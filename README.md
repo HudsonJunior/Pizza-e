@@ -28,6 +28,6 @@ $ npm start
 
 Todas as mudanças realizadas na sua branch devem ser commitadas através dos comandos
 
-$ git add nome_dos_arquivos \n
-$ git commit -m "Mensagem do commit" \n
-$ git push \n
+$ git add nome_dos_arquivos
+$ git commit -m "Mensagem do commit" 
+$ git push 
