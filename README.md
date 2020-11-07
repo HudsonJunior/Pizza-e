@@ -6,7 +6,7 @@ Após instalado, clonar este repositório em uma pasta do seu computador
 
 $ git clone https://github.com/Hudsox/Pizza-e.git
 
-Depois, é necessária a instalação das depêndencias do projeto, para isso digite:
+Depois, é necessário a instalação das depêndencias do projeto, para isso digite:
 
 $ npm install
 
