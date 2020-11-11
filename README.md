@@ -6,10 +6,6 @@ Após instalado, clonar este repositório em uma pasta do seu computador
 
 $ git clone https://github.com/Hudsox/Pizza-e.git
 
-Depois, é necessário a instalação das depêndencias do projeto, para isso digite:
-
-$ npm install
-
 Ao clonar o repositório, verificar se não há mudanças pendentes no git, realizando o comando:
 
 $ git pull
@@ -17,6 +13,10 @@ $ git pull
 Após isso, mudar para sua respectiva branch de trabalho:
 
 $ git checkout nome-da-sua-branch
+
+Depois, é necessário a instalação das depêndencias do projeto, para isso digite:
+
+$ npm install
 
 # Iniciando o projeto
 Para iniciar o projeto no localhost, basta digitar
