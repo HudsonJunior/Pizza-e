@@ -10,8 +10,6 @@ Depois, é necessário a instalação das depêndencias do projeto, para isso di
 
 $ npm install
 
-# Iniciando o projeto
-
 Ao clonar o repositório, verificar se não há mudanças pendentes no git, realizando o comando:
 
 $ git pull
@@ -20,6 +18,7 @@ Após isso, mudar para sua respectiva branch de trabalho:
 
 $ git checkout nome-da-sua-branch
 
+# Iniciando o projeto
 Para iniciar o projeto no localhost, basta digitar
 
 $ npm start
