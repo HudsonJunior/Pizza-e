@@ -1,13 +1,10 @@
 import { Component } from "react";
+import Login from "../src/pages/Login"
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <h1> Iniciando criação das interfaces</h1>
-      </div>
-    );
-  }
-}
 
+const App = () => (
+  <div className="App">
+    <Login />
+  </div>
+)
 export default App;
