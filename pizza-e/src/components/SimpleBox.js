@@ -1,14 +1,13 @@
 // src/components/BoxSimple.jsx
 import React from 'react'
-import PropTypes from 'prop-types'
 import './styles/SimpleBoxStyle.css'
 
-const SimpleBox = ({ children }) => (
-    <div style={styles.SimpleBox}>
-        {children}
-    </div>
-)
-SimpleBox.propTypes = {
-    children: PropTypes.node.isRequired,
+const SimpleBox = () => {
+    return (
+        <div>
+        </div>
+    )
 }
+
+
 export default SimpleBox
