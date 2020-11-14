@@ -1,11 +1,11 @@
 import { Component } from "react";
 import Login from "../src/pages/Login"
-import Main from "../src/pages/MainPage"
+import Home from "./pages/HomePage"
+import TopNav from './pages/TopNav'
 
-
-const App = () => (
-  <div className="App">
-    <Main />
-  </div>
-)
+const App = () => {
+  return(
+    <Home></Home>
+  )
+}
 export default App;

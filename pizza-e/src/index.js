@@ -2,11 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Home from "./pages/HomePage"
+import TopNav from "./pages/TopNav"
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  (
+  <Router>
+    <App>
+      <Switch>
+        <Route exact path="/" component = {Home}/>
+      </Switch>
+    </App>
+  </Router>
+  ),
   document.getElementById('root')
 );
 
