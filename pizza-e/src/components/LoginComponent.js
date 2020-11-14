@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import EdiText from 'react-editext'
 import './styles/LoginComponentStyle.css'
 const Login = () => {
     
@@ -8,7 +7,7 @@ const Login = () => {
             <input
                 type="text"
                 name="CPF"
-                placeholder="Digite seu CPF"
+                placeholder="CPF/CNPJ"
             >
             </input>
             <input
