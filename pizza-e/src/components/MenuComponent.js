@@ -1,12 +1,13 @@
-import React from 'react'
 import "./styles/MenuStyle.css"
+import React from 'react'
+import {Link} from 'react-router-dom'
 
 
 const menu = () => {
     return (
         <div className="boxMenu">
-            <a href="#home">Home</a>
-            <a href="#news">Cardápio</a>
+            <Link to="/">Home</Link>
+            <Link to="/cardapio">Cardápio</Link>
             <a href="#news">Minha Conta</a>
             <div class="dropdown">
                 <button class="dropbtn">Área de Funcionário
