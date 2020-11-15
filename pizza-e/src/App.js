@@ -1,11 +1,23 @@
-import { Component } from "react";
+import React from "react";
+import {Switch, Route} from 'react-router-dom'
+
 import Login from "../src/pages/Login"
-import Main from "../src/pages/MainPage"
+import Cardapio from "./pages/Cardapio";
+import Home from "./pages/HomePage"
+import TopNav from './pages/TopNav'
 
+const App = () => {
+    return (
+      <div className="App">
+        <TopNav></TopNav>
+        <Switch>
+          <Route exact path="/" component = {Home}/>
+          <Route path="/cardapio" component = {Cardapio}/>
 
-const App = () => (
-  <div className="App">
-    <Main />
-  </div>
-)
+        </Switch>
+      </div>
+    )
+  }
+  
+
 export default App;
