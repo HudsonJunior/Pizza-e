@@ -1,11 +1,15 @@
 import React from 'react'
 import './styles/LoginComponentStyle.css'
-
+import pizza from './../images/pizza.png'
 const Login = () => {
     
     return(
         <div className= "blockLogin border border-dark loginDiv">
-            <h1 style={{marginBottom: 50}}>Login</h1>
+            <img
+                src={ pizza } alt="Pizza"
+            ></img>
+            <h1>Pizza-e</h1>
+            <h1 style={{marginBottom: 30}}>Login</h1>
             <input
                 className="loginInput"
                 type="text"
