@@ -1,7 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './styles/LoginComponentStyle.css'
 import pizza from './../images/pizza.png'
-const Login = () => {
+
+const Login = props => {
+    const [user, setUser] = useState("")
+    const [senha, setSenha] = useState("")
+    const [tipoUser, setTipoUser] = useState(1) //padrão é cliente
+
+    const cadastrarButton = () => {
+        // chamar tela de cadastro
+    }
+
+    const logarButton = () => {
+        if(user === "blablabla") //funcionário
+            setTipoUser(0)
+        
+        // chamar tela home
+    }
     
     return(
         <div className= "blockLogin border border-dark loginDiv">
@@ -14,12 +29,14 @@ const Login = () => {
                 className="loginInput"
                 type="text"
                 name="CPF"
+                onChange = {user => setUser(user)}
                 placeholder="CPF/CNPJ"
             >
             </input>
             <input
                 className="loginInput"
                 type="password"
+                onChange = {senha => setSenha(senha)}
                 name="Senha"
                 placeholder="Digite sua senha"
             >
@@ -27,10 +44,14 @@ const Login = () => {
             <div
                 style={{flexDirection:"row", display:"flex"}}
             >
-            <button className="loginButton"> Cadastrar</button>
+            <button 
+                className="loginButton"
+                onClick = {cadastrarButton()}
+                
+                > Cadastrar</button>
             <button
                 name="Login"
-                onClick= {() => {}}
+                onClick= {logarButton()}
                 className="loginButton"
             >
             Entrar 
