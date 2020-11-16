@@ -8,7 +8,7 @@ const menu = () => {
         <div className="boxMenu">
             <Link to="/">Home</Link>
             <Link to="/cardapio">Cardápio</Link>
-            <Link to="/conta">Minha Conta</Link>
+            <Link to="/minhaConta">Minha Conta</Link>
             <div class="dropdown">
                 <button class="dropbtn">Área de Funcionários
                     <i class="fa fa-caret-down"></i>
