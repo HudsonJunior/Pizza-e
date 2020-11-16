@@ -14,11 +14,11 @@ const menu = () => {
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Pedidos</a>
-                    <a href="#">Clientes</a>
-                    <a href="#">Produtos</a>
-                    <a href="#">Estoque</a>
-                    <a href="#">Relatório</a>
+                    <Link href="#">Pedidos</Link>
+                    <Link href="#">Clientes</Link>
+                    <Link href="#">Produtos</Link>
+                    <Link href="#">Estoque</Link>
+                    <Link href="#">Relatório</Link>
                 </div>
             </div>
         </div>
