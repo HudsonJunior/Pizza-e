@@ -7,6 +7,7 @@ import Home from "./pages/HomePage";
 import Header from './components/HeaderComponent';
 import Menubar from './components/MenubarComponent';
 import Footer from './components/FooterComponent';
+import minhaConta from "./pages/minhaConta";
 
 const App = () => {
     return (
@@ -17,6 +18,7 @@ const App = () => {
           <Switch>
             <Route exact path="/" component = {Home}/>
             <Route path="/cardapio" component = {Cardapio}/>
+            <Route path="/minhaConta" component = {minhaConta}/>
           </Switch>
       </div>
       <Footer/>
