@@ -3,7 +3,7 @@ import React from 'react'
 const Cardapio = () =>{
     return(
         <div>
-            <p>pagina do cardapio</p>
+            <p>pagina do caralho</p>
         </div>
     )
 }
