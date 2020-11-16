@@ -7,7 +7,7 @@ import Home from "./pages/HomePage";
 import Header from './components/HeaderComponent';
 import Menubar from './components/MenubarComponent';
 import Footer from './components/FooterComponent';
-import minhaConta from "./components/minhaContaComponents";
+import minhaConta from "./pages/minhaConta";
 
 const App = () => {
     return (
