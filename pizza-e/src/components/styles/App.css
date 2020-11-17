@@ -1,9 +1,18 @@
-.containerPage{
-    display: flex;
-    flex-direction: column;
-    min-height: 100wh;
+html, body{
+    height: 100%;
+    margin: 2px 2px 0px 2px;
+
+}
+.content-wrap{
+    min-height: 100%;
+    margin-bottom: -80px;
 }
 
-.content-wrap{
-    flex:1;
+.content-wrap::after{
+    content: "";
+    display: block;
 }
+
+.footer, .page-content::after{
+    height:80px;
+} 

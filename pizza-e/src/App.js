@@ -2,27 +2,42 @@ import React from "react";
 import {Switch, Route} from 'react-router-dom'
 import './components/styles/App.css'
 import Login from "../src/pages/Login";
-import Cardapio from "./pages/Cardapio";
-import Home from "./pages/HomePage";
 import Header from './components/HeaderComponent';
 import Menubar from './components/MenubarComponent';
 import Footer from './components/FooterComponent';
+
+import Cardapio from "./pages/Cardapio";
+import Home from "./pages/HomePage";
 import minhaConta from "./pages/minhaConta";
+import Pedidos from "./pages/Pedidos";
+import Clientes from "./pages/Clientes";
+import Produtos from "./pages/Produtos";
+import Estoque from "./pages/Estoque";
+import Funcionarios from "./pages/Funcionarios";
+import Relatorios from "./pages/Relatorio";
 
 const App = () => {
     return (
-      <div className="containerPage">
-      <div className ="contentWrap">
-          <Header/>
-          <Menubar/>
-          <Switch>
-            <Route exact path="/" component = {Home}/>
-            <Route path="/cardapio" component = {Cardapio}/>
-            <Route path="/minhaConta" component = {minhaConta}/>
-          </Switch>
+      <body className="App">
+        <div className="containerPage">
+        <div className ="contentWrap">
+            <Header/>
+            <Menubar/>
+            <Switch>
+              <Route exact path="/" component = {Home}/>
+              <Route path="/cardapio" component = {Cardapio}/>
+              <Route path="/minhaConta" component = {minhaConta}/>
+              <Route path="/func/pedidos" component = {Pedidos}/>
+              <Route path="/func/clientes" component = {Clientes}/>
+              <Route path="/func/produtos" component = {Produtos}/>
+              <Route path="/func/estoque" component = {Estoque}/>
+              <Route path="/gerente/funcionarios" component = {Funcionarios}/>
+              <Route path="/gerente/relatorios" component = {Relatorios}/>
+            </Switch>
+        </div>
+        <Footer className="footer"/>
       </div>
-      <Footer/>
-    </div>
+    </body>
     )
   }
   
