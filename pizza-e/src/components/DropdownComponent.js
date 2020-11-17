@@ -1,6 +1,6 @@
 import React from 'react'
 import './styles/DropdownStyles.css'
-const options = () => {
+const Options = () => {
     return(
     <div class="dropdown">
         <button class="dropbtn">Área do Funcionário
@@ -17,4 +17,4 @@ const options = () => {
     )
 }
 
-export default options
+export default Options

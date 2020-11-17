@@ -1,10 +1,11 @@
 import React from "react";
-import {Switch, Route} from 'react-router-dom'
-import './components/styles/App.css'
+import { Switch, Route } from "react-router-dom";
+import "./components/styles/App.css";
+
 import Login from "../src/pages/Login";
-import Header from './components/HeaderComponent';
-import Menubar from './components/MenubarComponent';
-import Footer from './components/FooterComponent';
+import Header from "./components/HeaderComponent";
+import Menubar from "./components/MenubarComponent";
+import Footer from "./components/FooterComponent";
 
 import Cardapio from "./pages/Cardapio";
 import Home from "./pages/HomePage";
@@ -17,29 +18,29 @@ import Funcionarios from "./pages/Funcionarios";
 import Relatorios from "./pages/Relatorio";
 
 const App = () => {
-    return (
-      <body className="App">
-        <div className="containerPage">
-        <div className ="contentWrap">
-            <Header/>
-            <Menubar/>
-            <Switch>
-              <Route exact path="/" component = {Home}/>
-              <Route path="/cardapio" component = {Cardapio}/>
-              <Route path="/minhaConta" component = {minhaConta}/>
-              <Route path="/func/pedidos" component = {Pedidos}/>
-              <Route path="/func/clientes" component = {Clientes}/>
-              <Route path="/func/produtos" component = {Produtos}/>
-              <Route path="/func/estoque" component = {Estoque}/>
-              <Route path="/gerente/funcionarios" component = {Funcionarios}/>
-              <Route path="/gerente/relatorios" component = {Relatorios}/>
-            </Switch>
+  return (
+    <body>
+      <div className="wrapper">
+        <div className="container">
+          <Header />
+          {/* <Menubar/> */}
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/cardapio" component={Cardapio} />
+            <Route path="/minhaConta" component={minhaConta} />
+            <Route path="/func/pedidos" component={Pedidos} />
+            <Route path="/func/clientes" component={Clientes} />
+            <Route path="/func/produtos" component={Produtos} />
+            <Route path="/func/estoque" component={Estoque} />
+            <Route path="/gerente/funcionarios" component={Funcionarios} />
+            <Route path="/gerente/relatorios" component={Relatorios} />
+          </Switch>
         </div>
-        <Footer className="footer"/>
+        <Footer className="footer" />
       </div>
     </body>
-    )
-  }
-  
+  );
+};
 
 export default App;

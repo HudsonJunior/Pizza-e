@@ -1,6 +1,6 @@
 import React from 'react'
 
-const minhaConta = () =>{
+const MinhaConta = () =>{
     return(
         <h1>Página da minha conta</h1>
     )
