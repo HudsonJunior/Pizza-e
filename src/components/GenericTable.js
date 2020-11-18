@@ -1,44 +1,35 @@
 import React from "react";
 
+import {useHistory} from  "react-router-dom"
+
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
-import { FiPlus, FiSearch } from "react-icons/fi";
+import { FiEdit3, FiXCircle, FiPlus,  FiSearch } from "react-icons/fi";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// const Row1 = ({ record }) => {
-//   const keys = Object.keys(record);
-//   return (
-//     <tr key={record.id}>
-//       {keys.map((key) => (
-//         <td key={key}>{record[key]}</td>
-//       ))}
-//     </tr>
-//   );
-// };
-
-// const Table = ({data}) => {
-//     const keys = Object.keys(data[0])
-//     return(
-//         <table>
-//             <thead>
-//                 <tr>
-//                     {
-//                         keys.map(key => <th key={key}>{key}</th>)
-//                     }
-//                 </tr>
-
-//             </thead>
-//             <tbody>
-//                 {data.map(record => <Row1 record = {record} />)}
-//             </tbody>
-//         </table>
-//     )
-// }
 
 const url = window.location.href.replace("http://localhost:3000/func/", "");
 
 const GenericTable = ({ data, title }) => {
+  const history = useHistory()
+
+  const direcionarCadastro = () => {
+    {url === "pedidos" && (history.push("/"))
+
+    }
+    {url === "clientes" && (history.push("/"))
+    
+    }
+    {url === "produtos" && (history.push("/"))
+    
+    }
+    {url === "estoque" && (history.push("/"))
+  
+    }
+
+  }
+
   return (
     <>
       <InputGroup className="col-3 mb-3">
@@ -56,21 +47,22 @@ const GenericTable = ({ data, title }) => {
       </InputGroup>
 
       <Table striped bordered hover>
-        <thead>
-          <tr>
-            <td>ID</td>
-            <td>Descrição</td>
-            <td>Pagamento</td>
-            <td>Expedição</td>
-            <td>Data</td>
-            <td>CPF</td>
-            <td>Observações</td>
-            <td>Ações</td>
-          </tr>
-        </thead>
+        
 
         {url === "pedidos" && (
           <>
+            <thead>
+            <tr>
+              <td>ID</td>
+              <td>Descrição</td>
+              <td>Pagamento</td>
+              <td>Expedição</td>
+              <td>Data</td>
+              <td>CPF</td>
+              <td>Observações</td>
+              <td>Ações</td>
+            </tr>
+            </thead>  
             {data.map((item) => (
               <tbody>
                 <tr>
@@ -82,8 +74,11 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.CPF}</td>
                   <td>{item.observacoes}</td>
                   <td>
-                    <Button variant="success">
-                      <FiPlus size={26} color="#fff" /> Adicionar
+                    <Button variant="light" style={{marginRight:7, borderWidth:1, borderColor:"black"}}>
+                      <FiEdit3 size={20} color="#black" />
+                    </Button>
+                    <Button variant="danger">
+                      <FiXCircle size={20} color="#black" />
                     </Button>
                   </td>
                 </tr>
@@ -103,12 +98,24 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.endereco}</td>
                   <td>{item.email}</td>
                   <td>{item.telefone}</td>
+                  <td>
+                    <Button variant="light" style={{marginRight:7, borderWidth:1, borderColor:"black"}}>
+                      <FiEdit3 size={20} color="#black" />
+                    </Button>
+                    <Button variant="danger">
+                      <FiXCircle size={20} color="#black" />
+                    </Button>
+                  </td>
                 </tr>
               </tbody>
             ))}
           </>
         )}
       </Table>
+      <Button variant="success" onClick={direcionarCadastro}>
+        <FiPlus size={26} color="fff"/>
+        Adicionar
+      </Button>
     </>
   );
 };
