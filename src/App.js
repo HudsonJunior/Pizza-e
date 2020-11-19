@@ -11,6 +11,7 @@ import Cardapio from "./pages/Cardapio";
 import Home from "./pages/HomePage";
 import minhaConta from "./pages/minhaConta";
 import Pedidos from "./pages/Pedidos";
+import RegistrarPedidos from "./pages/RegistrarPedido"
 import Clientes from "./pages/Clientes";
 import Produtos from "./pages/Produtos";
 import Estoque from "./pages/Estoque";
@@ -30,6 +31,7 @@ const App = () => {
             <Route path="/cardapio" component={Cardapio} />
             <Route path="/minhaConta" component={minhaConta} />
             <Route path="/func/pedidos" component={Pedidos} />
+            <Route path ="/RegistrarPedidos" component={RegistrarPedidos} />
             <Route path="/func/clientes" component={Clientes} />
             <Route path="/func/produtos" component={Produtos} />
             <Route path="/func/estoque" component={Estoque} />

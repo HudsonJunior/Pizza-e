@@ -15,7 +15,7 @@ const GenericTable = ({ data, title }) => {
   const history = useHistory()
 
   const direcionarCadastro = () => {
-    {url === "pedidos" && (history.push("/"))
+    {url === "pedidos" && (history.push("/RegistrarPedidos"))
 
     }
     {url === "clientes" && (history.push("/"))
