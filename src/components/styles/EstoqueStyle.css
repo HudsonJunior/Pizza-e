@@ -1,0 +1,10 @@
+.flexEstoque {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentEstoque {
+  text-align: center;
+  width: 900px;
+}
