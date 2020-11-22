@@ -76,14 +76,14 @@ const FuncCadastrarClienteComponents = (props) => {
   };
 
   const finalizarCadastro = () =>{
-    history.push("/func/clientes")
+    history.push("/clientes")
   }
   const fim = () => {
    setOpen(false);
    setEnd(true);
   }
 
-  const voltar = () =>{history.push("/func/clientes")}
+  const voltar = () =>{history.push("/clientes")}
 
   const [confirmaVoltar,setVoltar] = React.useState(false);
 

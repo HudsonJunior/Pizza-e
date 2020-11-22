@@ -17,13 +17,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
-import { FiEdit3, FiXCircle, FiPlus, FiSearch } from "react-icons/fi";
-
-import { Dialog } from "@material-ui/core";
-
-import DialogActions from "@material-ui/core/DialogActions";
-
-import DialogTitle from "@material-ui/core/DialogTitle";
+import { FiEdit3, FiXCircle, FiPlus, FiSearch, FiCheck } from "react-icons/fi";
 
 import { ToastContainer, toast } from "react-toastify";
 
@@ -72,7 +66,7 @@ const GenericTable = ({ data, title }) => {
   const endClose = () => {
     setEnd(false);
   }
-  const handleClose = () => {
+  const gerenciarFechar = () => {
     setEnd(false);
     setOpen(false);
   };
@@ -121,7 +115,7 @@ const GenericTable = ({ data, title }) => {
       url === "pedidos" && history.push("/registrar-pedidos");
     }
     {
-      url === "clientes" && (history.push("/func/cadastrarCliente"))
+      url === "clientes" && (history.push("/funcionario-cadastrar-cliente"))
     
     }
     {
@@ -251,12 +245,13 @@ const GenericTable = ({ data, title }) => {
             {data.map((item) => (
               <tbody>
                 <tr>
-                  <td>{item.cod}</td>
+                  <td>{item.id}</td>
+                  <td>{item.cpf}</td>
                   <td>{item.nome}</td>
-                  <td>{item.marca}</td>
-                  <td>{item.quantidade}</td>
-                  <td>{item.itens}</td>
-                  <td>{item.qntMinima}</td>
+                  <td>{item.endereco}</td>
+                  <td>{item.email}</td>
+                  <td>{item.telefone}</td>
+                  
                   <td>
                   <Button variant="light" style={{marginRight:7, borderWidth:1, borderColor:"black"}} onClick={handleClickOpen}>
                       <FiEdit3 size={20} color="#black" />
@@ -264,7 +259,73 @@ const GenericTable = ({ data, title }) => {
                     
                   </td>
                 </tr>
+                <Dialog open={open} onClose={gerenciarFechar} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Editar as informações do cliente</DialogTitle>
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Nome"
+                  type="name"
+                  fullWidth
+                />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Endereço"
+                  type="name"
+                  fullWidth
+                />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Email"
+                  type="email"
+                  fullWidth
+                />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Telefone"
+                  type="name"
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Botao onClick={gerenciarFechar} color="primary">
+                  Cancel
+                </Botao>
+                <Botao onClick={fim} color="primary">
+                  Alterar
+                </Botao>
+              </DialogActions>
+            </Dialog>
+            <Dialog
+              open={end}
+              onClose={endClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{"Os dados foram alterados com sucesso!  "}<FiCheck size={35} color={"green"}></FiCheck></DialogTitle>
+              
+              <DialogContent>
+                
+                <DialogContentText id="alert-dialog-description">
+                  Dados alterados com sucesso.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={endClose} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+          </Dialog>
               </tbody>
+              
             ))}
           </>
         )}
@@ -518,71 +579,7 @@ const GenericTable = ({ data, title }) => {
                 </tr>
               </tbody>
             ))}
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-              <DialogTitle id="form-dialog-title">Editar as informações do cliente</DialogTitle>
-              <DialogContent>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Nome"
-                  type="name"
-                  fullWidth
-                />
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Endereço"
-                  type="name"
-                  fullWidth
-                />
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Email"
-                  type="email"
-                  fullWidth
-                />
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Telefone"
-                  type="name"
-                  fullWidth
-                />
-              </DialogContent>
-              <DialogActions>
-                <Botao onClick={handleClose} color="primary">
-                  Cancel
-                </Botao>
-                <Botao onClick={fim} color="primary">
-                  Alterar
-                </Botao>
-              </DialogActions>
-            </Dialog>
-            <Dialog
-              open={end}
-              onClose={endClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">{"Os dados foram alterados com sucesso!  "}<FiCheck size={35} color={"green"}></FiCheck></DialogTitle>
-              
-              <DialogContent>
-                
-                <DialogContentText id="alert-dialog-description">
-                  Dados alterados com sucesso.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={endClose} color="primary" autoFocus>
-                  Ok
-                </Button>
-              </DialogActions>
-          </Dialog>
+            
           </>
         )}
       </Table>

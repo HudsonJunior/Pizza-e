@@ -27,7 +27,7 @@ const Menu = ({ currentUser }) => {
         <div className="left">
           <Link to="/">🍕 Home</Link>
           <Link to="/cardapio">Cardápio</Link>
-          <Link to="/conta">Minha Conta</Link>
+          <Link to="/minhaConta">Minha Conta</Link>
           {currentUser && currentUser.type !== "C" && (
             <div className="dropdown1">
               <button className="dropbtn">
