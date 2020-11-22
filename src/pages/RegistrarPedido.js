@@ -1,56 +1,137 @@
-import React from "react"
-import {Form} from "react-bootstrap"
-import {Button} from "react-bootstrap"
-import {FiPlus} from "react-icons/fi";
+import React from "react";
+import { useHistory } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+import "../components/styles/PedidoStyle.css";
+import Menubar from "../components/MenubarComponent";
+
+import { makeStyles } from "@material-ui/core/styles";
+import { Dialog } from "@material-ui/core";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
+import { Button } from "react-bootstrap";
+
+import BarraPesquisa from "../components/BarraPesquisaComponent";
+import Pagamento from "../components/Pedido/PedidoPagamento";
+import Observacoes from "../components/Pedido/PedidoObservacao";
+import Expedicao from "../components/Pedido/PedidoExpedicao";
+import TabelaProdutoPedido from "../components/Pedido/PedidoTabelaProdutos";
+import NotaFiscalCpf from "../components/Pedido/PedidoCpfNaNota";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(1),
+      width: "35ch",
+    },
+  },
+}));
 
 const RegistrarPedido = () => {
+  const user = localStorage.getItem("user");
+  const convertedUser = JSON.parse(user);
+  const history = useHistory();
+  const classes = useStyles();
 
-    return (
-        <>
-            <h1>Registro de Pedido </h1>
-            <Form > 
-                <Form.Group controlId="formaPagamento">
-                    <Form.Label>Forma de Pagamento</Form.Label>
-                    <Form.Control as="select" defaultValue="Selecione..." className="col-2 mb-3">
-                        <option>Selecione...</option>
-                        <option>Dinheiro</option>
-                        <option>Cartão de Débito</option>
-                        <option>Cartão de Crédito</option>
-                    </Form.Control>
-                </Form.Group>
+  const [open, setOpen] = React.useState(false);
 
-                <Form.Group controlId="formaExpedicao">
-                    <Form.Label>Forma de Expedição  </Form.Label>
-                    <Form.Control as="select" defaultValue="Selecione..." className="col-2 mb-3">
-                        <option>Selecione...</option>
-                        <option>Retirar no Balcão</option>
-                        <option>Entrega na residência</option>
-                    </Form.Control>
-                    <Button variant="success">
-                        <FiPlus size={22} color="fff"/>
-                        Cadastrar Cliente
-                    </Button>
-                </Form.Group>
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-                <Form.Group controlId="ObservacoesPedido">
-                    <Form.Label>Observações</Form.Label>
-                    <Form.Control as="textarea" placeholder="Tirar algum ingrediente, ..." rows={3} className="col-2 mb-3"/>
-                </Form.Group>
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-                <Form.Group controlId="EmitirNota">
-                    <Form.Label>CPF ou CNPJ</Form.Label>
-                    <Form.Check type="checkbox" label="Emitir Nota Fiscal"/>
-                    <Form.Control type="cpf" placeholder="Digite o CPF/CNPJ" className="col-2 mb-3"/>
-                </Form.Group>
+  const toastStyle = {
+    position: "top-right",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  };
 
-                <Button variant="primary" type="submit">
-                    Realizar Pedido
-                </Button>
-            </Form>
-        </>
-    )
-}
+  const handleSave = (event) => {
+    event.preventDefault();
+    toast.success("🍕 Pedido feito! Nota fiscal emitida!", {
+      toastStyle,
+    });
+    setTimeout(() => {
+      history.push("/pedidos");
+    }, 2000);
+  };
 
-export default RegistrarPedido
+  return (
+    <>
+      <Menubar currentUser={convertedUser} />
+      <div className="RegistroPedido">
+        <h2>Registro de Pedido </h2>
+        <form className={classes.root} onSubmit={handleSave}>
+          <div className="divEsquerda">
+            <BarraPesquisa />
+            <TabelaProdutoPedido />
+          </div>
+
+          <div className="divDireita">
+            <Pagamento />
+            <Observacoes />
+            <Expedicao />
+            <NotaFiscalCpf />
+
+            <div className="RPBotoes">
+              <Button
+                variant="ligth"
+                style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
+                onClick={handleClickOpen}
+              >
+                Voltar
+              </Button>
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle id="alert-dialog-VoltarPedido">
+                  {"Deseja continuar o registro do pedido?"}
+                </DialogTitle>
+                <DialogActions>
+                  <Button
+                    className="botaoNaoPedido"
+                    variant="danger"
+                    href="/pedidos"
+                    onClick={handleClose}
+                    color="primary"
+                  >
+                    Não
+                  </Button>
+
+                  <Button
+                    variant="success"
+                    onClick={handleClose}
+                    color="primary"
+                    autoFocus
+                  >
+                    Sim
+                  </Button>
+                </DialogActions>
+              </Dialog>
+
+              <Button
+                className="botaoRealizarPedido"
+                variant="success"
+                style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
+                type="submit"
+              >
+                Realizar Pedido
+              </Button>
+            </div>
+          </div>
+        </form>
+        <ToastContainer />
+      </div>
+    </>
+  );
+};
+
+export default RegistrarPedido;

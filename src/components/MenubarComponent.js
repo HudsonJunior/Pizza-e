@@ -25,9 +25,9 @@ const Menu = ({ currentUser }) => {
         }}
       >
         <div className="left">
-          <Link to="/">Home</Link>
-          <Link to="/cardapio">Cardápio</Link>
-          <Link to="/conta">Minha Conta</Link>
+          <a href="/">Home</a>
+          <a href="/cardapio">Cardápio</a>
+          <a href="/conta">Minha Conta</a>
           {currentUser && currentUser.type !== "C" && (
             <div className="dropdown1">
               <button className="dropbtn">
@@ -35,10 +35,10 @@ const Menu = ({ currentUser }) => {
                 <i class="fa fa-caret-down"></i>
               </button>
               <div className="dropdown-content">
-                <a href="/func/pedidos">Pedidos</a>
-                <a href="/func/clientes">Clientes</a>
-                <a href="/func/produtos">Pedidos</a>
-                <a href="/func/estoque">Clientes</a>
+                <a href="/pedidos">Pedidos</a>
+                <a href="/clientes">Clientes</a>
+                <a href="/produtos">Pedidos</a>
+                <a href="/estoque">Clientes</a>
               </div>
             </div>
           )}
@@ -50,8 +50,11 @@ const Menu = ({ currentUser }) => {
                 <i class="fa fa-caret-down"></i>
               </button>
               <div className="dropdown2-content">
-                <Link to="/gerente/funcionarios">Gerenciar Funcionários</Link>
-                <Link to="/gerente/relatorios">Relatórios</Link>
+                <a href="/funcionarios">Gerenciar Funcionários</a>
+                <a href="/relatorios-venda">Relatórios de Venda</a>
+                <a href="/relatorios-satisfacao">Relatórios de Satisfação</a>
+                <a href="/relatorios-estoque">Relatórios de Estoque</a>
+
               </div>
             </div>
           )}
@@ -69,7 +72,7 @@ const Menu = ({ currentUser }) => {
             <FiLogOut size={22} color="white" />
           </button>
         )}
-        {!currentUser && <Link to="/login">Login</Link>}
+        {!currentUser && <a href="/login">Login</a>}
       </div>
     </div>
   );

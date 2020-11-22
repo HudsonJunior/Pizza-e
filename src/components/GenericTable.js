@@ -1,34 +1,32 @@
 import React from "react";
 
-import {useHistory} from  "react-router-dom"
+import { useHistory } from "react-router-dom";
 
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
-import { FiEdit3, FiXCircle, FiPlus,  FiSearch } from "react-icons/fi";
+import { FiEdit3, FiXCircle, FiPlus, FiSearch } from "react-icons/fi";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
-const url = window.location.href.replace("http://localhost:3000/func/", "");
+const url = window.location.href.replace("http://localhost:3000/", "");
 
 const GenericTable = ({ data, title }) => {
-  const history = useHistory()
+  const history = useHistory();
 
   const direcionarCadastro = () => {
-    {url === "pedidos" && (history.push("/RegistrarPedidos"))
-
+    {
+      url === "pedidos" && history.push("/registrar-pedidos");
     }
-    {url === "clientes" && (history.push("/"))
-    
+    {
+      url === "clientes" && history.push("/");
     }
-    {url === "produtos" && (history.push("/"))
-    
+    {
+      url === "produtos" && history.push("/");
     }
-    {url === "estoque" && (history.push("/"))
-  
+    {
+      url === "estoque" && history.push("/");
     }
-
-  }
+  };
 
   return (
     <>
@@ -47,34 +45,41 @@ const GenericTable = ({ data, title }) => {
       </InputGroup>
 
       <Table striped bordered hover>
-        
-
         {url === "pedidos" && (
           <>
             <thead>
-            <tr>
-              <td>ID</td>
-              <td>Descrição</td>
-              <td>Pagamento</td>
-              <td>Expedição</td>
-              <td>Data</td>
-              <td>CPF</td>
-              <td>Observações</td>
-              <td>Ações</td>
-            </tr>
-            </thead>  
+              <tr>
+                <td>Data</td>
+                <td>ID</td>
+                <td>Descrição</td>
+                <td>Pagamento</td>
+                <td>Observações</td>
+                <td>Expedição</td>
+                <td>CPF</td>
+                <td>Valor</td>
+                <td>Ações</td>
+              </tr>
+            </thead>
             {data.map((item) => (
               <tbody>
                 <tr>
-                  <td>{item.id}</td>
-                  <td>{item.descrição}</td>
-                  <td>{item.pagamento}</td>
-                  <td>{item.expedição}</td>
                   <td>{item.data}</td>
-                  <td>{item.CPF}</td>
+                  <td>{item.id}</td>
+                  <td>{item.descricao}</td>
+                  <td>{item.pagamento}</td>
                   <td>{item.observacoes}</td>
+                  <td>{item.expedicao}</td>
+                  <td>{item.CPF}</td>
+                  <td>R$ {item.valor}</td>
                   <td>
-                    <Button variant="light" style={{marginRight:7, borderWidth:1, borderColor:"black"}}>
+                    <Button
+                      variant="light"
+                      style={{
+                        marginRight: 7,
+                        borderWidth: 1,
+                        borderColor: "black",
+                      }}
+                    >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
                     <Button variant="danger">
@@ -99,7 +104,14 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.email}</td>
                   <td>{item.telefone}</td>
                   <td>
-                    <Button variant="light" style={{marginRight:7, borderWidth:1, borderColor:"black"}}>
+                    <Button
+                      variant="light"
+                      style={{
+                        marginRight: 7,
+                        borderWidth: 1,
+                        borderColor: "black",
+                      }}
+                    >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
                     <Button variant="danger">
@@ -113,7 +125,7 @@ const GenericTable = ({ data, title }) => {
         )}
       </Table>
       <Button variant="success" onClick={direcionarCadastro}>
-        <FiPlus size={26} color="fff"/>
+        <FiPlus size={26} color="fff" />
         Adicionar
       </Button>
     </>
