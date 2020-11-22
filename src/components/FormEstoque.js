@@ -12,7 +12,13 @@ import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
-import history from "../history";
+import { Dialog } from "@material-ui/core";
+
+import DialogActions from "@material-ui/core/DialogActions";
+
+import DialogTitle from "@material-ui/core/DialogTitle";
+
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,8 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FormularioEstoque = () => {
+const FormularioEstoque = (props) => {
+  const history = useHistory();
   const classes = useStyles();
+  var tipo = props.type;
+  const [open, setOpen] = React.useState(false);
 
   const toastStyle = {
     position: "top-right",
@@ -37,101 +46,76 @@ const FormularioEstoque = () => {
     draggable: true,
     progress: undefined,
   };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleSave = (event) => {
     event.preventDefault();
-    toast.success("🍕 Cadastro feito!", {
-      toastStyle,
-    });
+    if (tipo === "cadastrar") {
+      toast.success("🍕 Cadastro feito!", {
+        toastStyle,
+      });
+    }
+    if (tipo === "editar") {
+      toast.success("🍕 Dados atualizados!", {
+        toastStyle,
+      });
+    }
     setTimeout(() => {
       history.push("/estoque");
     }, 1500);
-    // } else {
-    //   return toast.error("🍕 Credenciais incorretas", {
-    //     toastStyle,
-    //   });
-    // }
-  };
-
-  const handleBack = () => {
-    console.log(1);
-    history.push("/estoque");
-  };
-
-  const validar = () => {
-    var nome = document.getElementById("nome");
-    var marca = document.getElementById("marca");
-    var quantidade = document.getElementById("quantidade");
-    var valor = document.getElementById("valor");
-    var peso = document.getElementById("peso");
-    var validade = document.getElementById("validade");
-    var fabricacao = document.getElementById("fabricacao");
-
-    if (nome.value === "") {
-      alert("Nome não informado!");
-      return;
-    }
-    if (marca.value === "") {
-      alert("Marca não informada!");
-      return;
-    }
-    if (quantidade.value === "") {
-      alert("Quantidade não informada!");
-      return;
-    }
-    if (valor.value === "") {
-      alert("Valor não informado!");
-      return;
-    }
-    if (peso.value === "") {
-      alert("Peso não informado!");
-      return;
-    }
-    if (validade.value === "") {
-      alert("Data de validade não informada!");
-      return;
-    }
-    if (fabricacao.value === "") {
-      alert("Data de fabricação não informada!");
-      return;
-    }
-    handleSave();
   };
 
   return (
     <>
-      <form
-        id="formularioEstoque"
-        className={classes.root}
-        onSubmit={validar}
-        noValidate
-        autoComplete="off"
-      >
+      <form className={classes.root} onSubmit={handleSave}>
+        {tipo === "cadastrar" && (
+          <div className="contentForm">
+            <TextField
+              required
+              label="Nome"
+              placeholder="Nome do produto"
+              style={{
+                margin: 8,
+              }}
+            />
+            <TextField
+              disabled
+              label="Código"
+              defaultValue="Automático"
+              style={{
+                margin: 8,
+              }}
+            />
+          </div>
+        )}
+        {tipo === "editar" && (
+          <div className="contentForm">
+            <TextField
+              disabled
+              label="Nome"
+              placeholder="Nome do produto"
+              style={{
+                margin: 8,
+              }}
+            />
+            <TextField
+              disabled
+              label="Código"
+              defaultValue="Automático"
+              style={{
+                margin: 8,
+              }}
+            />
+          </div>
+        )}
         <div className="contentForm">
           <TextField
             required
-            id="nome"
-            label="Nome"
-            placeholder="Nome do produto"
-            style={{
-              margin: 8,
-            }}
-          />
-          <TextField
-            id="marca"
-            label="Marca"
-            name="marca"
-            style={{
-              margin: 8,
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          />
-        </div>
-        <div className="contentForm">
-          <TextField
-            id="quantidade"
             label="Quantidade"
             type="number"
             style={{
@@ -145,7 +129,7 @@ const FormularioEstoque = () => {
             }}
           />
           <TextField
-            id="valor"
+            required
             label="Valor"
             style={{
               margin: 8,
@@ -157,7 +141,7 @@ const FormularioEstoque = () => {
         </div>
         <div className="contentForm">
           <TextField
-            id="peso"
+            required
             label="Peso"
             style={{
               margin: 8,
@@ -167,18 +151,18 @@ const FormularioEstoque = () => {
             }}
           />
           <TextField
-            disabled
-            id="codigo"
-            label="Código"
-            defaultValue="Automático"
+            label="Marca"
+            name="marca"
             style={{
               margin: 8,
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           />
         </div>
         <div className="contentForm">
           <TextField
-            id="validade"
             label="Data de Validade"
             type="date"
             style={{
@@ -193,7 +177,6 @@ const FormularioEstoque = () => {
             }}
           />
           <TextField
-            id="fabricacao"
             label="Data de Fabricação"
             type="date"
             style={{
@@ -208,10 +191,76 @@ const FormularioEstoque = () => {
             }}
           />
         </div>
-        <Button className="botao" variant="dark" onClick={handleBack}>
+        <Button
+          className="botao"
+          variant="ligth"
+          style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
+          onClick={handleClickOpen}
+        >
           <FiChevronLeft /> Voltar
         </Button>
-        <Button className="botao" type="submit" variant="success">
+        {tipo === "cadastrar" && (
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle id="alert-dialog-voltar">
+              {"Deseja continuar o cadastro do produto no estoque?"}
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                variant="danger"
+                className="botao"
+                href="/estoque"
+                onClick={handleClose}
+                color="primary"
+              >
+                Não
+              </Button>
+
+              <Button
+                className="botao"
+                variant="success"
+                onClick={handleClose}
+                color="primary"
+                autoFocus
+              >
+                Sim
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        {tipo === "editar" && (
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle id="alert-dialog-voltar">
+              {"Deseja continuar a editar os dados do produto?"}
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                variant="danger"
+                className="botao"
+                href="/estoque"
+                onClick={handleClose}
+                color="primary"
+              >
+                Não
+              </Button>
+
+              <Button
+                className="botao"
+                variant="success"
+                onClick={handleClose}
+                color="primary"
+                autoFocus
+              >
+                Sim
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        <Button
+          className="botao"
+          style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
+          type="submit"
+          variant="success"
+        >
           <FiCheckCircle /> Salvar
         </Button>
       </form>

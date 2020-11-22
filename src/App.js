@@ -19,6 +19,8 @@ import Relatorios from "./pages/Relatorio";
 import CadastrarEstoque from "./pages/CadastrarEstoque";
 import EditarEstoque from "./pages/EditarEstoque";
 import CadastrarFuncionario from "./pages/CadastrarFuncionario";
+import EditarFuncionario from "./pages/EditarFuncionario";
+
 const App = () => {
   return (
     <body>
@@ -42,6 +44,7 @@ const App = () => {
               path="/cadastrar-funcionario"
               component={CadastrarFuncionario}
             />
+            <Route path="/editar-funcionario" component={EditarFuncionario} />
           </Switch>
         </div>
         <Footer className="footer" />

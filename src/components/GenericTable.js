@@ -13,20 +13,6 @@ const url = window.location.href.replace("http://localhost:3000/", "");
 const GenericTable = ({ data, title }) => {
   const history = useHistory();
 
-  const [count, setCount] = useState(1);
-
-  const [table, setTable] = useState({});
-
-  const [value, setValue] = useState(0);
-
-  const [redirect, setRedirect] = useState("");
-
-  const deleteItem = (index) => {
-    let quantidadeItem = Number(data[index].quantidade) - count;
-    setCount(count + 1);
-    setValue(quantidadeItem);
-  };
-
   const handleEdit = () => {
     {
       url === "pedidos" && history.push("/");
@@ -40,36 +26,27 @@ const GenericTable = ({ data, title }) => {
     {
       url === "estoque" && history.push("/editar-estoque");
     }
+    {
+      console.log(1);
+      url === "funcionarios" && history.push("/editar-funcionario");
+    }
   };
   const direcionarCadastro = () => {
     {
-      url === "pedidos" && setRedirect("cadastrar-pedidos");
+      url === "pedidos" && history.push("/");
     }
     {
-      url === "clientes" && setRedirect("cadastrar-clientes");
+      url === "clientes" && history.push("/");
     }
     {
-      url === "produtos" && setRedirect("cadastrar-produtos");
+      url === "produtos" && history.push("/");
     }
     {
-      url === "estoque" && setRedirect("cadastrar-estoque");
+      url === "estoque" && history.push("/cadastrar-estoque");
     }
     {
-      url === "funcionarios" && setRedirect("cadastrar-funcionario");
+      url === "funcionarios" && history.push("/cadastrar-funcionario");
     }
-  };
-
-  useEffect(() => {
-    setTable(data);
-    direcionarCadastro();
-  }, []);
-
-  const handleDelete = (index) => {
-    //setTable(table[index].quantidade + 1);
-    let quantidadeItem = Number(data[index].quantidade) - count;
-    setCount(count + 1);
-    setTable(table[index].quantidade, quantidadeItem);
-    console.log(table[index].quantidade);
   };
 
   return (
@@ -199,13 +176,11 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
+                      onClick={handleEdit}
                     >
-                      <FiEdit3 size={20} color="#black" onclick={handleEdit} />
+                      <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDelete(index)}
-                    >
+                    <Button variant="danger">
                       <FiXCircle size={20} color="#black" />
                     </Button>
                   </td>
@@ -246,8 +221,9 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
+                      onClick={handleEdit}
                     >
-                      <FiEdit3 size={20} color="#black" onclick={handleEdit} />
+                      <FiEdit3 size={20} color="#black" />
                     </Button>
                     <Button variant="danger">
                       <FiXCircle
@@ -263,29 +239,9 @@ const GenericTable = ({ data, title }) => {
           </>
         )}
       </Table>
-      {/* <Button variant="success" onPress={direcionarCadastro}>
+      <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
         Adicionar
-      </Button> */}
-      <Button
-        variant="success"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <a
-          href={`/${redirect}`}
-          style={{
-            color: "white",
-            textDecoration: "none",
-            textTransform: "uppercase",
-          }}
-        >
-          <FiPlus size={26} color="fff" />
-          Adicionar
-        </a>
       </Button>
     </>
   );

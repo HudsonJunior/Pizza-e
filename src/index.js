@@ -3,13 +3,12 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Router } from "react-router";
-import { Route } from "react-router-dom";
-import history from "./history";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
-  <Router history={history}>
+  <BrowserRouter>
     <App />
-  </Router>,
+  </BrowserRouter>,
   document.getElementById("root")
 );
 

@@ -2,13 +2,11 @@ import React from "react";
 
 import Menubar from "../components/MenubarComponent";
 
-import Assistente from "../components/AssistentComponent";
-
 import "../components/styles/FormStyle.css";
 
-import FormularioEstoque from "../components/FormEstoque";
-
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+
+import FormularioFuncionario from "../components/FormFuncionario";
 
 const theme = createMuiTheme({
   palette: {
@@ -21,7 +19,7 @@ const theme = createMuiTheme({
   },
 });
 
-const CadastrarEstoque = () => {
+const EditarFuncionario = () => {
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   return (
@@ -29,13 +27,13 @@ const CadastrarEstoque = () => {
       <Menubar currentUser={convertedUser} />
       <div className="flexForm containerForm">
         <div className="contentForm">
-          <h2>Cadastrar novo produto no estoque</h2>
-          <p>Informe os dados necessários...</p>
-          <FormularioEstoque type="cadastrar" />
+          <h2>Editar dados do funcionário</h2>
+          <p>Atualize os campos desejados...</p>
+          <FormularioFuncionario type="editar" />
         </div>
       </div>
     </ThemeProvider>
   );
 };
 
-export default CadastrarEstoque;
+export default EditarFuncionario;
