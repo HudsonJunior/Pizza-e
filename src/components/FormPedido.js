@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "../components/styles/PedidoStyle.css";
-import Menubar from "../components/MenubarComponent";
+import Menubar from "./MenubarComponent";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Dialog } from "@material-ui/core";
@@ -14,12 +14,12 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { Button } from "react-bootstrap";
 
-import BarraPesquisa from "../components/BarraPesquisaComponent";
-import Pagamento from "../components/Pedido/PedidoPagamento";
-import Observacoes from "../components/Pedido/PedidoObservacao";
-import Expedicao from "../components/Pedido/PedidoExpedicao";
-import TabelaProdutoPedido from "../components/Pedido/PedidoTabelaProdutos";
-import NotaFiscalCpf from "../components/Pedido/PedidoCpfNaNota";
+import BarraPesquisa from "./BarraPesquisaComponent";
+import Pagamento from "./Pedido/PedidoPagamento";
+import Observacoes from "./Pedido/PedidoObservacao";
+import Expedicao from "./Pedido/PedidoExpedicao";
+import TabelaProdutoPedido from "./Pedido/PedidoTabelaProdutos";
+import NotaFiscalCpf from "./Pedido/PedidoCpfNaNota";
 import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
