@@ -58,7 +58,7 @@ const GenericTable = ({ data, title }) => {
 
   const handleEdit = () => {
     {
-      url === "pedidos" && history.push("/");
+      url === "pedidos" && history.push("/registrar-pedidos");
     }
     {
       url === "clientes" && history.push("/");
@@ -112,26 +112,30 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
+                <td>Data</td>
                 <td>ID</td>
                 <td>Descrição</td>
                 <td>Pagamento</td>
-                <td>Expedição</td>
-                <td>Data</td>
-                <td>CPF</td>
                 <td>Observações</td>
+                <td>Expedição</td>
+                <td>CPF</td>
+                <td>Valor</td>
+                <td>Status</td>
                 <td>Ações</td>
               </tr>
             </thead>
             {data.map((item) => (
               <tbody>
                 <tr>
-                  <td>{item.id}</td>
-                  <td>{item.descrição}</td>
-                  <td>{item.pagamento}</td>
-                  <td>{item.expedição}</td>
                   <td>{item.data}</td>
-                  <td>{item.CPF}</td>
+                  <td>{item.id}</td>
+                  <td>{item.descricao}</td>
+                  <td>{item.pagamento}</td>
                   <td>{item.observacoes}</td>
+                  <td>{item.expedicao}</td>
+                  <td>{item.CPF}</td>
+                  <td>R$ {item.valor}</td>
+                  <td>{item.status}</td>
                   <td>
                     <Button
                       variant="light"

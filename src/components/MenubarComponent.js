@@ -50,7 +50,9 @@ const Menu = ({ currentUser }) => {
               </button>
               <div className="dropdown2-content">
                 <a href="/funcionarios">Gerenciar Funcionários</a>
-                <a href="/relatorios">Relatórios</a>
+                <a href="/relatorios-venda">Relatórios de Venda</a>
+                <a href="/relatorios-satisfacao">Relatórios de Satisfação</a>
+                <a href="/relatorios-estoque">Relatórios de Estoque</a>
               </div>
             </div>
           )}
@@ -70,7 +72,7 @@ const Menu = ({ currentUser }) => {
             </button>
           </div>
         )}
-        {!currentUser && <Link to="/login">Login</Link>}
+        {!currentUser && <a href="/login">Login</a>}
       </div>
     </div>
   );

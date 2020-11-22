@@ -4,49 +4,69 @@ import Menubar from "../components/MenubarComponent";
 import GenericTable from "../components/GenericTable";
 
 const Pedidos = () => {
+
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
 
-  const [id_pedido] = useState("");
+  // const [id_pedido, setIdPedido] = useState("");
 
-  const BuscarPedido = (id_pedido) => {};
+  // const BuscarPedido = (id_pedido) => {};
 
   const data = [
     {
       id: 1,
-      descrição: "Pizza P calabresa, refrigerante",
+      descricao: "Pizza P calabresa, refrigerante",
       pagamento: "dinheiro",
-      expedição: "retirado no balcao",
+      expedicao: "retirado no balcao",
       data: "12-09-2020",
       CPF: "não cadastrado",
       observacoes: "nenhuma",
+      valor: 30.00,
+      status: "Pedido Realizado"
     },
     {
       id: 2,
-      descrição: "Pizza P calabresa, refrigerante",
+      descricao: "Pizza P frango, refrigerante",
       pagamento: "dinheiro",
-      expedição: "retirado no balcao",
+      expedicao: "retirado no balcao",
       data: "12-09-2020",
       CPF: "não cadastrado",
       observacoes: "nenhuma",
+      valor: 30.00,
+      status: "Em preparo"
     },
     {
       id: 3,
-      descrição: "Pizza P calabresa, refrigerante",
+      descricao: "Pizza P frango e bacon, refrigerante",
       pagamento: "dinheiro",
-      expedição: "retirado no balcao",
+      expedicao: "retirado no balcao",
       data: "12-09-2020",
       CPF: "não cadastrado",
       observacoes: "nenhuma",
+      valor: 35.00,
+      status: "Na viagem"
     },
     {
       id: 4,
-      descrição: "Pizza P calabresa, refrigerante",
+      descricao: "Pizza P brócolis, refrigerante",
       pagamento: "dinheiro",
-      expedição: "retirado no balcao",
+      expedicao: "retirado no balcao",
       data: "12-09-2020",
       CPF: "não cadastrado",
       observacoes: "nenhuma",
+      valor: 40.00,
+      status: "Entregue"
+    },
+    {
+      id: 5,
+      descricao: "Pizza P lombo, refrigerante",
+      pagamento: "dinheiro",
+      expedicao: "retirado no balcao",
+      data: "12-09-2020",
+      CPF: "não cadastrado",
+      observacoes: "nenhuma",
+      valor: 45.00,
+      status: "Cancelado"
     },
   ];
 
