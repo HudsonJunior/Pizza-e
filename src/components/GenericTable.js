@@ -57,6 +57,7 @@ const GenericTable = ({ data, title }) => {
                 <td>Expedição</td>
                 <td>CPF</td>
                 <td>Valor</td>
+                <td>Status</td>
                 <td>Ações</td>
               </tr>
             </thead>
@@ -71,6 +72,7 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.expedicao}</td>
                   <td>{item.CPF}</td>
                   <td>R$ {item.valor}</td>
+                  <td>{item.status}</td>
                   <td>
                     <Button
                       variant="light"

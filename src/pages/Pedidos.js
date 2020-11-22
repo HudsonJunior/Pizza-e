@@ -8,9 +8,9 @@ const Pedidos = () => {
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
 
-  const [id_pedido, setIdPedido] = useState("");
+  // const [id_pedido, setIdPedido] = useState("");
 
-  const BuscarPedido = (id_pedido) => {};
+  // const BuscarPedido = (id_pedido) => {};
 
   const data = [
     {
@@ -21,38 +21,52 @@ const Pedidos = () => {
       data: "12-09-2020",
       CPF: "não cadastrado",
       observacoes: "nenhuma",
-      valor: 4.00,
+      valor: 30.00,
+      status: "Pedido Realizado"
     },
     {
       id: 2,
-      descricao: "Pizza P calabresa, refrigerante",
+      descricao: "Pizza P frango, refrigerante",
       pagamento: "dinheiro",
       expedicao: "retirado no balcao",
       data: "12-09-2020",
       CPF: "não cadastrado",
       observacoes: "nenhuma",
-      valor: 4.00,
-
+      valor: 30.00,
+      status: "Em preparo"
     },
     {
       id: 3,
-      descricao: "Pizza P calabresa, refrigerante",
+      descricao: "Pizza P frango e bacon, refrigerante",
       pagamento: "dinheiro",
       expedicao: "retirado no balcao",
       data: "12-09-2020",
       CPF: "não cadastrado",
       observacoes: "nenhuma",
-      valor: 4.00,
+      valor: 35.00,
+      status: "Na viagem"
     },
     {
       id: 4,
-      descricao: "Pizza P calabresa, refrigerante",
+      descricao: "Pizza P brócolis, refrigerante",
       pagamento: "dinheiro",
       expedicao: "retirado no balcao",
       data: "12-09-2020",
       CPF: "não cadastrado",
       observacoes: "nenhuma",
-      valor: 4.00,
+      valor: 40.00,
+      status: "Entregue"
+    },
+    {
+      id: 5,
+      descricao: "Pizza P lombo, refrigerante",
+      pagamento: "dinheiro",
+      expedicao: "retirado no balcao",
+      data: "12-09-2020",
+      CPF: "não cadastrado",
+      observacoes: "nenhuma",
+      valor: 45.00,
+      status: "Cancelado"
     },
   ];
 

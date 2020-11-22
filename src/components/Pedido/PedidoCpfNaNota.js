@@ -8,31 +8,18 @@ import TextField from "@material-ui/core/TextField";
 
 
 const NotaFiscalCpf = () => {
+
   const [value, setValue] = React.useState("semCpf");
-  const handleChangeNF = (event) => {
+  const handleChange = (event) => {
     setValue(event.target.value);
   };
 
-  const [outroCpf, setOutroCpf] = React.useState(false);
-
   const criaCampoCpf = () => {
-    return outroCpf ? (
+    return (value==="comCpf") ? (
       <TextField required id="CampoCpf" label="CPF" type="number" />
     ) : (
-      <div></div>
+      <></>
     );
-  };
-
-  const handleChangeSemCpf = () => {
-    setOutroCpf(false);
-  };
-
-  const handleChangeCpfCadastrado = () => {
-    setOutroCpf(false);
-  };
-
-  const handleChangeOutroCpf = () => {
-    setOutroCpf(true);
   };
 
   return (
@@ -43,20 +30,18 @@ const NotaFiscalCpf = () => {
           aria-label="notaFiscal"
           name="notaFiscal1"
           value={value}
-          onChange={handleChangeNF}
+          onChange={handleChange}
         >
           <FormControlLabel
             value="semCpf"
             control={<Radio />}
             label="Sem CPF"
-            onChange={handleChangeSemCpf}
           />
           {/* <FormControlLabel value="cpfCadastrado" control={<Radio />} label="CPF do cliente cadastrado " onChange={handleChangeCpfCadastrado} /> */}
           <FormControlLabel
-            value="outro"
+            value="comCpf"
             control={<Radio />}
             label="Com CPF"
-            onChange={handleChangeOutroCpf}
           />
           {criaCampoCpf()}
         </RadioGroup>

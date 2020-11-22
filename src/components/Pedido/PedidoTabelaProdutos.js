@@ -8,43 +8,43 @@ const data = [
   {
     nome: "Pizza 1",
     codigo: "1",
-    valor: "0,50",
+    valor: 30.00,
   },
   {
     nome: "Pizza 2",
     codigo: "2",
-    valor: "0,50",
+    valor: 34.00,
   },
   {
     nome: "Pizza 3",
     codigo: "3",
-    valor: "0,50",
+    valor: 36.00,
   },
 
   {
     nome: "Pizza 4",
     codigo: "4",
-    valor: "0,50",
+    valor: 35.00,
   },
   {
     nome: "Pizza 5",
     codigo: "5",
-    valor: "0,50",
+    valor: 40.00,
   },
   {
     nome: "Pizza 6",
     codigo: "6",
-    valor: "0,50",
+    valor: 30.00,
   },
   {
     nome: "Pizza 7",
     codigo: "7",
-    valor: "0,50",
+    valor: 26.00,
   },
   {
     nome: "Pizza 8",
     codigo: "2",
-    valor: "0,50",
+    valor: 30.00,
   },
 ];
 

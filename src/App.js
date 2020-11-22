@@ -16,6 +16,7 @@ import Produtos from "./pages/Produtos";
 import Estoque from "./pages/Estoque";
 import Funcionarios from "./pages/Funcionarios";
 import RelatoriosVenda from "./pages/RelatoriosVenda";
+import RelatoriosEstoque from "./pages/RelatoriosEstoque";
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/estoque" component={Estoque} />
             <Route path="/funcionarios" component={Funcionarios} />
             <Route path="/relatorios-venda" component={RelatoriosVenda} />
+            <Route path="/relatorios-estoque" component={RelatoriosEstoque} />
           </Switch>
         </div>
         <Footer className="footer" />

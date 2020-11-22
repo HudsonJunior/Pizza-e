@@ -1,7 +1,7 @@
 import React from "react";
 import Menubar from "../components/MenubarComponent";
-import TabelaCodigo from "../components/Relatorios/VendaTabelaCodigo";
-import TabelaData from "../components/Relatorios/VendaTabelaData"
+import TabelaCodigo from "../components/RelatoriosVenda/VendaTabelaCodigo";
+import TabelaData from "../components/RelatoriosVenda/VendaTabelaData"
 import FormControl from "@material-ui/core/FormControl";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -18,42 +18,30 @@ const RelatoriosVenda = () => {
     setValue(event.target.value);
   };
 
-
-  const [filtro, setFiltro] = React.useState("");
-
-  const handleChangeData = () => {
-    setFiltro("RVData");
-  };
-
-  const handleChangeCodigo = () => {
-    setFiltro("RVCodigo");
-  };
-
   const CarregaTabela = () => {
-    return filtro === "RVCodigo" ? (
+    return value === "data" ? (
       (console.log(1), (<TabelaCodigo />))
     ) : (
       <TabelaData/>
     );
   };
+  
   return (
     <>
       <Menubar currentUser={convertedUser} />
       <h2>Relatórios de Vendas:</h2>
       <FormControl component="RadioBtnRelatorioVenda">
-      <FormLabel >Filtrar por:</FormLabel>
+      <FormLabel >Filtrar por</FormLabel>
         <RadioGroup aria-label="RelatorioVenda" name="RelatorioVenda1" value={value} onChange={handleChange}>
           <FormControlLabel
             control={<Radio />}
             value="data"
             label="Período de tempo"
-            onChange={handleChangeData}
           />
           <FormControlLabel
             control={<Radio />}
             value="codigo"
             label="Código do produto"
-            onChange={handleChangeCodigo}
           />
         </RadioGroup>
       </FormControl>
