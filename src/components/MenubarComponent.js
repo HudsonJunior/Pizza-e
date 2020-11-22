@@ -37,7 +37,7 @@ const Menu = ({ currentUser }) => {
               <div className="dropdown-content">
                 <a href="/func/pedidos">Pedidos</a>
                 <a href="/func/clientes">Clientes</a>
-                <a href="/func/produtos">Pedidos</a>
+                <a href="/func/produtos">Produtos</a>
                 <a href="/func/estoque">Clientes</a>
               </div>
             </div>
