@@ -10,7 +10,7 @@ import Cardapio from "./pages/Cardapio";
 import Home from "./pages/HomePage";
 import minhaConta from "./pages/minhaConta";
 import Pedidos from "./pages/Pedidos";
-import RegistrarPedidos from "./pages/RegistrarPedido";
+import GerenciaPedido from "./pages/GerenciarPedido";
 import Clientes from "./pages/Clientes";
 import Produtos from "./pages/Produtos";
 import Estoque from "./pages/Estoque";
@@ -34,7 +34,7 @@ const App = () => {
             <Route path="/cardapio" component={Cardapio} />
             <Route path="/minhaConta" component={minhaConta} />
             <Route path="/pedidos" component={Pedidos} />
-            <Route path="/registrar-pedidos" component={RegistrarPedidos} />
+            <Route path="/gerenciar-pedido" component={GerenciaPedido} />
             <Route path="/clientes" component={Clientes} />
             <Route path="/produtos" component={Produtos} />
             <Route path="/estoque" component={Estoque} />
