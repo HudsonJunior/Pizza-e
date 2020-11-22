@@ -4,13 +4,13 @@ import "./components/styles/App.css";
 
 import Login from "../src/pages/Login";
 import Header from "./components/HeaderComponent";
-import Menubar from "./components/MenubarComponent";
 import Footer from "./components/FooterComponent";
 
 import Cardapio from "./pages/Cardapio";
 import Home from "./pages/HomePage";
 import minhaConta from "./pages/minhaConta";
 import Pedidos from "./pages/Pedidos";
+import RegistrarPedidos from "./pages/RegistrarPedido"
 import Clientes from "./pages/Clientes";
 import Produtos from "./pages/Produtos";
 import Estoque from "./pages/Estoque";
@@ -19,6 +19,8 @@ import Relatorios from "./pages/Relatorio";
 import CadastrarEstoque from "./pages/CadastrarEstoque";
 import EditarEstoque from "./pages/EditarEstoque";
 import CadastrarFuncionario from "./pages/CadastrarFuncionario";
+import RelatoriosVenda from "./pages/RelatoriosVenda";
+import RelatoriosEstoque from "./pages/RelatoriosEstoque";
 const App = () => {
   return (
     <body>
@@ -31,17 +33,13 @@ const App = () => {
             <Route path="/cardapio" component={Cardapio} />
             <Route path="/minhaConta" component={minhaConta} />
             <Route path="/pedidos" component={Pedidos} />
+            <Route path ="/registrar-pedidos" component={RegistrarPedidos} />
             <Route path="/clientes" component={Clientes} />
             <Route path="/produtos" component={Produtos} />
             <Route path="/estoque" component={Estoque} />
             <Route path="/funcionarios" component={Funcionarios} />
-            <Route path="/relatorios" component={Relatorios} />
-            <Route path="/editar-estoque" component={EditarEstoque} />
-            <Route path="/cadastrar-estoque" component={CadastrarEstoque} />
-            <Route
-              path="/cadastrar-funcionario"
-              component={CadastrarFuncionario}
-            />
+            <Route path="/relatorios-venda" component={RelatoriosVenda} />
+            <Route path="/relatorios-estoque" component={RelatoriosEstoque} />
           </Switch>
         </div>
         <Footer className="footer" />
