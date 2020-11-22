@@ -16,7 +16,7 @@ import Produtos from "./pages/Produtos";
 import Estoque from "./pages/Estoque";
 import Funcionarios from "./pages/Funcionarios";
 import Relatorios from "./pages/Relatorio";
-
+import GerenciarProduto from './pages/GerenciarProduto'
 const App = () => {
   return (
     <body>
@@ -35,6 +35,7 @@ const App = () => {
             <Route path="/func/estoque" component={Estoque} />
             <Route path="/gerente/funcionarios" component={Funcionarios} />
             <Route path="/gerente/relatorios" component={Relatorios} />
+            <Route path="/func/gerenciar-produto" component={GerenciarProduto} />
           </Switch>
         </div>
         <Footer className="footer" />
