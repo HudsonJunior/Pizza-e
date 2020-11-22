@@ -20,6 +20,7 @@ import Observacoes from "../components/Pedido/PedidoObservacao";
 import Expedicao from "../components/Pedido/PedidoExpedicao";
 import TabelaProdutoPedido from "../components/Pedido/PedidoTabelaProdutos";
 import NotaFiscalCpf from "../components/Pedido/PedidoCpfNaNota";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegistrarPedido = () => {
+const FormPedido = props => {
+  console.log("form pedido", props)
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   const history = useHistory();
@@ -38,6 +40,24 @@ const RegistrarPedido = () => {
 
   const [open, setOpen] = React.useState(false);
 
+  const {tipo} = props
+  const {item} = props
+
+  const [itemFormaPag, setFormaPag] = React.useState("Dinheiro")
+  const [observacoesValue, setObservacoes] = React.useState("")
+  const [cpfRadio,setCpfRadio] = React.useState("")
+  const [valueRadio, setValueRadio] = React.useState("semCpf")
+  const [valueFormaExpedicao, setFormaExpedicao] = React.useState("")
+  const isCadastro = tipo === "Cadastrar"
+
+  useEffect(() => {
+    if(item){
+      setFormaPag(item.pagamento)
+      setObservacoes(item.observacoes)
+      setCpfRadio(item.CPF)
+      setFormaExpedicao(item.expedicao)
+    }
+  }, [])
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -58,9 +78,17 @@ const RegistrarPedido = () => {
 
   const handleSave = (event) => {
     event.preventDefault();
-    toast.success("🍕 Pedido feito! Nota fiscal emitida!", {
-      toastStyle,
-    });
+    if(isCadastro){
+      toast.success("🍕 Pedido feito! Nota fiscal emitida!", {
+        toastStyle,
+      });
+    }
+    else{
+      toast.success("🍕 Pedido alterado!", {
+        toastStyle,
+      });
+    }
+    
     setTimeout(() => {
       history.push("/pedidos");
     }, 2000);
@@ -70,7 +98,7 @@ const RegistrarPedido = () => {
     <>
       <Menubar currentUser={convertedUser} />
       <div className="RegistroPedido">
-        <h2>Registro de Pedido </h2>
+        <h2>{isCadastro ? "Registro de Pedido" : "Editar pedido"}</h2>
         <form className={classes.root} onSubmit={handleSave}>
           <div className="divEsquerda">
             <BarraPesquisa />
@@ -78,10 +106,13 @@ const RegistrarPedido = () => {
           </div>
 
           <div className="divDireita">
-            <Pagamento />
-            <Observacoes />
-            <Expedicao />
-            <NotaFiscalCpf />
+            <Pagamento formaPagamento={itemFormaPag} />
+            <Observacoes observacoes={observacoesValue}/>
+            <Expedicao formaExpedicao={valueFormaExpedicao}/>
+            {isCadastro && (
+              <NotaFiscalCpf />
+            )}
+            
 
             <div className="RPBotoes">
               <Button
@@ -93,7 +124,7 @@ const RegistrarPedido = () => {
               </Button>
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle id="alert-dialog-VoltarPedido">
-                  {"Deseja continuar o registro do pedido?"}
+                  {isCadastro ? "Deseja continuar o registro do pedido?" : "Deseja continuar com a edição do pedido?"}
                 </DialogTitle>
                 <DialogActions>
                   <Button
@@ -123,7 +154,7 @@ const RegistrarPedido = () => {
                 style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
                 type="submit"
               >
-                Realizar Pedido
+                {isCadastro ? "Realizar Pedido" : "Editar Pedido"}
               </Button>
             </div>
           </div>
@@ -134,4 +165,4 @@ const RegistrarPedido = () => {
   );
 };
 
-export default RegistrarPedido;
+export default FormPedido;
