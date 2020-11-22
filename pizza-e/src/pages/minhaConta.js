@@ -1,11 +1,10 @@
 import React from 'react'
+import MinhaConta from "../components/minhaContaComponents"
 
 const minhaConta = () =>{
     return(
-        <div>
-            <p>pagina da minha conta</p>
-        </div>
+        <MinhaConta></MinhaConta>
     )
 }
 
-export default minhaConta
+export default minhaConta 
