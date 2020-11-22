@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Expedicao = () => {
+const Expedicao = props => {
   const classes = useStyles();
 
   const [formaExpedicao, setFormaExpedicao] = React.useState("");
@@ -25,6 +25,14 @@ const Expedicao = () => {
   const handleChangeBalcao = () => {
     setFormaExpedicao("balcao");
   };
+
+  useEffect(() => {
+    if(props.formaExpedicao && props.formaExpedicao == "entrega")
+      setFormaExpedicao("entrega")
+    else
+      setFormaExpedicao("balcao")
+
+  }, [])
 
   const handleChangeEntrega = () => {
     setFormaExpedicao("entrega");
