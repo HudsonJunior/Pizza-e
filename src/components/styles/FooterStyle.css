@@ -1,0 +1,19 @@
+.footer {
+  color: white;
+  background-color: #212529;
+}
+
+.linha {
+  text-align: center;
+  font-size: 14px;
+}
+
+.listaNomes a:link,
+.listaNomes a:visited {
+  text-decoration: none;
+  color: white;
+}
+
+.listaNomes a:hover {
+  color: #ff9d00;
+}

@@ -1,0 +1,40 @@
+.RegistroPedido{
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.divEsquerda{
+    align-items: center;
+    position: relative;
+    width: 50%;
+    text-align: center;
+    float: left
+}
+
+.divDireita {
+    align-items: center;
+    position: relative;
+    width: 50%;
+    text-align: center;
+    display: inline-block;
+
+}
+
+.RPCampos{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.RPNota, .RPCliente{
+    margin-top: 15px;
+}
+
+.botaoRealizarPedido {
+    margin-top: 0;
+}
+
+.botaoNaoPedido {
+    margin-top: 0;
+}
