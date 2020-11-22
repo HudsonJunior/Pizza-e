@@ -1,5 +1,5 @@
 import React from 'react'
-import FormPedido from './FormPedido'
+import FormPedido from '../components/FormPedido'
 
 const GerenciarPedido = props => {
     console.log(props.location.state)
