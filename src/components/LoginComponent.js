@@ -4,6 +4,7 @@ import pizza from "./../images/pizza.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 const Login = (props) => {
   const history = useHistory();
@@ -86,16 +87,31 @@ const Login = (props) => {
           name="Senha"
           placeholder="Digite sua senha"
         ></input>
-        <div style={{ flexDirection: "row", display: "flex" }}>
-          <button className="loginButton" onClick={cadastrarButton()}>
-            {" "}
+        <div className="botoesLogin">
+          <Button
+            variant="ligth"
+            className="loginEsquerda"
+            style={{
+              marginRight: 7,
+              borderWidth: 1,
+              borderColor: "black",
+              backgroundColor: "white",
+            }}
+            onClick={cadastrarButton()}
+          >
             Cadastrar
-          </button>
-          <button name="Login" type="submit" className="loginButton">
-            Entrar
-          </button>
+          </Button>
+          <Button
+            variant="success"
+            style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
+            type="submit"
+          >
+            Login
+          </Button>
         </div>
-        <a href="url"> Esqueci minha senha</a>
+        <a className="senha" href="url">
+          Esqueci minha senha
+        </a>
       </form>
       <ToastContainer />
     </div>
