@@ -80,7 +80,7 @@ const GenericTable = ({ data, title }) => {
 
   const handleEdit = (item) => {
     {
-      url === "pedidos" && history.push("/");
+      url === "pedidos" && history.push("/gerenciar-pedido", {tipo:"Editar", item: item});
     }
     {
       url === "clientes" && history.push("/");
@@ -98,7 +98,7 @@ const GenericTable = ({ data, title }) => {
 
   const direcionarCadastro = () => {
     {
-      url === "pedidos" && history.push("/registrar-pedidos");
+      url === "pedidos" && history.push("/gerenciar-pedido", {tipo: "Cadastro"});
     }
     {
       url === "clientes" && history.push("/");
@@ -201,6 +201,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
+                      onClick={value => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
