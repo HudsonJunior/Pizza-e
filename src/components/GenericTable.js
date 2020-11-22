@@ -58,7 +58,7 @@ const GenericTable = ({ data, title }) => {
 
   const handleEdit = () => {
     {
-      url === "pedidos" && history.push("/registrar-pedidos");
+      url === "pedidos" && history.push("/");
     }
     {
       url === "clientes" && history.push("/");
@@ -75,7 +75,7 @@ const GenericTable = ({ data, title }) => {
   };
   const direcionarCadastro = () => {
     {
-      url === "pedidos" && history.push("/");
+      url === "pedidos" && history.push("/registrar-pedidos");
     }
     {
       url === "clientes" && history.push("/");

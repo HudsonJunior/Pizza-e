@@ -15,7 +15,6 @@ import Clientes from "./pages/Clientes";
 import Produtos from "./pages/Produtos";
 import Estoque from "./pages/Estoque";
 import Funcionarios from "./pages/Funcionario";
-import Relatorios from "./pages/Relatorio";
 import CadastrarEstoque from "./pages/CadastrarEstoque";
 import EditarEstoque from "./pages/EditarEstoque";
 import CadastrarFuncionario from "./pages/CadastrarFuncionario";
@@ -40,7 +39,6 @@ const App = () => {
             <Route path="/produtos" component={Produtos} />
             <Route path="/estoque" component={Estoque} />
             <Route path="/funcionarios" component={Funcionarios} />
-            <Route path="/relatorios" component={Relatorios} />
             <Route path="/editar-estoque" component={EditarEstoque} />
             <Route path="/cadastrar-estoque" component={CadastrarEstoque} />
             <Route
