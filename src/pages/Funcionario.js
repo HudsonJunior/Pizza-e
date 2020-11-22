@@ -19,8 +19,8 @@ const Funcionarios = () => {
       rg: "159753",
       carteira_trabalho: "2086",
       cep: "86600895",
-      endereco: "Rua da paixao",
-      complemento: "41",
+      endereco: "Rua da paixao 41",
+      complemento: "perto da padaria do ze",
     },
     {
       nome: "Leticia Barbosa",
@@ -29,8 +29,8 @@ const Funcionarios = () => {
       rg: "156356",
       carteira_trabalho: "2865",
       cep: "86600878",
-      endereco: "Rua da amorindas",
-      complemento: "10",
+      endereco: "Rua da amorindas 22",
+      complemento: "",
     },
     {
       nome: "Eduardo Bonito",
@@ -39,8 +39,8 @@ const Funcionarios = () => {
       rg: "125412",
       carteira_trabalho: "7526",
       cep: "75003333",
-      endereco: "Avenida Maracana",
-      complemento: "25",
+      endereco: "Avenida Maracana 31",
+      complemento: "atras do colegio",
     },
     {
       nome: "Marcos Caetano",
@@ -49,8 +49,8 @@ const Funcionarios = () => {
       rg: "456951",
       carteira_trabalho: "3025",
       cep: "85003695",
-      endereco: "Rua Marechal Novo",
-      complemento: "963",
+      endereco: "Rua Marechal Novo 55",
+      complemento: "em frente a prefeitura",
     },
   ];
 

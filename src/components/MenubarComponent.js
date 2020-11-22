@@ -57,16 +57,18 @@ const Menu = ({ currentUser }) => {
         </div>
 
         {currentUser && (
-          <button
-            onClick={handleLogout}
-            style={{
-              marginRight: 10,
-              backgroundColor: "transparent",
-              border: "none",
-            }}
-          >
-            <FiLogOut size={22} color="white" />
-          </button>
+          <div className="btnLogout">
+            <button
+              onClick={handleLogout}
+              style={{
+                margin: 8,
+                backgroundColor: "transparent",
+                border: "none",
+              }}
+            >
+              <FiLogOut className="icon" size={22} color="white" />
+            </button>
+          </div>
         )}
         {!currentUser && <Link to="/login">Login</Link>}
       </div>

@@ -38,6 +38,19 @@ const Estoque = () => {
       data_registro: "02/06/2020",
       data_remocao: "02/10/2020",
     },
+    {
+      nome: "Papel higiênico",
+      codigo: "1010",
+      marca: "Neve",
+      quantidade: "0",
+      valor: "2,10",
+      peso: "100g",
+      validade: "",
+      fabricacao: "",
+      status: "desativado",
+      data_registro: "02/06/2020",
+      data_remocao: "02/10/2020",
+    },
   ];
 
   return (

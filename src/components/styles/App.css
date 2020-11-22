@@ -22,3 +22,7 @@ body,
 .footer {
   height: 80px;
 }
+
+.contentApp {
+  flex: 1;
+}

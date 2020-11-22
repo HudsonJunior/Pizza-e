@@ -1,22 +1,19 @@
-.footer{
-    color: white;
-    background-color:  #ff9d00;
-    font-size: 12px;
+.footer {
+  color: white;
+  background-color: #212529;
 }
 
-.colAno{
-    text-align: center;
+.linha {
+  text-align: center;
+  font-size: 14px;
 }
 
-.linha{
-    text-align: center;
+.listaNomes a:link,
+.listaNomes a:visited {
+  text-decoration: none;
+  color: white;
 }
 
-.listaNomes a:link, .listaNomes a:visited{
-    text-decoration: none;
-    color: white;
-}
-
-.listaNomes a:hover{
-    color: black;
+.listaNomes a:hover {
+  color: #ff9d00;
 }

@@ -46,6 +46,7 @@ const App = () => {
             />
             <Route path="/editar-funcionario" component={EditarFuncionario} />
           </Switch>
+          <div className="push"></div>
         </div>
         <Footer className="footer" />
       </div>

@@ -6,12 +6,55 @@ import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
 import { FiEdit3, FiXCircle, FiPlus, FiSearch } from "react-icons/fi";
 
+import { Dialog } from "@material-ui/core";
+
+import DialogActions from "@material-ui/core/DialogActions";
+
+import DialogTitle from "@material-ui/core/DialogTitle";
+
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const url = window.location.href.replace("http://localhost:3000/", "");
 
 const GenericTable = ({ data, title }) => {
   const history = useHistory();
+  const [open, setOpen] = React.useState(false);
+  var itensQuantidade = [];
+
+  const toastStyle = {
+    position: "top-right",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (tipo) => {
+    setOpen(false);
+    if (tipo === "confirmar") {
+      toast.success("🍕 Produto removido do estoque com sucesso!", {
+        toastStyle,
+      });
+    } else {
+      toast.success("🍕 Registro deletado com sucesso!", {
+        toastStyle,
+      });
+    }
+  };
+
+  const handleError = () => {
+    toast.error("🍕 Produto não pode ser removido: Quantidade maior que zero!");
+  };
 
   const handleEdit = () => {
     {
@@ -27,7 +70,6 @@ const GenericTable = ({ data, title }) => {
       url === "estoque" && history.push("/editar-estoque");
     }
     {
-      console.log(1);
       url === "funcionarios" && history.push("/editar-funcionario");
     }
   };
@@ -157,7 +199,7 @@ const GenericTable = ({ data, title }) => {
                 <td>Ações</td>
               </tr>
             </thead>
-            {data.map((item, index) => (
+            {data.map((item) => (
               <tbody>
                 <tr>
                   <td>{item.codigo}</td>
@@ -180,9 +222,34 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger">
+                    <Button variant="danger" onClick={handleClickOpen}>
                       <FiXCircle size={20} color="#black" />
                     </Button>
+                    <Dialog open={open} onClose={handleClose}>
+                      <DialogTitle id="alert-dialog-apagar">
+                        {"Deseja realmente remover o produto do estoque?"}
+                      </DialogTitle>
+                      <DialogActions>
+                        <Button
+                          variant="danger"
+                          className="botao"
+                          href="/estoque"
+                          onClick={handleClose}
+                          color="primary"
+                        >
+                          Não
+                        </Button>
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={() => handleClose("confirmar")}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </td>
                 </tr>
               </tbody>
@@ -225,13 +292,41 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger">
+                    <Button variant="danger" onClick={handleClickOpen}>
                       <FiXCircle
                         size={20}
                         color="#black"
                         // onclick={deleteItem(item.quantidade)}
                       />
                     </Button>
+                    <Dialog open={open} onClose={handleClose}>
+                      <DialogTitle id="alert-dialog-apagar">
+                        {
+                          "Deseja realmente deletar os registros do funcionário?"
+                        }
+                      </DialogTitle>
+                      <DialogActions>
+                        <Button
+                          variant="danger"
+                          className="botao"
+                          href="/funcionarios"
+                          onClick={handleClose}
+                          color="primary"
+                        >
+                          Não
+                        </Button>
+
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={() => handleClose("confirmar")}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </td>
                 </tr>
               </tbody>
@@ -243,6 +338,7 @@ const GenericTable = ({ data, title }) => {
         <FiPlus size={26} color="fff" />
         Adicionar
       </Button>
+      <ToastContainer />
     </>
   );
 };
