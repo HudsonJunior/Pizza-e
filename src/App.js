@@ -21,7 +21,7 @@ import CadastrarFuncionario from "./pages/CadastrarFuncionario";
 import EditarFuncionario from "./pages/EditarFuncionario";
 import RelatoriosVenda from "./pages/RelatoriosVenda";
 import RelatoriosEstoque from "./pages/RelatoriosEstoque";
-
+import GerenciarProduto from "./pages/GerenciarProduto"
 const App = () => {
   return (
     <body>
@@ -48,6 +48,7 @@ const App = () => {
             <Route path="/editar-funcionario" component={EditarFuncionario} />
             <Route path="/relatorios-venda" component={RelatoriosVenda} />
             <Route path="/relatorios-estoque" component={RelatoriosEstoque} />
+            <Route path="/gerenciar-produto" component={GerenciarProduto} />
           </Switch>
           <div className="push"></div>
         </div>
