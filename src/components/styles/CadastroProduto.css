@@ -1,0 +1,31 @@
+
+.containerCadastroProduto {
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonVoltar {
+    margin:10px;
+    width:100px; 
+    border-radius:10px;
+}
+
+.buttonConfirmar {
+    margin:10px; 
+    width:100px; 
+    background-color:#ff9d00; 
+    color:white; 
+    border-radius:10px;
+}
+
+.contentProdutos {
+    margin: 10px;
+    text-align: center;
+}
+
+.disButtonsCadastro {
+    display:flex;
+    justify-content:center;
+    width:100%;
+    padding-top: 40px;
+}
