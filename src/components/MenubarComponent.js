@@ -1,7 +1,6 @@
 import "./styles/MenuStyle.css";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import btnCadastrar from "../components/ButtonCadastrar";
 import { FiLogOut } from "react-icons/fi";
 
 import { useHistory } from "react-router-dom";
@@ -25,7 +24,7 @@ const Menu = ({ currentUser }) => {
         }}
       >
         <div className="left">
-          <Link to="/">Home</Link>
+          <Link to="/">🍕 Home</Link>
           <Link to="/cardapio">Cardápio</Link>
           <Link to="/conta">Minha Conta</Link>
           {currentUser && currentUser.type !== "C" && (
@@ -35,10 +34,10 @@ const Menu = ({ currentUser }) => {
                 <i class="fa fa-caret-down"></i>
               </button>
               <div className="dropdown-content">
-                <a href="/func/pedidos">Pedidos</a>
-                <a href="/func/clientes">Clientes</a>
-                <a href="/func/produtos">Produtos</a>
-                <a href="/func/estoque">Clientes</a>
+                <a href="/pedidos">Pedidos</a>
+                <a href="/clientes">Clientes</a>
+                <a href="/produtos">Produtos</a>
+                <a href="/estoque">Estoque</a>
               </div>
             </div>
           )}
@@ -50,26 +49,30 @@ const Menu = ({ currentUser }) => {
                 <i class="fa fa-caret-down"></i>
               </button>
               <div className="dropdown2-content">
-                <Link to="/gerente/funcionarios">Gerenciar Funcionários</Link>
-                <Link to="/gerente/relatorios">Relatórios</Link>
+                <a href="/funcionarios">Gerenciar Funcionários</a>
+                <a href="/relatorios-venda">Relatórios de Venda</a>
+                <a href="/relatorios-satisfacao">Relatórios de Satisfação</a>
+                <a href="/relatorios-estoque">Relatórios de Estoque</a>
               </div>
             </div>
           )}
         </div>
 
         {currentUser && (
-          <button
-            onClick={handleLogout}
-            style={{
-              marginRight: 10,
-              backgroundColor: "transparent",
-              border: "none",
-            }}
-          >
-            <FiLogOut size={22} color="white" />
-          </button>
+          <div className="btnLogout">
+            <button
+              onClick={handleLogout}
+              style={{
+                margin: 8,
+                backgroundColor: "transparent",
+                border: "none",
+              }}
+            >
+              <FiLogOut className="icon" size={22} color="white" />
+            </button>
+          </div>
         )}
-        {!currentUser && <Link to="/login">Login</Link>}
+        {!currentUser && <a href="/login">Login</a>}
       </div>
     </div>
   );

@@ -4,39 +4,52 @@ import "./components/styles/App.css";
 
 import Login from "../src/pages/Login";
 import Header from "./components/HeaderComponent";
-import Menubar from "./components/MenubarComponent";
 import Footer from "./components/FooterComponent";
 
 import Cardapio from "./pages/Cardapio";
 import Home from "./pages/HomePage";
 import minhaConta from "./pages/minhaConta";
 import Pedidos from "./pages/Pedidos";
+import RegistrarPedidos from "./pages/RegistrarPedido";
 import Clientes from "./pages/Clientes";
 import Produtos from "./pages/Produtos";
 import Estoque from "./pages/Estoque";
-import Funcionarios from "./pages/Funcionarios";
-import Relatorios from "./pages/Relatorio";
-import GerenciarProduto from './pages/GerenciarProduto'
+import Funcionarios from "./pages/Funcionario";
+import CadastrarEstoque from "./pages/CadastrarEstoque";
+import EditarEstoque from "./pages/EditarEstoque";
+import CadastrarFuncionario from "./pages/CadastrarFuncionario";
+import EditarFuncionario from "./pages/EditarFuncionario";
+import RelatoriosVenda from "./pages/RelatoriosVenda";
+import RelatoriosEstoque from "./pages/RelatoriosEstoque";
 const App = () => {
   return (
     <body>
       <div className="wrapper">
         <div className="containerApp">
-          <Header />
           {/* <Menubar/> */}
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/cardapio" component={Cardapio} />
             <Route path="/minhaConta" component={minhaConta} />
-            <Route path="/func/pedidos" component={Pedidos} />
-            <Route path="/func/clientes" component={Clientes} />
-            <Route path="/func/produtos" component={Produtos} />
-            <Route path="/func/estoque" component={Estoque} />
-            <Route path="/gerente/funcionarios" component={Funcionarios} />
-            <Route path="/gerente/relatorios" component={Relatorios} />
+            <Route path="/pedidos" component={Pedidos} />
+            <Route path="/registrar-pedidos" component={RegistrarPedidos} />
+            <Route path="/clientes" component={Clientes} />
+            <Route path="/produtos" component={Produtos} />
+            <Route path="/estoque" component={Estoque} />
+            <Route path="/funcionarios" component={Funcionarios} />
+            <Route path="/editar-estoque" component={EditarEstoque} />
+            <Route path="/cadastrar-estoque" component={CadastrarEstoque} />
+            <Route
+              path="/cadastrar-funcionario"
+              component={CadastrarFuncionario}
+            />
+            <Route path="/editar-funcionario" component={EditarFuncionario} />
+            <Route path="/relatorios-venda" component={RelatoriosVenda} />
+            <Route path="/relatorios-estoque" component={RelatoriosEstoque} />
             <Route path="/func/gerenciar-produto" component={GerenciarProduto} />
           </Switch>
+          <div className="push"></div>
         </div>
         <Footer className="footer" />
       </div>

@@ -1,0 +1,14 @@
+.flexForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentForm {
+  text-align: center;
+  width: 900px;
+}
+
+.botao {
+  margin-top: 0;
+}
