@@ -86,7 +86,7 @@ const GenericTable = ({ data, title }) => {
       url === "clientes" && history.push("/");
     }
     {
-      url === "produtos" && history.push("/func/gerenciar-produto", {tipo: "Editar", item: item});
+      url === "produtos" && history.push("/gerenciar-produto", {tipo: "Editar", item: item});
     }
     {
       url === "estoque" && history.push("/editar-estoque");
@@ -344,12 +344,9 @@ const GenericTable = ({ data, title }) => {
             })}
             </>
           )}
-                  
+            
           </>
         )}
-      <Button variant="success" data-tip="Adicionar produto" onClick={direcionarCadastro} style={{alignItems:"center", marginLeft:5}}>
-      </Button>
-      <ReactTooltip />
         <FiPlus size={26} color="fff"/>
         {url === "estoque" && (
           <>
