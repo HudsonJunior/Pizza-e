@@ -229,7 +229,7 @@ const GenericTable = ({ data, title }) => {
             <Dialog open={open} onClose={handleClose}>
             <DialogTitle id="alert-dialog-apagar">
               {
-                "Deseja remover o pedido?"
+                "Deseja cancelar o pedido?"
               }
             </DialogTitle>
             <DialogActions>
@@ -389,7 +389,7 @@ const GenericTable = ({ data, title }) => {
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle id="alert-dialog-apagar">
               {
-                "Deseja remover o produto?"
+                "Deseja desativar o produto?"
               }
             </DialogTitle>
             <DialogActions>
