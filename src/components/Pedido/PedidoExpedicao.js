@@ -6,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "react-bootstrap";
 import { FiUser, FiPlus } from "react-icons/fi";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   formControl2: {
@@ -15,8 +16,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Expedicao = props => {
+const Expedicao = (props) => {
+  const history = useHistory();
   const classes = useStyles();
+  var tipo = props.type;
 
   const [formaExpedicao, setFormaExpedicao] = React.useState("");
   const handleChangeExp = (event) => {
@@ -38,19 +41,36 @@ const Expedicao = props => {
     setFormaExpedicao("entrega");
   };
 
-  const chamaCliente = () => {
+  const handleLogin = () => {
+    history.push("/login", { tipo: "pedido" });
+  };
+
+  const handleCadastrar = () => {
+    history.push("/cadastrar-cliente", { tipo: "pedido" });
+  };
+
+  const handleBuscarCliente = () => {
+    history.push("/clientes", { tipo: "pedidoFunc" });
+  };
+
+  const handleNovoCliente = () => {
+    history.push("/funcionario-cadastrar-cliente", { tipo: "pedido" });
+  };
+
+  const chamaClienteFunc = () => {
     return formaExpedicao === "entrega" ? (
       <div className="RPCliente">
         <FormControl style={{ alignItems: "center" }}>
           <Button
             variant="light"
+            onClick={handleBuscarCliente}
             style={{ borderWidth: 1, borderColor: "black" }}
           >
             <FiUser size={15} color="black" />
             Buscar Cliente
           </Button>
           <p style={{ marginBottom: 0 }}>Ou</p>
-          <Button variant="success">
+          <Button variant="success" onClick={handleNovoCliente}>
             <FiPlus size={15} color="fff" />
             Novo Cliente
           </Button>
@@ -59,6 +79,34 @@ const Expedicao = props => {
     ) : (
       <div></div>
     );
+  };
+
+  const chamaClienteVisitante = () => {
+    return formaExpedicao === "entrega" ? (
+      <div className="RPCliente">
+        <FormControl style={{ alignItems: "center" }}>
+          <Button
+            variant="light"
+            onClick={handleLogin}
+            style={{ borderWidth: 1, borderColor: "black" }}
+          >
+            <FiUser size={15} color="black" />
+            Login
+          </Button>
+          <p style={{ marginBottom: 0 }}>Ou</p>
+          <Button variant="success" onClick={handleCadastrar}>
+            <FiPlus size={15} color="fff" />
+            Cadastrar
+          </Button>
+        </FormControl>
+      </div>
+    ) : (
+      <div></div>
+    );
+  };
+
+  const chamaClienteLogado = () => {
+    return <div></div>;
   };
 
   return (
@@ -80,7 +128,9 @@ const Expedicao = props => {
             Entrega
           </MenuItem>
         </Select>
-        {chamaCliente()}
+        {tipo === "funcionario" && chamaClienteFunc()}
+        {tipo === "cliente" && chamaClienteLogado()}
+        {tipo === "visitante" && chamaClienteVisitante()}
       </FormControl>
     </div>
   );

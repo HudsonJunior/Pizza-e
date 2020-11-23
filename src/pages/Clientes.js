@@ -46,7 +46,7 @@ const Clientes = () => {
     <>
       <Menubar currentUser={convertedUser} />
       <div className="clientes">
-        <h2>Pedidos:</h2>
+        <h2>Clientes:</h2>
         <GenericTable data={data} title="Clientes" />
       </div>
     </>

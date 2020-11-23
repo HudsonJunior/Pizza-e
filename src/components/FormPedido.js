@@ -108,7 +108,7 @@ const FormPedido = props => {
           <div className="divDireita">
             <Pagamento formaPagamento={itemFormaPag} />
             <Observacoes observacoes={observacoesValue}/>
-            <Expedicao formaExpedicao={valueFormaExpedicao}/>
+            <Expedicao type="funcionario" formaExpedicao={valueFormaExpedicao}/>
             {isCadastro && (
               <NotaFiscalCpf />
             )}

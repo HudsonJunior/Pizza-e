@@ -1,6 +1,7 @@
 import "./styles/MenuStyle.css";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import btnCadastrar from "../components/ButtonCadastrar";
 import { FiLogOut } from "react-icons/fi";
 
 import { useHistory } from "react-router-dom";
@@ -26,7 +27,7 @@ const Menu = ({ currentUser }) => {
         <div className="left">
           <Link to="/">🍕 Home</Link>
           <Link to="/cardapio">Cardápio</Link>
-          <Link to="/conta">Minha Conta</Link>
+          <Link to="/minhaConta">Minha Conta</Link>
           {currentUser && currentUser.type !== "C" && (
             <div className="dropdown1">
               <button className="dropbtn">

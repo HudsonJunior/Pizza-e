@@ -4,10 +4,11 @@ import pizza from "./../images/pizza.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 const Login = (props) => {
   const history = useHistory();
-
+  var tipo = props.type;
   const toastStyle = {
     position: "top-right",
     autoClose: 1500,
@@ -22,7 +23,7 @@ const Login = (props) => {
   const [senha, setSenha] = useState("");
 
   const cadastrarButton = () => {
-    // chamar tela de cadastro
+    history.push("/cadastrar-cliente");
   };
 
   const handleLogin = (event) => {
@@ -49,18 +50,34 @@ const Login = (props) => {
     ];
 
     const currentUser = users.find((elemento) => elemento.name === user);
-    if (currentUser.password === senha) {
-      toast.success("🍕 Login feito!", {
-        toastStyle,
-      });
-      localStorage.setItem("user", JSON.stringify(currentUser));
-      setTimeout(() => {
-        history.push("/");
-      }, 1500);
+    if (tipo === "pedido") {
+      if (currentUser.password === senha) {
+        toast.success("🍕 Login feito!", {
+          toastStyle,
+        });
+        localStorage.setItem("user", JSON.stringify(currentUser));
+        setTimeout(() => {
+          history.push("/concluir-pedido");
+        }, 1500);
+      } else {
+        return toast.error("🍕 Credenciais incorretas", {
+          toastStyle,
+        });
+      }
     } else {
-      return toast.error("🍕 Credenciais incorretas", {
-        toastStyle,
-      });
+      if (currentUser.password === senha) {
+        toast.success("🍕 Login feito!", {
+          toastStyle,
+        });
+        localStorage.setItem("user", JSON.stringify(currentUser));
+        setTimeout(() => {
+          history.push("/");
+        }, 1500);
+      } else {
+        return toast.error("🍕 Credenciais incorretas", {
+          toastStyle,
+        });
+      }
     }
   };
 
@@ -86,16 +103,31 @@ const Login = (props) => {
           name="Senha"
           placeholder="Digite sua senha"
         ></input>
-        <div style={{ flexDirection: "row", display: "flex" }}>
-          <button className="loginButton" onClick={cadastrarButton()}>
-            {" "}
+        <div className="botoesLogin">
+          <Button
+            variant="ligth"
+            className="loginEsquerda"
+            style={{
+              marginRight: 7,
+              borderWidth: 1,
+              borderColor: "black",
+              backgroundColor: "white",
+            }}
+            onClick={cadastrarButton}
+          >
             Cadastrar
-          </button>
-          <button name="Login" type="submit" className="loginButton">
-            Entrar
-          </button>
+          </Button>
+          <Button
+            variant="success"
+            style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
+            type="submit"
+          >
+            Login
+          </Button>
         </div>
-        <a href="url"> Esqueci minha senha</a>
+        <a className="senha" href="url">
+          Esqueci minha senha
+        </a>
       </form>
       <ToastContainer />
     </div>
