@@ -84,13 +84,19 @@ const FormularioEstoque = (props) => {
               }}
             />
             <TextField
-              disabled
-              label="Código"
-              defaultValue="Automático"
+              required
+              label="Quantidade"
+              type="number"
               style={{
                 margin: 8,
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
-            />
+              InputLabelProps={{
+                shrink: true,
+              }}
+            ></TextField>
           </div>
         )}
         {tipo === "editar" && (
@@ -104,19 +110,26 @@ const FormularioEstoque = (props) => {
               }}
             />
             <TextField
-              disabled
-              label="Código"
-              defaultValue="Automático"
+              required
+              label="Quantidade"
+              type="number"
               style={{
                 margin: 8,
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
-            />
+              InputLabelProps={{
+                shrink: true,
+              }}
+            ></TextField>
           </div>
         )}
         <div className="contentForm">
           <TextField
+            TextField
             required
-            label="Quantidade"
+            label="Quantidade Minima"
             type="number"
             style={{
               margin: 8,
