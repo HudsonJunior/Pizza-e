@@ -80,7 +80,7 @@ const RegistrarPedido = () => {
           <div className="divDireita">
             <Pagamento />
             <Observacoes />
-            <Expedicao />
+            <Expedicao type="funcionario" />
             <NotaFiscalCpf />
 
             <div className="RPBotoes">

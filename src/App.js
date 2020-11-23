@@ -24,7 +24,10 @@ import RelatoriosEstoque from "./pages/RelatoriosEstoque";
 import GerenciarProduto from "./pages/GerenciarProduto";
 import CadastrarCliente from "./pages/CadastrarCliente";
 import FuncCadastrarCliente from "./pages/FuncCadastrarCliente";
-import RelatoriosSatisfacao from "./pages/RelatorioSatisfacao"
+import RelatoriosSatisfacao from "./pages/RelatorioSatisfacao";
+import RevisarPedidoCliente from "./pages/RevisarPedidoCliente";
+import ConcluirPedidoCliente from "./pages/ConcluirPedidoCliente";
+
 const App = () => {
   return (
     <body>
@@ -50,11 +53,19 @@ const App = () => {
             />
             <Route path="/editar-funcionario" component={EditarFuncionario} />
             <Route path="/relatorios-venda" component={RelatoriosVenda} />
-            <Route path="/relatorios-satisfacao" component={RelatoriosSatisfacao} />
+            <Route
+              path="/relatorios-satisfacao"
+              component={RelatoriosSatisfacao}
+            />
             <Route path="/relatorios-estoque" component={RelatoriosEstoque} />
             <Route path="/gerenciar-produto" component={GerenciarProduto} />
             <Route path="/cadastrar-cliente" component={CadastrarCliente} />
-            <Route path="/funcionario-cadastrar-cliente" component={FuncCadastrarCliente} />
+            <Route
+              path="/funcionario-cadastrar-cliente"
+              component={FuncCadastrarCliente}
+            />
+            <Route path="/revisar-pedido" component={RevisarPedidoCliente} />
+            <Route path="/concluir-pedido" component={ConcluirPedidoCliente} />
           </Switch>
           <div className="push"></div>
         </div>

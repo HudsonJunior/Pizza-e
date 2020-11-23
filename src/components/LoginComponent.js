@@ -8,7 +8,7 @@ import { Button } from "react-bootstrap";
 
 const Login = (props) => {
   const history = useHistory();
-
+  var tipo = props.type;
   const toastStyle = {
     position: "top-right",
     autoClose: 1500,
@@ -23,7 +23,7 @@ const Login = (props) => {
   const [senha, setSenha] = useState("");
 
   const cadastrarButton = () => {
-    history.push("/clientes/cadastrarCliente")
+    history.push("/cadastrar-cliente");
   };
 
   const handleLogin = (event) => {
@@ -50,18 +50,34 @@ const Login = (props) => {
     ];
 
     const currentUser = users.find((elemento) => elemento.name === user);
-    if (currentUser.password === senha) {
-      toast.success("🍕 Login feito!", {
-        toastStyle,
-      });
-      localStorage.setItem("user", JSON.stringify(currentUser));
-      setTimeout(() => {
-        history.push("/");
-      }, 1500);
+    if (tipo === "pedido") {
+      if (currentUser.password === senha) {
+        toast.success("🍕 Login feito!", {
+          toastStyle,
+        });
+        localStorage.setItem("user", JSON.stringify(currentUser));
+        setTimeout(() => {
+          history.push("/concluir-pedido");
+        }, 1500);
+      } else {
+        return toast.error("🍕 Credenciais incorretas", {
+          toastStyle,
+        });
+      }
     } else {
-      return toast.error("🍕 Credenciais incorretas", {
-        toastStyle,
-      });
+      if (currentUser.password === senha) {
+        toast.success("🍕 Login feito!", {
+          toastStyle,
+        });
+        localStorage.setItem("user", JSON.stringify(currentUser));
+        setTimeout(() => {
+          history.push("/");
+        }, 1500);
+      } else {
+        return toast.error("🍕 Credenciais incorretas", {
+          toastStyle,
+        });
+      }
     }
   };
 
@@ -97,7 +113,7 @@ const Login = (props) => {
               borderColor: "black",
               backgroundColor: "white",
             }}
-            onClick={cadastrarButton()}
+            onClick={cadastrarButton}
           >
             Cadastrar
           </Button>
