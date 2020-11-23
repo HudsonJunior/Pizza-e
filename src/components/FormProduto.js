@@ -98,9 +98,13 @@ const FormProduto = props => {
     const getButtonsPromo = () => {
         return ( addPromo ?
                 <div className="contentProdutos">
-                    <TextField id="standard-basic" value={valorPromo} onChange={event => setValorPromo(event.target.value)} type="number" label="Valor promocional" className={classes.textField}/>
-                    <TextField id="datetime-local" value={data1Promo} onChange={event => setData1Promo(event.target.value)} type="datetime-local" label="Data início promoção" className={classes.textField} InputLabelProps={{shrink: true}}/>
-                    <TextField id="datetime-local" value={data2Promo} onChange={event => setData2Promo(event.target.value)} type="datetime-local" label="Data final promoção" className={classes.textField} InputLabelProps={{shrink: true}}/>
+                    <div style={{flexDirection: "row", textAlign:"center"}}>
+                        <TextField id="datetime-local" value={data1Promo} onChange={event => setData1Promo(event.target.value)} type="datetime-local" label="Data início promoção" className={classes.textField} InputLabelProps={{shrink: true}}/>
+                        <TextField id="datetime-local" value={data2Promo} onChange={event => setData2Promo(event.target.value)} type="datetime-local" label="Data final promoção" className={classes.textField} InputLabelProps={{shrink: true}}/>
+
+                    </div>
+                    <TextField style={{width:"42%"}}id="standard-basic" value={valorPromo} onChange={event => setValorPromo(event.target.value)} type="number" label="Valor promocional" className={classes.textField}/>
+
                 </div>
             :
                 <div></div>
@@ -172,14 +176,20 @@ const FormProduto = props => {
         return( 
                 <form className={classes.root} onSubmit={handleSubmit}> 
                     <div className="contentProdutos">
+                        <div style={{flexDirection: "row", textAlign:"center"}}>
                         {tipo === 'Editar' ? 
-                            <TextField className={classes.textField} value={nome} id="standard-basic" label="Nome" disabled/>
+                            <TextField style={{width:"42%"}} className={classes.textField} value={nome} id="standard-basic" label="Nome" disabled/>
                             :
-                            <TextField className={classes.textField} onChange={event => setNome(event.target.value)} value={nome} id="standard-basic" label="Nome" required/>
+                            <TextField style={{width:"42%"}} className={classes.textField} onChange={event => setNome(event.target.value)} value={nome} id="standard-basic" label="Nome" required/>
 
                         }
-                        <TextField className={classes.textField} type="Number" onChange={event => setValor(event.target.value)} value={valor} id="standard-basic" label="Valor" required/>
-                        <TextField className={classes.textField}  disabled id="standard-basic" label="Código" defaultValue="Automático"/>
+                        <div style={{flexDirection: "row", textAlign:"center"}}>
+                            <TextField className={classes.textField} type="Number" onChange={event => setValor(event.target.value)} value={valor} id="standard-basic" label="Valor" required/>
+                            <TextField className={classes.textField}  disabled id="standard-basic" label="Código" defaultValue="Automático"/>
+                        
+                        </div>
+
+                        </div>
                         {getFields()}
                         <Button style={{margin:20}} variant="light" onClick={value => setAddPromo(!addPromo)} data-tip="Lançar uma promoção do produto">Adicionar promoção</Button>
                         <ReactTooltip />
