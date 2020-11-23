@@ -61,18 +61,32 @@ const GenericTable = ({ data, title }) => {
     setOpen(true);
   };
 
-  const handleClose = (tipo) => {
+  const handleClose = (url) => {
     setOpen(false);
-    if (tipo === "confirmar") {
-      toast.success("🍕 Produto removido do estoque com sucesso!", {
-        toastStyle,
-      });
-    } else {
+
+    if(url === 'funcionarios'){
       toast.success("🍕 Registro deletado com sucesso!", {
         toastStyle,
       });
     }
+    else if(url === 'estoque'){
+      toast.success("🍕 Produto removido do estoque com sucesso!", {
+        toastStyle,
+      });
+    }
+    else if(url === 'produtos'){
+      toast.success("🍕 Produto removido com sucesso!", {
+        toastStyle,
+      });
+    }
+    else if(url === 'pedidos'){
+      toast.success("🍕 Pedido removido com sucesso!", {
+        toastStyle,
+      });
+    }
+
   };
+
 
   const handleError = () => {
     toast.error("🍕 Produto não pode ser removido: Quantidade maior que zero!");
@@ -205,13 +219,40 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger">
+                    <Button variant="danger" onClick={() => setOpen(true)}>
                       <FiXCircle size={20} color="#black" />
                     </Button>
                   </td>
                 </tr>
               </tbody>
             ))}
+            <Dialog open={open} onClose={handleClose}>
+            <DialogTitle id="alert-dialog-apagar">
+              {
+                "Deseja remover o pedido?"
+              }
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                variant="danger"
+                className="botao"
+                color="primary"
+                onClick={() => setOpen(false)}
+              >
+                Não
+              </Button>
+
+              <Button
+                className="botao"
+                variant="success"
+                onClick={() => handleClose("pedidos")}
+                color="primary"
+                autoFocus
+              >
+                Sim
+              </Button>
+            </DialogActions>
+          </Dialog>
           </>
         )}
 
@@ -284,7 +325,7 @@ const GenericTable = ({ data, title }) => {
                         <ReactTooltip />
                           <FiEdit3 size={20} color="#black" />
                         </Button>
-                        <Button variant="danger" data-tip="Desativar">
+                        <Button variant="danger" data-tip="Desativar" onClick={value => setOpen(true)}>
                         <ReactTooltip />
                           <FiXCircle size={20} color="#black" />
                         </Button>
@@ -333,7 +374,7 @@ const GenericTable = ({ data, title }) => {
                         <ReactTooltip />
                           <FiEdit3 size={20} color="#black" />
                         </Button>
-                        <Button variant="danger" data-tip="Desativar">
+                        <Button variant="danger" data-tip="Desativar" onClick={value => setOpen(true)}>
                         <ReactTooltip />
                           <FiXCircle size={20} color="#black" />
                         </Button>
@@ -345,7 +386,33 @@ const GenericTable = ({ data, title }) => {
             })}
             </>
           )}
-            
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle id="alert-dialog-apagar">
+              {
+                "Deseja remover o produto?"
+              }
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                variant="danger"
+                className="botao"
+                onClick={() => setOpen(false)}
+                color="primary"
+              >
+                Não
+              </Button>
+
+              <Button
+                className="botao"
+                variant="success"
+                onClick={() => handleClose("produtos")}
+                color="primary"
+                autoFocus
+              >
+                Sim
+              </Button>
+            </DialogActions>
+          </Dialog>
           </>
         )}
         <FiPlus size={26} color="fff"/>
@@ -398,7 +465,7 @@ const GenericTable = ({ data, title }) => {
                         <Button
                           variant="danger"
                           className="botao"
-                          href="/estoque"
+                          onClick={() => setOpen(false)}
                           onClick={handleClose}
                           color="primary"
                         >
@@ -407,7 +474,7 @@ const GenericTable = ({ data, title }) => {
                         <Button
                           className="botao"
                           variant="success"
-                          onClick={() => handleClose("confirmar")}
+                          onClick={() => handleClose("estoque")}
                           color="primary"
                           autoFocus
                         >
@@ -474,7 +541,7 @@ const GenericTable = ({ data, title }) => {
                         <Button
                           variant="danger"
                           className="botao"
-                          href="/funcionarios"
+                          onClick={() => setOpen(false)}
                           onClick={handleClose}
                           color="primary"
                         >
@@ -484,7 +551,7 @@ const GenericTable = ({ data, title }) => {
                         <Button
                           className="botao"
                           variant="success"
-                          onClick={() => handleClose("confirmar")}
+                          onClick={() => handleClose("funcionarios")}
                           color="primary"
                           autoFocus
                         >
