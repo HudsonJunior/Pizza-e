@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import { FiChevronLeft } from "react-icons/fi";
 
 const Login = (props) => {
   const history = useHistory();
@@ -24,6 +25,13 @@ const Login = (props) => {
 
   const cadastrarButton = () => {
     history.push("/cadastrar-cliente");
+  };
+  const handleBack = () => {
+    if (tipo === "perfil") {
+      history.push("/");
+    } else {
+      history.goBack();
+    }
   };
 
   const handleLogin = (event) => {
@@ -105,13 +113,25 @@ const Login = (props) => {
         ></input>
         <div className="botoesLogin">
           <Button
+            className="loginEsquerda"
             variant="ligth"
+            style={{
+              marginRight: 7,
+              borderWidth: 1,
+              backgroundColor: "white",
+              borderColor: "black",
+            }}
+            onClick={handleBack}
+          >
+            <FiChevronLeft /> Voltar
+          </Button>
+          <Button
+            variant="primary"
             className="loginEsquerda"
             style={{
               marginRight: 7,
               borderWidth: 1,
               borderColor: "black",
-              backgroundColor: "white",
             }}
             onClick={cadastrarButton}
           >

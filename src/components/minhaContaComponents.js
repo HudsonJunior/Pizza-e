@@ -51,7 +51,7 @@ const MinhaConta = ({ currentUser }) => {
   };
 
   const handleVisitante = () => {
-    history.push("/login");
+    history.push("/login", { tipo: "perfil" });
   };
 
   const data = {
