@@ -117,7 +117,7 @@ const FormProduto = props => {
     }
 
     if(voltar)
-        history.push("/func/produtos")
+        history.push("/produtos")
 
 
     const getFields = () => {
@@ -249,7 +249,7 @@ const FormProduto = props => {
                     toastStyle,
                 })
                 setTimeout(() => {
-                    history.push("/func/produtos")
+                    history.push("/produtos")
                 }, 1500);
             }}>Continuar</Button>
             </Modal.Footer>
