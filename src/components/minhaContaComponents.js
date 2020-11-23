@@ -10,6 +10,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import TabelaMinhaConta from "./TabelaMinhaConta"
 
 import "./styles/cadastrarCliente.css";
 
@@ -51,7 +52,7 @@ const MinhaConta = ({ currentUser }) => {
   };
 
   const handleVisitante = () => {
-    history.push("/login");
+    history.push("/login", { tipo: "perfil" });
   };
 
   const data = {
@@ -238,6 +239,7 @@ const MinhaConta = ({ currentUser }) => {
           </DialogActions>
         </Dialog>
       </div>
+      <TabelaMinhaConta/>
     </>
   );
 };
