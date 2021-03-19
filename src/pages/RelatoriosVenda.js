@@ -20,9 +20,9 @@ const RelatoriosVenda = () => {
 
   const CarregaTabela = () => {
     return value === "data" ? (
-      (console.log(1), (<TabelaCodigo />))
+      (console.log(1), (<TabelaData />))
     ) : (
-      <TabelaData/>
+      <TabelaCodigo/>
     );
   };
   
