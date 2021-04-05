@@ -1,38 +1,26 @@
 import React, { useState } from "react";
-import { confirmAlert } from "react-confirm-alert"; // Import
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-import { useHistory } from "react-router-dom";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { useHistory } from "react-router-dom"
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl2 from "@material-ui/core/FormControl";
-import Botao from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
+
 
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
-import {
-  FiEdit3,
-  FiXCircle,
-  FiPlus,
-  FiSearch,
-  FiCheck,
-  FiChevronLeft,
-} from "react-icons/fi";
-
+import { FiEdit3, FiXCircle, FiPlus, FiSearch, FiCheck, FiDelete } from "react-icons/fi"; import { Dialog } from "@material-ui/core";
+import Botao from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { ToastContainer, toast } from "react-toastify";
 
-import ReactTooltip from "react-tooltip";
-
+import ReactTooltip from 'react-tooltip';
 import "react-toastify/dist/ReactToastify.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -44,19 +32,19 @@ const GenericTable = ({ data, title }) => {
   const [open, setOpen] = React.useState(false);
   var itensQuantidade = [];
 
-  const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
-  const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
+  const [valueTipoProduto, setTipoProduto] = React.useState("pizza")
+  const [valueGeneric, setTipoValueGeneric] = React.useState("pizza")
   const handleChangePizza = () => {
-    setTipoProduto("pizza");
-  };
+    setTipoProduto('pizza')
+  }
 
   const handleChangeProduto = () => {
-    setTipoProduto("normal");
-  };
+    setTipoProduto('normal')
+  }
 
   const handleChange = (event) => {
-    setTipoValueGeneric(event.target.value);
-  };
+    setTipoValueGeneric(event.target.value)
+  }
 
   const toastStyle = {
     position: "top-right",
@@ -76,7 +64,7 @@ const GenericTable = ({ data, title }) => {
 
   const endClose = () => {
     setEnd(false);
-  };
+  }
   const gerenciarFechar = () => {
     setEnd(false);
     setOpen(false);
@@ -84,47 +72,48 @@ const GenericTable = ({ data, title }) => {
   const fim = () => {
     setOpen(false);
     setEnd(true);
-  };
+  }
 
   const handleClose = (url) => {
     setOpen(false);
 
-    if (url === "funcionarios") {
-      toast.success("🍕  Registro deletado com sucesso!", {
-        toastStyle,
-      });
-    } else if (url === "estoque") {
-      toast.success("🍕  Produto removido do estoque com sucesso!", {
-        toastStyle,
-      });
-    } else if (url === "produtos") {
-      toast.success("🍕  Produto removido com sucesso!", {
-        toastStyle,
-      });
-    } else if (url === "pedidos") {
-      toast.success("🍕  Pedido removido com sucesso!", {
+    if (url === 'funcionarios') {
+      toast.success("🍕 Registro deletado com sucesso!", {
         toastStyle,
       });
     }
+    else if (url === 'estoque') {
+      toast.success("🍕 Produto removido do estoque com sucesso!", {
+        toastStyle,
+      });
+    }
+    else if (url === 'produtos') {
+      toast.success("🍕 Produto removido com sucesso!", {
+        toastStyle,
+      });
+    }
+    else if (url === 'pedidos') {
+      toast.success("🍕 Pedido removido com sucesso!", {
+        toastStyle,
+      });
+    }
+
   };
+
 
   const handleError = () => {
     toast.error("🍕 Produto não pode ser removido: Quantidade maior que zero!");
   };
 
-  const handleBack = () => {
-    history.goBack();
-  };
   const handleEdit = (item) => {
     {
-      url === "pedidos" && history.push("/");
+      url === "pedidos" && history.push("/gerenciar-pedido", { tipo: "Editar", item: item });
     }
     {
       url === "clientes" && history.push("/");
     }
     {
-      url === "produtos" &&
-        history.push("/gerenciar-produto", { tipo: "Editar", item: item });
+      url === "produtos" && history.push("/gerenciar-produto", { tipo: "Editar", item: item });
     }
     {
       url === "estoque" && history.push("/editar-estoque");
@@ -136,35 +125,28 @@ const GenericTable = ({ data, title }) => {
 
   const direcionarCadastro = () => {
     {
-      url === "pedidos" && history.push("/registrar-pedidos");
+      url === "pedidos" && history.push("/gerenciar-pedido", { tipo: "Cadastro" });
     }
     {
-      url === "clientes" && history.push("/funcionario-cadastrar-cliente");
+      url === "clientes" && (history.push("/funcionario-cadastrar-cliente"))
     }
     {
-      url === "produtos" &&
+      url === "produtos" && (
         confirmAlert({
           title: "Escolher tipo",
           message: "Selecione o tipo de produto que deseja cadastrar",
           buttons: [
             {
               label: "Pizza",
-              onClick: () =>
-                history.push("/gerenciar-produto", {
-                  tipo: "Cadastro",
-                  tipoProduto: "Pizza",
-                }),
+              onClick: () => history.push("/gerenciar-produto", { tipo: "Cadastro", tipoProduto: "Pizza" })
             },
             {
               label: "Normal",
-              onClick: () =>
-                history.push("/gerenciar-produto", {
-                  tipo: "Cadastro",
-                  tipoProduto: "Normal",
-                }),
-            },
-          ],
-        });
+              onClick: () => history.push("/gerenciar-produto", { tipo: "Cadastro", tipoProduto: "Normal" })
+            }
+          ]
+        })
+      )
     }
     {
       url === "estoque" && history.push("/cadastrar-estoque");
@@ -192,13 +174,8 @@ const GenericTable = ({ data, title }) => {
 
       {url === "produtos" && (
         <FormControl2 style={{ margin: 10 }} component="RadioTipoProduto">
-          <FormLabel>Escolha o tipo do produto</FormLabel>
-          <RadioGroup
-            aria-label="TipoProduto"
-            name="TipoProduto"
-            value={valueGeneric}
-            onChange={handleChange}
-          >
+          <FormLabel >Escolha o tipo do produto</FormLabel>
+          <RadioGroup aria-label="TipoProduto" name="TipoProduto" value={valueGeneric} onChange={handleChange}>
             <FormControlLabel
               control={<Radio />}
               value="pizza"
@@ -251,10 +228,11 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
+                      onClick={value => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={handleClickOpen}>
+                    <Button variant="danger" onClick={() => setOpen(true)}>
                       <FiXCircle size={20} color="#black" />
                     </Button>
                   </td>
@@ -263,7 +241,9 @@ const GenericTable = ({ data, title }) => {
             ))}
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle id="alert-dialog-apagar">
-                {"Deseja cancelar o pedido?"}
+                {
+                  "Deseja cancelar o pedido?"
+                }
               </DialogTitle>
               <DialogActions>
                 <Button
@@ -273,7 +253,7 @@ const GenericTable = ({ data, title }) => {
                   onClick={() => setOpen(false)}
                 >
                   Não
-                </Button>
+              </Button>
 
                 <Button
                   className="botao"
@@ -283,12 +263,12 @@ const GenericTable = ({ data, title }) => {
                   autoFocus
                 >
                   Sim
-                </Button>
+              </Button>
               </DialogActions>
             </Dialog>
           </>
         )}
-
+        {console.log(url)}
         {url === "clientes" && (
           <>
             <thead>
@@ -313,27 +293,17 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.telefone}</td>
 
                   <td>
-                    <Button
-                      variant="light"
-                      style={{
-                        marginRight: 7,
-                        borderWidth: 1,
-                        borderColor: "black",
-                      }}
-                      onClick={handleClickOpen}
-                    >
+                    <Button variant="light" style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }} onClick={handleClickOpen}>
                       <FiEdit3 size={20} color="#black" />
+                    </Button>
+                    <Button variant="danger" data-tip="Desativar" onClick={value => { }}>
+                      <ReactTooltip />
+                      <FiXCircle size={20} color="#black" />
                     </Button>
                   </td>
                 </tr>
-                <Dialog
-                  open={open}
-                  onClose={gerenciarFechar}
-                  aria-labelledby="form-dialog-title"
-                >
-                  <DialogTitle id="form-dialog-title">
-                    Editar as informações do cliente
-                  </DialogTitle>
+                <Dialog open={open} onClose={gerenciarFechar} aria-labelledby="form-dialog-title">
+                  <DialogTitle id="form-dialog-title">Editar as informações do cliente</DialogTitle>
                   <DialogContent>
                     <TextField
                       autoFocus
@@ -371,10 +341,10 @@ const GenericTable = ({ data, title }) => {
                   <DialogActions>
                     <Botao onClick={gerenciarFechar} color="primary">
                       Cancel
-                    </Botao>
+                </Botao>
                     <Botao onClick={fim} color="primary">
                       Alterar
-                    </Botao>
+                </Botao>
                   </DialogActions>
                 </Dialog>
                 <Dialog
@@ -383,20 +353,18 @@ const GenericTable = ({ data, title }) => {
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description"
                 >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Os dados foram alterados com sucesso!  "}
-                    <FiCheck size={35} color={"green"}></FiCheck>
-                  </DialogTitle>
+                  <DialogTitle id="alert-dialog-title">{"Os dados foram alterados com sucesso!  "}<FiCheck size={35} color={"green"}></FiCheck></DialogTitle>
 
                   <DialogContent>
+
                     <DialogContentText id="alert-dialog-description">
                       Dados alterados com sucesso.
-                    </DialogContentText>
+                </DialogContentText>
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={endClose} color="primary" autoFocus>
                       Ok
-                    </Button>
+                </Button>
                   </DialogActions>
                 </Dialog>
               </tbody>
@@ -437,25 +405,11 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.inicioPromo}</td>
                           <td>{item.fimPromo}</td>
                           <td>
-                            <Button
-                              onClick={(value) => handleEdit(item)}
-                              variant="light"
-                              data-tip="Editar"
-                              style={{
-                                marginBottom: 10,
-                                marginRight: 7,
-                                borderWidth: 1,
-                                borderColor: "black",
-                              }}
-                            >
+                            <Button onClick={value => handleEdit(item)} variant="light" data-tip="Editar" style={{ marginBottom: 10, marginRight: 7, borderWidth: 1, borderColor: "black" }}>
                               <ReactTooltip />
                               <FiEdit3 size={20} color="#black" />
                             </Button>
-                            <Button
-                              variant="danger"
-                              onClick={handleClickOpen}
-                              data-tip="Desativar"
-                            >
+                            <Button variant="danger" data-tip="Desativar" onClick={value => setOpen(true)}>
                               <ReactTooltip />
                               <FiXCircle size={20} color="#black" />
                             </Button>
@@ -487,8 +441,9 @@ const GenericTable = ({ data, title }) => {
                           </td>
                         </tr>
                       </tbody>
-                    );
+                    )
                   }
+
                 })}
               </>
             )}
@@ -511,6 +466,7 @@ const GenericTable = ({ data, title }) => {
                 {data.map((item) => {
                   if (item.tipo === "Normal") {
                     return (
+
                       <tbody>
                         <tr>
                           <td>{item.tipo}</td>
@@ -523,24 +479,11 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.inicioPromo}</td>
                           <td>{item.fimPromo}</td>
                           <td>
-                            <Button
-                              onClick={(value) => handleEdit(item)}
-                              variant="light"
-                              data-tip="Editar"
-                              style={{
-                                marginRight: 7,
-                                borderWidth: 1,
-                                borderColor: "black",
-                              }}
-                            >
+                            <Button onClick={value => handleEdit(item)} variant="light" data-tip="Editar" style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}>
                               <ReactTooltip />
                               <FiEdit3 size={20} color="#black" />
                             </Button>
-                            <Button
-                              variant="danger"
-                              onClick={handleClickOpen}
-                              data-tip="Desativar"
-                            >
+                            <Button variant="danger" data-tip="Desativar" onClick={value => setOpen(true)}>
                               <ReactTooltip />
                               <FiXCircle size={20} color="#black" />
                             </Button>
@@ -572,13 +515,41 @@ const GenericTable = ({ data, title }) => {
                           </td>
                         </tr>
                       </tbody>
-                    );
+                    )
                   }
                 })}
               </>
             )}
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle id="alert-dialog-apagar">
+                {
+                  "Deseja desativar o produto?"
+                }
+              </DialogTitle>
+              <DialogActions>
+                <Button
+                  variant="danger"
+                  className="botao"
+                  onClick={() => setOpen(false)}
+                  color="primary"
+                >
+                  Não
+              </Button>
+
+                <Button
+                  className="botao"
+                  variant="success"
+                  onClick={() => handleClose("produtos")}
+                  color="primary"
+                  autoFocus
+                >
+                  Sim
+              </Button>
+              </DialogActions>
+            </Dialog>
           </>
         )}
+        <FiPlus size={26} color="fff" />
         {url === "estoque" && (
           <>
             <thead>
@@ -600,25 +571,7 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.codigo}</td>
                   <td>{item.nome}</td>
                   <td>{item.marca}</td>
-                  <td>
-                    {item.quantidade}
-                    <Fab
-                      color="light"
-                      aria-label="add"
-                      size="small"
-                      style={{ margin: 5 }}
-                    >
-                      <RemoveIcon />
-                    </Fab>
-                    <Fab
-                      color="light"
-                      aria-label="add"
-                      size="small"
-                      style={{ margin: 5 }}
-                    >
-                      <AddIcon />
-                    </Fab>
-                  </td>
+                  <td>{item.quantidade}</td>
                   <td>{item.valor}</td>
                   <td>{item.peso}</td>
                   <td>{item.validade}</td>
@@ -709,7 +662,7 @@ const GenericTable = ({ data, title }) => {
                       <FiXCircle
                         size={20}
                         color="#black"
-                        // onclick={deleteItem(item.quantidade)}
+                      // onclick={deleteItem(item.quantidade)}
                       />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
@@ -747,23 +700,7 @@ const GenericTable = ({ data, title }) => {
           </>
         )}
       </Table>
-      <Button
-        className="botao"
-        variant="ligth"
-        style={{
-          marginRight: 7,
-          borderWidth: 1,
-          borderColor: "black",
-        }}
-        onClick={handleBack}
-      >
-        <FiChevronLeft /> Voltar
-      </Button>
-      <Button
-        variant="success"
-        style={{ marginLeft: 10 }}
-        onClick={direcionarCadastro}
-      >
+      <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
         Adicionar
       </Button>

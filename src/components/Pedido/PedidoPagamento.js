@@ -5,6 +5,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   formControl1: {
@@ -14,10 +15,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Pagamento = () => {
+const Pagamento = props => {
   const classes = useStyles();
 
   const [formaPagamento, setFormaPagamento] = React.useState("");
+
+  useEffect(() => {
+    if(props.formaPagamento){
+      if(props.formaPagamento === "dinheiro")
+        setFormaPagamento("din")
+      else if(props.formaPagamento === "cartão de crétido")
+        setFormaPagamento("cd")
+      else
+        setFormaPagamento("cc")
+    }
+  }, [])
+
   const handleChangePag = (event) => {
     setFormaPagamento(event.target.value);
   };
