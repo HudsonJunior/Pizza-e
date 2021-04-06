@@ -556,8 +556,6 @@ const GenericTable = ({ data, title }) => {
               <tr>
                 <td>Cod</td>
                 <td>Nome</td>
-                <td>Marca</td>
-                <td>Quantidade</td>
                 <td>Valor do item</td>
                 <td>Peso do item</td>
                 <td>Data de validade</td>
@@ -570,8 +568,6 @@ const GenericTable = ({ data, title }) => {
                 <tr>
                   <td>{item.codigo}</td>
                   <td>{item.nome}</td>
-                  <td>{item.marca}</td>
-                  <td>{item.quantidade}</td>
                   <td>{item.valor}</td>
                   <td>{item.peso}</td>
                   <td>{item.validade}</td>
