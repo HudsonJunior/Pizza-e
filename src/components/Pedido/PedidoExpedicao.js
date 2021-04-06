@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "react-bootstrap";
 import { FiUser, FiPlus } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
+import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formControl2: {
@@ -21,25 +22,27 @@ const Expedicao = (props) => {
   const classes = useStyles();
   var tipo = props.type;
 
-  const [formaExpedicao, setFormaExpedicao] = React.useState("");
+  /*   const [formaExpedicao, setFormaExpedicao] = React.useState("balcao");
+  const [endereco, setEndereco] = React.useState(""); */
+  /* 
   const handleChangeExp = (event) => {
     setFormaExpedicao(event.target.value);
   };
   const handleChangeBalcao = () => {
     setFormaExpedicao("balcao");
-  };
+  }; */
 
   useEffect(() => {
-    if(props.formaExpedicao && props.formaExpedicao == "entrega")
-      setFormaExpedicao("entrega")
-    else
-      setFormaExpedicao("balcao")
+    console.log(props);
+    if (props.formaExpedicao && props.formaExpedicao === "entrega")
+      props.setExpedicao("entrega");
+    else if (props.formaExpedicao && props.formaExpedicao === "balcao")
+      props.setExpedicao("balcao");
+  }, []);
 
-  }, [])
-
-  const handleChangeEntrega = () => {
+  /*   const handleChangeEntrega = () => {
     setFormaExpedicao("entrega");
-  };
+  }; */
 
   const handleLogin = () => {
     history.push("/login", { tipo: "pedido" });
@@ -58,22 +61,37 @@ const Expedicao = (props) => {
   };
 
   const chamaClienteFunc = () => {
-    return formaExpedicao === "entrega" ? (
+    return props.formaExpedicao === "entrega" ? (
       <div className="RPCliente">
         <FormControl style={{ alignItems: "center" }}>
-          <Button
+          <TextField
+            className={classes.textField}
+            onChange={(event) => props.setCliente(event.target.value)}
+            value={props.cpfCliente}
+            id="standard-basic"
+            label="CPF Cliente"
+            required
+          />
+          {/* <Button
             variant="light"
             onClick={handleBuscarCliente}
             style={{ borderWidth: 1, borderColor: "black" }}
           >
             <FiUser size={15} color="black" />
             Buscar Cliente
-          </Button>
+          </Button> */}
           <p style={{ marginBottom: 0 }}>Ou</p>
           <Button variant="success" onClick={handleNovoCliente}>
             <FiPlus size={15} color="fff" />
             Novo Cliente
           </Button>
+          <TextField
+            className={classes.textField}
+            onChange={(event) => props.setEndereco(event.target.value)}
+            value={props.endereco}
+            id="standard-basic"
+            label="Endereço de entrega"
+          />
         </FormControl>
       </div>
     ) : (
@@ -82,7 +100,7 @@ const Expedicao = (props) => {
   };
 
   const chamaClienteVisitante = () => {
-    return formaExpedicao === "entrega" ? (
+    return props.formaExpedicao === "entrega" ? (
       <div className="RPCliente">
         <FormControl style={{ alignItems: "center" }}>
           <Button
@@ -118,15 +136,11 @@ const Expedicao = (props) => {
         <Select
           labelId="labelFormaExpedicao"
           id="selecaoExpedicao"
-          value={formaExpedicao}
-          onChange={handleChangeExp}
+          value={props.formaExpedicao}
+          onChange={(event) => props.setExpedicao(event.target.value)}
         >
-          <MenuItem value={"balcao"} onChange={handleChangeBalcao}>
-            Retirar no Balcão
-          </MenuItem>
-          <MenuItem value={"entrega"} onChange={handleChangeEntrega}>
-            Entrega
-          </MenuItem>
+          <MenuItem value={"balcao"}>Retirar no Balcão</MenuItem>
+          <MenuItem value={"entrega"}>Entrega</MenuItem>
         </Select>
         {tipo === "funcionario" && chamaClienteFunc()}
         {tipo === "cliente" && chamaClienteLogado()}
