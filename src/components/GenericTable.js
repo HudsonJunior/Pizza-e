@@ -8,7 +8,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl2 from "@material-ui/core/FormControl";
 
-
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
 import { FiEdit3, FiXCircle, FiPlus, FiSearch, FiCheck, FiDelete } from "react-icons/fi"; import { Dialog } from "@material-ui/core";
@@ -25,6 +24,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
+const axios = require('axios');
 const url = window.location.href.replace("http://localhost:3000/", "");
 
 const GenericTable = ({ data, title }) => {
@@ -34,6 +34,8 @@ const GenericTable = ({ data, title }) => {
 
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza")
   const [valueGeneric, setTipoValueGeneric] = React.useState("pizza")
+  const [produtoSelecionado, setProdutoSelecionado] = React.useState({})
+
   const handleChangePizza = () => {
     setTipoProduto('pizza')
   }
@@ -74,6 +76,74 @@ const GenericTable = ({ data, title }) => {
     setEnd(true);
   }
 
+  const desativarProduto = (item) => {
+    console.log('kkkkkkkkk', item)
+    if (item.tipo == "Pizza") {
+      axios.patch('http://localhost:8080/produtos-finais', {
+        nome: item.nome,
+        valor: item.valor,
+        ingredientes: item.ingredientes,
+        ativado: false,
+        adicionais: item.adicionais,
+        tipo: 'Pizza',
+        inicio_promo: item.inicioPromo,
+        fim_promo: item.fimPromo,
+        valor_promocional: item.valorPromocional ?? '',
+
+      }).then(result => {
+        toast.success("🍕 Produto desativado com sucesso!", {
+          toastStyle,
+        })
+      })
+        .catch(error => {
+          if (error.response?.data) {
+            toast.error(error.response.data.message, {
+              toastStyle,
+            })
+            toast.error(error.response.data.details, {
+              toastStyle,
+            })
+          }
+          else {
+            toast.error('Ocorrou um erro ao desativar o produto, tente novamente!', { toastStyle, })
+          }
+
+        })
+    }
+    else {
+      axios.patch('http://localhost:8080/produtos-finais', {
+        nome: item.nome,
+        valor: item.valor,
+        ativado: false,
+        peso: item.peso,
+        inicio_promo: item.inicioPromo,
+        fim_promo: item.fimPromo,
+        valor_promocional: item.valorPromocional ?? '',
+        tipo: 'Normal'
+      })
+        .then(function (response) {
+          toast.success("🍕 Produto desativado com sucesso!", {
+            toastStyle,
+          })
+        })
+        .catch(function (error) {
+          if (error.response?.data) {
+            toast.error(error.response.data.message, {
+              toastStyle,
+            })
+            toast.error(error.response.data.details, {
+              toastStyle,
+            })
+          }
+          else {
+            toast.error('Ocorrou um erro ao desativar o produto, tente novamente!', { toastStyle, })
+          }
+
+        });
+    }
+  }
+
+
   const handleClose = (url) => {
     setOpen(false);
 
@@ -84,11 +154,6 @@ const GenericTable = ({ data, title }) => {
     }
     else if (url === 'estoque') {
       toast.success("🍕 Produto removido do estoque com sucesso!", {
-        toastStyle,
-      });
-    }
-    else if (url === 'produtos') {
-      toast.success("🍕 Produto removido com sucesso!", {
         toastStyle,
       });
     }
@@ -409,7 +474,7 @@ const GenericTable = ({ data, title }) => {
                               <ReactTooltip />
                               <FiEdit3 size={20} color="#black" />
                             </Button>
-                            <Button variant="danger" data-tip="Desativar" onClick={value => setOpen(true)}>
+                            <Button variant="danger" data-tip="Desativar" onClick={value => desativarProduto(item)}>
                               <ReactTooltip />
                               <FiXCircle size={20} color="#black" />
                             </Button>
@@ -458,7 +523,7 @@ const GenericTable = ({ data, title }) => {
                               <ReactTooltip />
                               <FiEdit3 size={20} color="#black" />
                             </Button>
-                            <Button variant="danger" data-tip="Desativar" onClick={value => setOpen(true)}>
+                            <Button variant="danger" data-tip="Desativar" onClick={value => desativarProduto(item)}>
                               <ReactTooltip />
                               <FiXCircle size={20} color="#black" />
                             </Button>
@@ -470,33 +535,6 @@ const GenericTable = ({ data, title }) => {
                 })}
               </>
             )}
-            <Dialog open={open} onClose={handleClose}>
-              <DialogTitle id="alert-dialog-apagar">
-                {
-                  "Deseja desativar o produto?"
-                }
-              </DialogTitle>
-              <DialogActions>
-                <Button
-                  variant="danger"
-                  className="botao"
-                  onClick={() => setOpen(false)}
-                  color="primary"
-                >
-                  Não
-              </Button>
-
-                <Button
-                  className="botao"
-                  variant="success"
-                  onClick={() => handleClose("produtos")}
-                  color="primary"
-                  autoFocus
-                >
-                  Sim
-              </Button>
-              </DialogActions>
-            </Dialog>
           </>
         )}
         <FiPlus size={26} color="fff" />
