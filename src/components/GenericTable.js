@@ -106,6 +106,7 @@ const GenericTable = ({ data, title }) => {
   };
 
   const handleEdit = (item) => {
+    console.log(item)
     {
       url === "pedidos" && history.push("/gerenciar-pedido", { tipo: "Editar", item: item });
     }
@@ -116,10 +117,10 @@ const GenericTable = ({ data, title }) => {
       url === "produtos" && history.push("/gerenciar-produto", { tipo: "Editar", item: item });
     }
     {
-      url === "estoque" && history.push("/editar-estoque");
+      url === "estoque" && history.push("/editar-estoque", { item: item});
     }
     {
-      url === "funcionarios" && history.push("/editar-funcionario");
+      url === "funcionarios" && history.push("/editar-funcionario", {tipo: "Editar", item:item});
     }
   };
 
@@ -560,17 +561,17 @@ const GenericTable = ({ data, title }) => {
                 <td>Peso do item</td>
                 <td>Data de validade</td>
                 <td>Data de fabricação</td>
-                <td>Ações</td>
+                <td>Ações</td> 
               </tr>
             </thead>
             {data.map((item) => (
               <tbody>
                 <tr>
-                  <td>{item.codigo}</td>
-                  <td>{item.nome}</td>
+                  <td>{item._id}</td>
+                  <td>{item.nome}</td>  
                   <td>{item.valor}</td>
                   <td>{item.peso}</td>
-                  <td>{item.validade}</td>
+                  <td>{item.validade.split("T")[0]}</td>
                   <td>{item.fabricacao}</td>
                   <td>
                     <Button
@@ -580,7 +581,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={handleEdit}
+                      onClick={value => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -650,7 +651,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={handleEdit}
+                      onClick={handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>

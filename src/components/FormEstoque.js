@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 const FormularioEstoque = (props) => {
   const history = useHistory();
   const classes = useStyles();
+  const item = props.item;
   var tipo = props.type;
   const [open, setOpen] = React.useState(false);
 
@@ -81,9 +82,24 @@ const FormularioEstoque = (props) => {
       })
   }
     if (tipo === "editar") {
-      toast.success("🍕 Dados atualizados!", {
+      axios.patch('http://localhost:8080/produtos-estoque', {
+        nome: item.nome,
+        valor: item.valor,
+        peso: item.peso,
+        validade: item.validade,
+        fabricacao: item.fabricacao,
+      }).then(result => toast.success("🍕 Dados atualizados!", {
         toastStyle,
-      });
+      }))
+      .catch(error => {
+        console.log(error)
+          toast.error(error.response.data.message, {
+              toastStyle,
+          })
+          toast.error(error.response.data.details, {
+              toastStyle,
+          })
+      })
     }
     setTimeout(() => {
       history.push("/estoque");

@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, {useState, useEffect } from 'react';
 
 import Menubar from "../components/MenubarComponent";
+
 import GenericTable from "../components/GenericTable";
+
+const axios = require('axios');
+
 
 const Estoque = () => {
   const user = localStorage.getItem("user");
@@ -53,12 +57,29 @@ const Estoque = () => {
     },
   ];
 
+  const [itens, setItens] = React.useState([]);
+  useEffect(() => {
+      getItens()
+    }, []);
+  
+  const getItens = async () => {
+    const response = await axios.get(
+      `http://localhost:8080/produtos-estoque`
+    );
+    const itensResponse = await response;
+    const itensArray = itensResponse.data;
+
+    console.log(itensArray)
+    setItens(itensArray);
+    };
+
+
   return (
     <>
       <Menubar currentUser={convertedUser} />
       <div className="estoque">
         <h2>Estoque:</h2>
-        <GenericTable data={produtos_estoque} title="Estoque" />
+        <GenericTable data={itens} title="Estoque" />
       </div>
     </>
   );

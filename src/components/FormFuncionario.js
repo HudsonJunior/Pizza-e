@@ -84,9 +84,27 @@ const FormularioFuncionario = (props) => {
       })
     }
     if (tipo === "editar") {
-      toast.success("🍕 Dados atualizados!", {
+      axios.patch('http://localhost:8080/funcionarios', {
+        nome: nome,
+        senha: senha,
+        cpf: cpf,
+        rg: rg,
+        carteira: carteira,
+        cep: cep,
+        rua: rua,
+        numero: numero
+      }).then(result => toast.success("🍕 Cadastro feito!", {
         toastStyle,
-      });
+      }))
+      .catch(error => {
+        console.log(error)
+          toast.error(error.response.data.message, {
+              toastStyle,
+          })
+          toast.error(error.response.data.details, {
+              toastStyle,
+          })
+      })
     }
     setTimeout(() => {
       history.push("/funcionarios");
