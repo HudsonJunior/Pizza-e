@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Observacoes = (props) => {
-  console.log(props);
   const classes = useStyles();
 
   useEffect(() => {

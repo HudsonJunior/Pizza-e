@@ -33,7 +33,6 @@ const Expedicao = (props) => {
   }; */
 
   useEffect(() => {
-    console.log(props);
     if (props.formaExpedicao && props.formaExpedicao === "entrega")
       props.setExpedicao("entrega");
     else if (props.formaExpedicao && props.formaExpedicao === "balcao")

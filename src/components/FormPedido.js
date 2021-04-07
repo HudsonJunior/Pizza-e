@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -21,12 +22,12 @@ import Observacoes from "./Pedido/PedidoObservacao";
 import Expedicao from "./Pedido/PedidoExpedicao";
 import TabelaProdutoPedido from "./Pedido/PedidoTabelaProdutos";
 import NotaFiscalCpf from "./Pedido/PedidoCpfNaNota";
+
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import { useEffect } from "react";
 
 const axios = require("axios");
 
@@ -57,7 +58,7 @@ const FormPedido = (props) => {
   const [valueFormaExpedicao, setFormaExpedicao] = React.useState("balcao");
   const [endereco, setEndereco] = React.useState("");
   const [cpfCliente, setCpfCliente] = React.useState("");
-  const [valorPedido, setValorPedido] = React.useState("R$ 00,00");
+  const [valorPedido, setValorPedido] = React.useState("00,00");
   const [flagPago, setFlagPago] = React.useState("nao");
   const isCadastro = tipo === "Cadastrar";
 
@@ -95,23 +96,13 @@ const FormPedido = (props) => {
     var date =
       today.getFullYear() +
       "-" +
-      (today.getMonth() + 1) +
+      ("0" + (today.getMonth() + 1)).slice(-2) +
       "-" +
-      today.getDate();
+      ("0" + today.getDate()).slice(-2);
 
     var time =
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-    console.log(
-      itemFormaPag,
-      valueFormaExpedicao,
-      cpfCliente,
-      endereco,
-      cpfNF,
-      observacoesValue,
-      valorPedido,
-      flagPago
-    );
     if (isCadastro) {
       const response = axios
         .post("http://localhost:8080/pedido", {
