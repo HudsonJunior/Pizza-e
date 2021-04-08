@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, {useState, useEffect } from 'react';
 
 import Menubar from "../components/MenubarComponent";
 import GenericTable from "../components/GenericTable";
+
+const axios = require('axios');
 
 const Funcionarios = () => {
   const user = localStorage.getItem("user");
@@ -54,12 +56,29 @@ const Funcionarios = () => {
     },
   ];
 
+
+  const [func, setFunc] = React.useState([]);
+  useEffect(() => {
+      getFuncs()
+    }, []);
+
+  const getFuncs = async () => {
+    const response = await axios.get(
+      `http://localhost:8080/funcionarios`
+    );
+    const funcResponse = await response;
+    const funcArray = funcResponse.data;
+
+    setFunc(funcArray);
+    };
+
+
   return (
     <>
       <Menubar currentUser={convertedUser} />
       <div className="funcionario">
         <h2>Funcionários:</h2>
-        <GenericTable data={funcionarios} title="Funcionarios" />
+        <GenericTable data={func} title="Funcionarios" />
       </div>
     </>
   );

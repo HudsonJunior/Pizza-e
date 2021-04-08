@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect } from 'react';
 
 import TextField from "@material-ui/core/TextField";
 
@@ -39,6 +39,7 @@ const FormularioEstoque = (props) => {
   const history = useHistory();
   const classes = useStyles();
   const item = props.item;
+
   var tipo = props.type;
   const [open, setOpen] = React.useState(false);
 
@@ -82,15 +83,21 @@ const FormularioEstoque = (props) => {
       })
   }
     if (tipo === "editar") {
+      console.log(item)
       axios.patch('http://localhost:8080/produtos-estoque', {
-        nome: item.nome,
-        valor: item.valor,
-        peso: item.peso,
-        validade: item.validade,
-        fabricacao: item.fabricacao,
-      }).then(result => toast.success("🍕 Dados atualizados!", {
+        id: item._id,
+        nome,
+        valor,
+        peso,
+        validade,
+        fabricacao,
+      }).then(result => { toast.success("🍕 Dados atualizados!", {
         toastStyle,
-      }))
+      })
+      setTimeout(() => {
+        history.push("/estoque");
+      }, 3000);
+    })
       .catch(error => {
         console.log(error)
           toast.error(error.response.data.message, {
@@ -101,9 +108,6 @@ const FormularioEstoque = (props) => {
           })
       })
     }
-    setTimeout(() => {
-      history.push("/estoque");
-    }, 1500);
   };
 
   const [nome, setNome] = useState("")
@@ -112,12 +116,24 @@ const FormularioEstoque = (props) => {
   const [validade, setValidade] = useState("")
   const [fabricacao, setFabricacao] = useState("")
 
+  useEffect(() => {
+    if(item){
+      setNome(item.nome)
+      setValor(item.valor)
+      setPeso(item.peso)
+      setValidade(item.validade.split("T")[0])
+      setFabricacao(item.fabricacao)
+    }
+  }, [])
+
+
 
   return (
     <>
       <form className={classes.root} onSubmit={handleSave}>
         <div className="contentForm">
-        <TextField onChange={event => setNome(event.target.value)}
+        <TextField value={nome}
+        onChange={event => setNome(event.target.value)}
               required
               label="Nome"
               placeholder="Nome do produto"
@@ -127,7 +143,7 @@ const FormularioEstoque = (props) => {
             />
           </div>
           <div className="contentForm">
-          <TextField onChange={event => setValor(event.target.value)}
+          <TextField value={valor} onChange={event => setValor(event.target.value)}
             required
             label="Valor"
             style={{
@@ -139,7 +155,7 @@ const FormularioEstoque = (props) => {
           />
         </div>
         <div className="contentForm">
-          <TextField onChange={event => setPeso(event.target.value)}
+          <TextField value={peso} onChange={event => setPeso(event.target.value)}
             required
             label="Peso"
             style={{
@@ -151,7 +167,7 @@ const FormularioEstoque = (props) => {
           />
         </div>
         <div className="contentForm">
-          <TextField onChange={event => setValidade(event.target.value)}
+          <TextField value={validade} onChange={event => setValidade(event.target.value)}
             label="Data de Validade"
             type="date"
             style={{
@@ -167,7 +183,7 @@ const FormularioEstoque = (props) => {
           />
           </div>
           <div className="contentForm">
-          <TextField onChange={event => setFabricacao(event.target.value)}
+          <TextField value={fabricacao} onChange={event => setFabricacao(event.target.value)}
             label="Data de Fabricação"
             type="date"
             style={{

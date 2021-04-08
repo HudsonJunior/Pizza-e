@@ -120,7 +120,7 @@ const GenericTable = ({ data, title }) => {
       url === "estoque" && history.push("/editar-estoque", { item: item});
     }
     {
-      url === "funcionarios" && history.push("/editar-funcionario", {tipo: "Editar", item:item});
+      url === "funcionarios" && history.push("/editar-funcionario", {item:item});
     }
   };
 
@@ -628,7 +628,8 @@ const GenericTable = ({ data, title }) => {
                 <td>RG</td>
                 <td>Carteira de trabalho</td>
                 <td>CEP</td>
-                <td>Endereço</td>
+                <td>Rua</td>
+                <td>Numero</td>
                 <td>Complemento</td>
                 <td>Ações</td>
               </tr>
@@ -639,10 +640,11 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.nome}</td>
                   <td>{item.cpf}</td>
                   <td>{item.rg}</td>
-                  <td>{item.carteira_trabalho}</td>
+                  <td>{item.carteira}</td>
                   <td>{item.cep}</td>
-                  <td>{item.endereco}</td>
-                  <td>{item.complemento}</td>
+                  <td>{item.rua}</td>
+                  <td>{item.numero}</td>
+                  <td>{item.complemento}</td> 
                   <td>
                     <Button
                       variant="light"
@@ -651,7 +653,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={handleEdit(item)}
+                      onClick={value => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>

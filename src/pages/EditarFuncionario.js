@@ -19,9 +19,11 @@ const theme = createMuiTheme({
   },
 });
 
-const EditarFuncionario = () => {
+const EditarFuncionario = (props) => {
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
+  console.log('props', props)
+  const { item } = props.location.state
   return (
     <ThemeProvider theme={theme}>
       <Menubar currentUser={convertedUser} />
@@ -29,7 +31,7 @@ const EditarFuncionario = () => {
         <div className="contentForm">
           <h2>Editar dados do funcionário</h2>
           <p>Atualize os campos desejados...</p>
-          <FormularioFuncionario type="editar" />
+          <FormularioFuncionario type="editar" func={item} />
         </div>
       </div>
     </ThemeProvider>
