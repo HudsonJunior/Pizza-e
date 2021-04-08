@@ -65,7 +65,7 @@ const Pedidos = () => {
           ) : (
             <div>
               <pre>
-                <h5>Nenhum pedido foi registrado nesta data...</h5>
+                <p>Nenhum pedido foi registrado nesta data...</p>
               </pre>
               <Button variant="success" onClick={direcionarCadastro}>
                 <FiPlus size={26} color="fff" />
