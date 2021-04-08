@@ -534,14 +534,14 @@ const GenericTable = ({ data, title }) => {
                       <tbody>
                         <tr>
                           <td>{item.tipo}</td>
-                          <td>{item.codigo}</td>
+                          <td>{item._id}</td>
                           <td>{item.nome}</td>
                           <td>{item.valor}</td>
                           <td>{item.ingredientes}</td>
                           <td>{item.adicionais}</td>
-                          <td>{item.valorPromocional}</td>
-                          <td>{item.inicioPromo}</td>
-                          <td>{item.fimPromo}</td>
+                          <td>{item.valor_promocional || 0}</td>
+                          <td>{formataData(item.inicio_promo)}</td>
+                          <td>{formataData(item.fim_promo)}</td>
                           <td>
                             <Button
                               onClick={(value) => handleEdit(item)}
@@ -596,9 +596,9 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.valor}</td>
                           <td>{item.peso}</td>
                           <td>{item.status}</td>
-                          <td>{item.valorPromicional}</td>
-                          <td>{item.inicioPromo}</td>
-                          <td>{item.fimPromo}</td>
+                          <td>{item.valor_promocional || 0}</td>
+                          <td>{formataData(item.inicio_promo)}</td>
+                          <td>{formataData(item.fim_promo)}</td>
                           <td>
                             <Button
                               onClick={(value) => handleEdit(item)}
