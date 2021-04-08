@@ -102,7 +102,11 @@ const FormPedido = (props) => {
       ("0" + today.getDate()).slice(-2);
 
     var time =
-      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      ("0" + today.getHours()).slice(-2) +
+      ":" +
+      ("0" + today.getMinutes()).slice(-2) +
+      ":" +
+      ("0" + today.getSeconds()).slice(-2);
 
     if (isCadastro) {
       const response = axios
