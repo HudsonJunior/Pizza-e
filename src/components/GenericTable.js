@@ -128,7 +128,7 @@ const GenericTable = ({ data, title }) => {
     }
   };
 
-  const formatDate = (data) => {
+  const formataData = (data) => {
     const novaData = new Date(data);
     return (
       ("0" + (novaData.getDate() + 1)).slice(-2) +
@@ -145,7 +145,7 @@ const GenericTable = ({ data, title }) => {
       stringProdutos += produtosArray[i].quantidade;
       stringProdutos += " ";
       stringProdutos += produtosArray[i].nome;
-      if (i < produtosArray.length - 1) stringProdutos += ", ";
+      if (i < produtosArray.length - 1) stringProdutos += ",\n";
     }
     return stringProdutos;
   };
@@ -236,38 +236,42 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
-                <td>Data</td>
-                <td>Hora</td>
-                <td>ID</td>
-                <td>Descrição</td>
-                <td>Observações</td>
-                <td>Forma Pagamento</td>
-                <td>Forma Expedição</td>
-                <td>Endereço</td>
-                <td>CPF Cliente</td>
-                <td>CPF NF</td>
-                <td>Valor</td>
-                <td>Status</td>
-                <td>Pago</td>
-                <td>Ações</td>
+                <th>Data</th>
+                <th>Hora</th>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Observações</th>
+                <th>Pagamento</th>
+                <th>Pago</th>
+                <th>Expedição</th>
+                <th>Endereço</th>
+                <th>CPF Cliente</th>
+                <th>CPF NF</th>
+                <th>Ações</th>
               </tr>
             </thead>
             {data.map((item) => (
               <tbody>
                 <tr>
-                  <td>{formatDate(item.data)}</td>
+                  <td>{formataData(item.data)}</td>
                   <td>{item.hora}</td>
-                  <td>{item._id}</td>
-                  <td>{getProdutosPedido(item.produtos)}</td>
+                  <td style={{ width: 150, wordBreak: "break-word" }}>
+                    {item._id}
+                  </td>
+                  <td>{item.statusPedido}</td>
+                  <td style={{ whiteSpace: "pre-wrap" }}>
+                    {getProdutosPedido(item.produtos)}
+                  </td>
+                  <td>R${item.valor}</td>
                   <td>{item.observacoes}</td>
                   <td>{item.formaPagamento}</td>
+                  <td>{item.statusPagamento}</td>
                   <td>{item.formaExpedicao}</td>
                   <td>{item.endereco}</td>
                   <td>{item.cpfCliente}</td>
                   <td>{item.cpfNF}</td>
-                  <td>R$ {item.valor}</td>
-                  <td>{item.statusPedido}</td>
-                  <td>{item.statusPagamento}</td>
                   <td>
                     <Button
                       variant="light"

@@ -16,7 +16,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { Button } from "react-bootstrap";
 
-import BarraPesquisa from "./BarraPesquisaComponent";
 import Pagamento from "./Pedido/PedidoPagamento";
 import Observacoes from "./Pedido/PedidoObservacao";
 import Expedicao from "./Pedido/PedidoExpedicao";
@@ -41,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FormPedido = (props) => {
-  console.log("form pedido", props);
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   const history = useHistory();
@@ -52,6 +50,7 @@ const FormPedido = (props) => {
   const { tipo } = props;
   const { item } = props;
 
+  const [produtos, setProdutos] = React.useState([]);
   const [itemFormaPag, setFormaPag] = React.useState("dinheiro");
   const [observacoesValue, setObservacoes] = React.useState("Nenhuma");
   const [cpfNF, setCpfNF] = React.useState("");
@@ -63,6 +62,7 @@ const FormPedido = (props) => {
   const isCadastro = tipo === "Cadastrar";
 
   useEffect(() => {
+    // para a edicao
     if (item) {
       setFormaPag(item.pagamento);
       setObservacoes(item.observacoes);
@@ -70,6 +70,7 @@ const FormPedido = (props) => {
       setFormaExpedicao(item.expedicao);
     }
   }, []);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -106,20 +107,17 @@ const FormPedido = (props) => {
     if (isCadastro) {
       const response = axios
         .post("http://localhost:8080/pedido", {
-          produtos: [
-            { _id: "604ce0bb8fa8d02aef2a494a", nome: "teste 3", quantidade: 1 },
-            { _id: "604ce13b018bcc2d9ca215f4", nome: "teste 4", quantidade: 2 },
-          ],
+          produtos,
           formaPagamento: itemFormaPag,
           formaExpedicao: valueFormaExpedicao,
           endereco: endereco,
           data: date,
           hora: time,
-          cpfCliente: cpfCliente,
-          cpfNF: cpfNF,
+          cpfCliente,
+          cpfNF,
           observacoes: observacoesValue,
           statusPedido: "realizado",
-          valor: valorPedido,
+          valor: parseFloat(valorPedido),
           statusPagamento: flagPago,
         })
         .then(function (response) {
@@ -149,15 +147,19 @@ const FormPedido = (props) => {
         <h2>{isCadastro ? "Registro de Pedido" : "Editar pedido"}</h2>
         <form className={classes.root} onSubmit={handleSubmit}>
           <div className="divEsquerda">
-            <BarraPesquisa />
-            <TabelaProdutoPedido />
+            <TabelaProdutoPedido
+              produtosPedido={produtos}
+              valor={valorPedido}
+              setProdutosPedido={setProdutos}
+              setValor={setValorPedido}
+            />
           </div>
           <div className="divDireita">
             <TextField
               style={{ width: 100 }}
               id="valorPedido"
               onChange={(event) => setValorPedido(event.target.value)}
-              value={valorPedido}
+              value={"R$ " + valorPedido}
               label="Valor Total"
             />
             <Pagamento setPagamento={setFormaPag} formaPag={itemFormaPag} />

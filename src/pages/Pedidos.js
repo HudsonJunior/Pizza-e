@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import Menubar from "../components/MenubarComponent";
 import GenericTable from "../components/GenericTable";
 import TextField from "@material-ui/core/TextField";
-
+import { Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { FiPlus } from "react-icons/fi";
 const axios = require("axios");
 
 const Pedidos = () => {
+  const history = useHistory();
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   const [pedidos, setPedidos] = React.useState([]);
@@ -37,6 +40,9 @@ const Pedidos = () => {
     }
   };
 
+  const direcionarCadastro = () => {
+    history.push("/gerenciar-pedido", { tipo: "Cadastro" });
+  };
   return (
     <>
       <Menubar currentUser={convertedUser} />
@@ -53,13 +59,19 @@ const Pedidos = () => {
           value={date}
           onChange={(event) => setDate(event.target.value)}
         />
-        <div style={{ marginTop: 20 }}>
-          {pedidos.length > 1 ? (
+        <div style={{ margin: 15 }}>
+          {pedidos.length > 0 ? (
             <GenericTable data={pedidos} title="Pedidos" />
           ) : (
-            <pre>
-              <h4>Nenhum pedido foi registrado nesta data...</h4>
-            </pre>
+            <div>
+              <pre>
+                <h5>Nenhum pedido foi registrado nesta data...</h5>
+              </pre>
+              <Button variant="success" onClick={direcionarCadastro}>
+                <FiPlus size={26} color="fff" />
+                Adicionar
+              </Button>
+            </div>
           )}
         </div>
       </div>

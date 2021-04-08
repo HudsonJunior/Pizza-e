@@ -90,6 +90,7 @@ const Expedicao = (props) => {
             value={props.endereco}
             id="standard-basic"
             label="Endereço de entrega"
+            required
           />
         </FormControl>
       </div>
