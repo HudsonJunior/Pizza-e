@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 import TextField from '@material-ui/core/TextField';
+import "./styles/TabelaData.css";
 
 
 const data = [
@@ -69,19 +69,6 @@ const TabelaData = () => {
           </tbody>
         ))}
       </Table>
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        style={{
-          borderWidth: 1,
-          borderColor: "black",
-          margin: 20,
-          backgroundColor: "lightGray",
-        }}
-      >
-        Baixar
-      </Button>
     </div>
   );
 };

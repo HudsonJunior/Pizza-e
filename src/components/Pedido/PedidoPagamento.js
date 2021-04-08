@@ -1,5 +1,4 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -11,49 +10,38 @@ const useStyles = makeStyles((theme) => ({
   formControl1: {
     margin: theme.spacing(1),
     minWidth: 150,
-    width: "22ch",
+    width: "35ch",
   },
 }));
 
-const Pagamento = props => {
+const Pagamento = (props) => {
   const classes = useStyles();
 
-  const [formaPagamento, setFormaPagamento] = React.useState("");
-
   useEffect(() => {
-    if(props.formaPagamento){
-      if(props.formaPagamento === "dinheiro")
-        setFormaPagamento("din")
-      else if(props.formaPagamento === "cartão de crétido")
-        setFormaPagamento("cd")
-      else
-        setFormaPagamento("cc")
+    if (props.formaPagamento) {
+      if (props.formaPagamento === "dinheiro") {
+        props.setPagamento("dinheiro");
+      } else if (props.formaPagamento === "cartão de debito") {
+        props.setPagamento("cartao de debito");
+      } else {
+        props.setPagamento("cartao de credito");
+      }
     }
-  }, [])
-
-  const handleChangePag = (event) => {
-    setFormaPagamento(event.target.value);
-  };
+  }, []);
 
   return (
     <div className="RPCampos">
-      <TextField
-        style={{ width: 100 }}
-        id="valorPedido"
-        value={"R$ 00,00"}
-        label="Valor Total"
-      />
       <FormControl required className={classes.formControl1}>
         <InputLabel id="inputPagamento">Forma de Pagamento</InputLabel>
         <Select
           labelId="labelFormaPagamento"
           id="selecaoPagamento"
-          value={formaPagamento}
-          onChange={handleChangePag}
+          value={props.formaPag}
+          onChange={(event) => props.setPagamento(event.target.value)}
         >
-          <MenuItem value={"din"}>Dinheiro</MenuItem>
-          <MenuItem value={"cd"}>Cartão de Débito</MenuItem>
-          <MenuItem value={"cc"}>Cartão de Crédito</MenuItem>
+          <MenuItem value={"dinheiro"}>Dinheiro</MenuItem>
+          <MenuItem value={"cartão de debito"}>Cartão de Débito</MenuItem>
+          <MenuItem value={"cartão de credito"}>Cartão de Crédito</MenuItem>
         </Select>
       </FormControl>
     </div>
