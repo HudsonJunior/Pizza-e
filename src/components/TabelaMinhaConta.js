@@ -1,72 +1,66 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 
-const data = [
-  {
-    data: "10-02-2020",
-    hora: "10:10",
-    id: 112,
-    descricao: "Pizza Calabresa P",
-    expedicao: "Entrega",
-    endereco: "Rua Dez de maio, 90",
-    observacoes: "nenhuma",
-    valor: 30.0,
-    status: "Finalizado",
-  },
-  {
-    data: "10-03-2020",
-    hora: "10:10",
-    id: 1234,
-    descricao: "Pizza Calabresa P",
-    expedicao: "Entrega",
-    endereco: "Rua Dez de maio, 90",
-    observacoes: "nenhuma",
-    valor: 30.0,
-    status: "Finalizado",
-  },
-  {
-    data: "10-04-2020",
-    hora: "10:10",
-    id: 1342,
-    descricao: "Pizza Calabresa P",
-    expedicao: "Entrega",
-    endereco: "Rua Dez de maio, 90",
-    observacoes: "nenhuma",
-    valor: 30.0,
-    status: "Em preparo",
-  },
-];
+const formataData = (data) => {
+  const novaData = new Date(data);
+  return (
+    ("0" + (novaData.getDate() + 1)).slice(-2) +
+    "/" +
+    ("0" + (novaData.getMonth() + 1)).slice(-2) +
+    "/" +
+    novaData.getFullYear()
+  );
+};
 
-const TabelaMinhaConta = () => {
+const getProdutosPedido = (produtosArray) => {
+  let stringProdutos = "";
+  for (var i = 0; i < produtosArray.length; i++) {
+    stringProdutos += produtosArray[i].quantidade;
+    stringProdutos += " ";
+    stringProdutos += produtosArray[i].nome;
+    if (i < produtosArray.length - 1) stringProdutos += ",\n";
+  }
+  return stringProdutos;
+};
+
+const TabelaMinhaConta = (props) => {
   return (
     <>
-        <p>Meus Pedidos:</p>
+      <p>Meus Pedidos:</p>
       <Table striped bordered hover>
         <thead>
           <tr>
-            <td>Data</td>
-            <td>Hora</td>
-            <td>ID</td>
-            <td>Descrição</td>
-            <td>Expedição</td>
-            <td>Endereço</td>
-            <td>Observações</td>
-            <td>Valor</td>
-            <td>Status</td>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>ID</th>
+            <th>Status</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Observações</th>
+            <th>Pagamento</th>
+            <th>Pago</th>
+            <th>Expedição</th>
+            <th>Endereço</th>
           </tr>
         </thead>
-        {data.map((item) => (
+        {props.meusPedidos.map((item) => (
           <tbody>
             <tr>
-              <td>{item.data}</td>
+              <td>{formataData(item.data)}</td>
               <td>{item.hora}</td>
-              <td>{item.id}</td>
-              <td>{item.descricao}</td>
-              <td>{item.expedicao}</td>
-              <td>{item.endereco}</td>
+              <td style={{ width: 150, wordBreak: "break-word" }}>
+                {item._id}
+              </td>
+              <td>{item.statusPedido}</td>
+              <td style={{ whiteSpace: "pre-wrap" }}>
+                {getProdutosPedido(item.produtos)}
+              </td>
+              <td>R${item.valor}</td>
               <td>{item.observacoes}</td>
-              <td>R$ {item.valor}</td>
-              <td>{item.status}</td>
+              <td>{item.formaPagamento}</td>
+              <td>{item.statusPagamento}</td>
+              <td>{item.formaExpedicao}</td>
+              <td>{item.endereco}</td>
             </tr>
           </tbody>
         ))}
@@ -75,4 +69,4 @@ const TabelaMinhaConta = () => {
   );
 };
 
-export default TabelaMinhaConta
+export default TabelaMinhaConta;

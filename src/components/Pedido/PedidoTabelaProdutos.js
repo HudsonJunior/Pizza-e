@@ -44,7 +44,6 @@ const TabelaProdutoPedido = (props) => {
     for (let produto of props.produtosPedido) {
       valor += parseFloat(produto.valor) * parseInt(produto.quantidade);
     }
-    console.log(valor);
     props.setValor(valor);
   };
 
@@ -90,6 +89,8 @@ const TabelaProdutoPedido = (props) => {
 
   const getValorItem = (item) => {
     let fimPromo = item.fim_promo.split("T")[0];
+    let inicioPromo = item.inicio_promo.split("T")[0];
+
     var today = new Date();
     var date =
       today.getFullYear() +
@@ -97,7 +98,12 @@ const TabelaProdutoPedido = (props) => {
       ("0" + (today.getMonth() + 1)).slice(-2) +
       "-" +
       ("0" + today.getDate()).slice(-2);
-    if (item.valor_promocial !== "" && fimPromo.localeCompare(date) === 1)
+
+    if (
+      item.valor_promocial !== "" &&
+      fimPromo.localeCompare(date) === 1 &&
+      inicioPromo.localeCompare(date === -1)
+    )
       return item.valor_promocial;
     else return item.valor;
   };
@@ -125,9 +131,9 @@ const TabelaProdutoPedido = (props) => {
       <Table striped bordered hover className="tableProdutosPedido">
         <thead>
           <tr>
-            <td>Nome</td>
-            <td>Valor</td>
-            <td>Quantidade</td>
+            <th>Nome</th>
+            <th>Valor Unitário</th>
+            <th>Quantidade</th>
           </tr>
         </thead>
         {produtos.map((item) => (
@@ -136,29 +142,32 @@ const TabelaProdutoPedido = (props) => {
               <td>{item.nome}</td>
               <td>{getValorItem(item)}</td>
               <td>
-                <Fab
-                  size="small"
-                  aria-label="remove"
-                  style={{ backgroundColor: red[500] }}
-                  onClick={() => handleSub(item._id)}
-                >
-                  <RemoveIcon />
-                </Fab>
-                <TextField
-                  style={{ width: 20 }}
-                  id="quantidade"
-                  value={getQtdeProdutos(item._id)}
-                />
-                <Fab
-                  size="small"
-                  aria-label="add"
-                  style={{ backgroundColor: green[500] }}
-                  onClick={() =>
-                    handleAdd(item._id, item.nome, getValorItem(item))
-                  }
-                >
-                  <AddIcon />
-                </Fab>
+                <div style={{ textAlign: "center" }}>
+                  <Fab
+                    size="small"
+                    aria-label="remove"
+                    style={{ backgroundColor: red[500] }}
+                    onClick={() => handleSub(item._id)}
+                  >
+                    <RemoveIcon />
+                  </Fab>
+                  <TextField
+                    style={{ width: 17 }}
+                    id="quantidade"
+                    value={getQtdeProdutos(item._id)}
+                    disabled
+                  />
+                  <Fab
+                    size="small"
+                    aria-label="add"
+                    style={{ backgroundColor: green[500] }}
+                    onClick={() =>
+                      handleAdd(item._id, item.nome, getValorItem(item))
+                    }
+                  >
+                    <AddIcon />
+                  </Fab>
+                </div>
               </td>
             </tr>
           </tbody>

@@ -102,7 +102,11 @@ const FormPedido = (props) => {
       ("0" + today.getDate()).slice(-2);
 
     var time =
-      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      ("0" + today.getHours()).slice(-2) +
+      ":" +
+      ("0" + today.getMinutes()).slice(-2) +
+      ":" +
+      ("0" + today.getSeconds()).slice(-2);
 
     if (isCadastro) {
       const response = axios
@@ -121,10 +125,19 @@ const FormPedido = (props) => {
           statusPagamento: flagPago,
         })
         .then(function (response) {
-          console.log(response);
-          toast.success("🍕 Pedido feito! Nota fiscal emitida!", {
-            toastStyle,
-          });
+          if (produtos.length > 0) {
+            console.log(response);
+            toast.success("🍕 Pedido feito! Nota fiscal emitida!", {
+              toastStyle,
+            });
+            setTimeout(() => {
+              history.push("/pedidos");
+            }, 2000);
+          } else {
+            toast.error("🍕 Por favor, selecione um item!", {
+              toastStyle,
+            });
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -135,9 +148,9 @@ const FormPedido = (props) => {
       });
     }
 
-    setTimeout(() => {
+    /*     setTimeout(() => {
       history.push("/pedidos");
-    }, 2000);
+    }, 2000); */
   };
 
   return (

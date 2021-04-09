@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Menubar from "../components/MenubarComponent";
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 import { FiEdit3, FiXCircle, FiPlus, FiSearch, FiCheck } from "react-icons/fi";
@@ -10,7 +10,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TabelaMinhaConta from "./TabelaMinhaConta"
+import TabelaMinhaConta from "./TabelaMinhaConta";
 
 import "./styles/cadastrarCliente.css";
 
@@ -18,6 +18,9 @@ import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { HistoryTwoTone } from "@material-ui/icons";
+
+const axios = require("axios");
+
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiTextField-root": {
@@ -28,10 +31,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MinhaConta = ({ currentUser }) => {
+  const user = localStorage.getItem("user");
   const history = useHistory();
   const classes = useStyles();
   const [alterar, setAlterar] = React.useState(false);
   const [mensagem, setMensagem] = React.useState(false);
+  const [pedidos, setPedidos] = React.useState([]);
+
+  useEffect(() => {
+    getPedidos();
+  }, []);
 
   const mostrarMensagem = () => {
     setMensagem(true);
@@ -55,6 +64,20 @@ const MinhaConta = ({ currentUser }) => {
     history.push("/login", { tipo: "perfil" });
   };
 
+  const getPedidos = async () => {
+    try {
+      const cpf = "09227240918";
+      const response = await axios.get(
+        `http://localhost:8080/pedido/cpf?cpfCliente=${cpf}`
+      );
+      const pedidosResponse = await response.data;
+      console.log(pedidosResponse);
+      setPedidos(pedidosResponse);
+    } catch (error) {
+      setPedidos([]);
+    }
+  };
+
   const data = {
     cpf: "123456798",
     nome: "Gabriel Maeda",
@@ -73,7 +96,6 @@ const MinhaConta = ({ currentUser }) => {
     telefone: "301509963",
   };
 
-  const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   function verificaUsuario() {
     if (convertedUser && convertedUser.type === "C") {
@@ -239,7 +261,7 @@ const MinhaConta = ({ currentUser }) => {
           </DialogActions>
         </Dialog>
       </div>
-      <TabelaMinhaConta/>
+      <TabelaMinhaConta meusPedidos={pedidos} setMeusPedidos={setPedidos} />
     </>
   );
 };
