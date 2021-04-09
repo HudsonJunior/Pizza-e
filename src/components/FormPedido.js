@@ -27,6 +27,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import { MenuItem } from '@material-ui/core';
 
 const axios = require("axios");
 
@@ -59,15 +60,24 @@ const FormPedido = (props) => {
   const [cpfCliente, setCpfCliente] = React.useState("");
   const [valorPedido, setValorPedido] = React.useState("00,00");
   const [flagPago, setFlagPago] = React.useState("nao");
+  const [status, setStatus] = React.useState("nao");
   const isCadastro = tipo === "Cadastrar";
 
   useEffect(() => {
     // para a edicao
     if (item) {
-      setFormaPag(item.pagamento);
+      console.log('item', item)
+      setFormaPag(item.formaPagamento);
       setObservacoes(item.observacoes);
       setCpfNF(item.CPF);
-      setFormaExpedicao(item.expedicao);
+      setFormaExpedicao(item.formaExpedicao);
+      setStatus(item.statusPedido)
+      setValorPedido(item.valor)
+      if (item.cpfCliente) setCpfCliente(item.cpfCliente)
+      if (item.endereco) setEndereco(item.endereco)
+      if (item.statusPagamento) setFlagPago(item.statusPagamento)
+      if (item.produtos) setProdutos(item.produtos)
+      if (item.cpfNF) setCpfNF(item.cpfNF)
     }
   }, []);
 
@@ -81,7 +91,7 @@ const FormPedido = (props) => {
 
   const toastStyle = {
     position: "top-right",
-    autoClose: 1500,
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -109,7 +119,7 @@ const FormPedido = (props) => {
       ("0" + today.getSeconds()).slice(-2);
 
     if (isCadastro) {
-      const response = axios
+      axios
         .post("http://localhost:8080/pedido", {
           produtos,
           formaPagamento: itemFormaPag,
@@ -143,14 +153,40 @@ const FormPedido = (props) => {
           console.log(error);
         });
     } else {
-      toast.success("🍕 Pedido alterado!", {
-        toastStyle,
-      });
+      axios
+        .patch("http://localhost:8080/pedido", {
+          produtos,
+          formaPagamento: itemFormaPag,
+          formaExpedicao: valueFormaExpedicao,
+          endereco: endereco,
+          data: item.data,
+          hora: item.time,
+          cpfCliente,
+          cpfNF,
+          observacoes: observacoesValue,
+          statusPedido: status,
+          valor: parseFloat(valorPedido),
+          statusPagamento: flagPago,
+          id: item._id
+        })
+        .then(function (response) {
+          toast.success("🍕 Pedido alterado com sucesso!", {
+            toastStyle,
+          });
+          setTimeout(() => {
+            history.push("/pedidos");
+          }, 2000);
+        })
+        .catch(function (error) {
+          toast.error(error.response?.data.message, {
+            toastStyle,
+          })
+          toast.error(error.response?.data.details, {
+            toastStyle,
+          })
+        });
     }
 
-    /*     setTimeout(() => {
-      history.push("/pedidos");
-    }, 2000); */
   };
 
   return (
@@ -171,7 +207,7 @@ const FormPedido = (props) => {
             <TextField
               style={{ width: 100 }}
               id="valorPedido"
-              onChange={(event) => setValorPedido(event.target.value)}
+              onChange={(event) => setValorPedido(event.target.value.replace("R$ ", ""))}
               value={"R$ " + valorPedido}
               label="Valor Total"
             />
@@ -204,6 +240,13 @@ const FormPedido = (props) => {
                 <FormControlLabel value="sim" control={<Radio />} label="Sim" />
                 <FormControlLabel value="nao" control={<Radio />} label="Não" />
               </RadioGroup>
+              <TextField className={classes.textField} onChange={event => setStatus(event.target.value)} value={status} select id="standard-select-currency" label="Status" required>
+                <MenuItem value={"realizado"}>Realizado</MenuItem>
+                <MenuItem value={"preparando"}>Em preparo</MenuItem>
+                <MenuItem value={"viagem"}>Na viagem</MenuItem>
+                <MenuItem value={"entregue"}>Entregue</MenuItem>
+                <MenuItem value={"cancelado"}>Cancelado</MenuItem>
+              </TextField>
             </FormControl>
 
             <div className="RPBotoes">

@@ -2,33 +2,39 @@ import React, { useEffect } from "react";
 
 import Menubar from "../components/MenubarComponent";
 import GenericTable from "../components/GenericTable";
+import { InputGroup } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
+import FacadeProduto from "../Facade/FacadeProduto";
 
-const axios = require('axios');
 
 const Produtos = () => {
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   const [produtos, setProdutos] = React.useState([]);
+  const [nomeProduto, setNomeProduto] = React.useState("");
+  const facadeProdutos = new FacadeProduto()
 
 
   useEffect(() => {
-    getProdutos()
-  }, [])
+    if (nomeProduto === "") {
+      facadeProdutos.getProdutos(null, setProdutos);
+    } else facadeProdutos.getProdutos(nomeProduto, setProdutos);
+  }, [nomeProduto]);
 
-  const getProdutos = async () => {
-    const response = await axios.get(
-      `http://localhost:8080/produtos-finais`
-    );
-    const produtosArray = response.data;
-    setProdutos(produtosArray);
-    console.log(produtosArray)
-  }
 
   return (
     <>
       <Menubar currentUser={convertedUser} />
       <div className="produtos">
         <h2>Produtos:</h2>
+        <InputGroup className="mb-3" style={{ width: 300, paddingLeft: 10 }}>
+          <FormControl
+            placeholder="Nome do produto"
+            aria-describedby="basic-addon2"
+            value={nomeProduto}
+            onChange={(event) => setNomeProduto(event.target.value)}
+          />
+        </InputGroup>
         <GenericTable data={produtos} title="Produtos" />
       </div>
     </>

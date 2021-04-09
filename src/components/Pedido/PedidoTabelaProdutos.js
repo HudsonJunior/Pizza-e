@@ -7,37 +7,18 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { green, red } from "@material-ui/core/colors";
-const axios = require("axios");
+import FacadeProduto from "../../Facade/FacadeProduto";
 
 const TabelaProdutoPedido = (props) => {
   const [nomeProduto, setNomeProduto] = React.useState("");
   const [produtos, setProdutos] = React.useState([]);
+  const facadeProdutos = new FacadeProduto()
 
   useEffect(() => {
     if (nomeProduto === "") {
-      getProdutos(null);
-    } else getProdutos();
+      facadeProdutos.getProdutos(null, setProdutos);
+    } else facadeProdutos.getProdutos(nomeProduto, setProdutos);
   }, [nomeProduto]);
-
-  const getProdutos = async () => {
-    try {
-      if (nomeProduto != null) {
-        const response = await axios.get(
-          `http://localhost:8080/produtos-finais?nome=${nomeProduto}`
-        );
-        const produtosResponse = await response.data;
-        setProdutos(produtosResponse);
-      } else {
-        const response = await axios.get(
-          `http://localhost:8080/produtos-finais`
-        );
-        const produtosResponse = await response.data;
-        setProdutos(produtosResponse);
-      }
-    } catch (error) {
-      setProdutos([]);
-    }
-  };
 
   const getValor = () => {
     let valor = 0;
@@ -65,7 +46,7 @@ const TabelaProdutoPedido = (props) => {
       props.produtosPedido.push(obj);
     }
     props.setProdutosPedido(props.produtosPedido);
-    getProdutos();
+    facadeProdutos.getProdutos(null, setProdutos);
     getValor();
   };
 
@@ -83,7 +64,7 @@ const TabelaProdutoPedido = (props) => {
       props.produtosPedido.splice(i, 1);
     }
     props.setProdutosPedido(props.produtosPedido);
-    getProdutos();
+    facadeProdutos.getProdutos(null, setProdutos);
     getValor();
   };
 

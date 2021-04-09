@@ -32,6 +32,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { string } from "yup";
+import { TramRounded } from "@material-ui/icons";
+import { setPageStateUpdate } from "@material-ui/data-grid";
 
 const axios = require('axios');
 const url = window.location.href.replace("http://localhost:3000/", "");
@@ -84,6 +86,48 @@ const GenericTable = ({ data, title }) => {
     setOpen(false);
     setEnd(true);
   };
+
+  const cancelarPedido = (item) => {
+    console.log('item', item)
+    if (item.statusPedido == 'cancelado') {
+      toast.error('Pedido já está como cancelado!', toastStyle)
+    }
+    else {
+      axios
+        .patch("http://localhost:8080/pedido", {
+          produtos: item.produtos,
+          formaPagamento: item.formaPagamento,
+          formaExpedicao: item.formaExpedicao,
+          endereco: item.endereco,
+          data: item.data,
+          hora: item.hora,
+          cpfCliente: item.cpfCliente,
+          cpfNF: item.cpfNF,
+          observacoes: item.observacoes,
+          statusPedido: item.statusPedido,
+          valor: parseFloat(item.valor),
+          statusPagamento: item.statusPagamento,
+          id: item._id,
+          cancelar: true,
+        })
+        .then(function (response) {
+          console.log(response);
+          toast.success("🍕 Pedido cancelado com sucesso!", {
+            toastStyle,
+          });
+          setState()
+        })
+        .catch(function (error) {
+          console.log(error);
+          toast.error(error.response?.data.message, {
+            toastStyle,
+          })
+          toast.error(error.response?.data.details, {
+            toastStyle,
+          })
+        });
+    }
+  }
 
   const desativarProduto = (item) => {
     console.log('kkkkkkkkk', item)
@@ -178,8 +222,15 @@ const GenericTable = ({ data, title }) => {
 
   const handleEdit = (item) => {
     {
-      url === "pedidos" &&
-        history.push("/gerenciar-pedido", { tipo: "Editar", item: item });
+      if (url === "pedidos") {
+        if (item.statusPedido == 'cancelado') {
+          toast.error("Não é possivel editar um pedido que já foi cancelado", toastStyle)
+        }
+        else {
+          history.push("/gerenciar-pedido", { tipo: "Editar", item: item });
+
+        }
+      }
     }
     {
       url === "clientes" && history.push("/");
@@ -352,7 +403,7 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={() => setOpen(true)}>
+                    <Button variant="danger" onClick={() => cancelarPedido(item)}>
                       <FiXCircle size={20} color="#black" />
                     </Button>
                   </td>
