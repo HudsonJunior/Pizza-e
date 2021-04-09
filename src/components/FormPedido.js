@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -7,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../components/styles/PedidoStyle.css";
 import Menubar from "./MenubarComponent";
 
+import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { Dialog } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -14,13 +16,20 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { Button } from "react-bootstrap";
 
-import BarraPesquisa from "./BarraPesquisaComponent";
 import Pagamento from "./Pedido/PedidoPagamento";
 import Observacoes from "./Pedido/PedidoObservacao";
 import Expedicao from "./Pedido/PedidoExpedicao";
 import TabelaProdutoPedido from "./Pedido/PedidoTabelaProdutos";
 import NotaFiscalCpf from "./Pedido/PedidoCpfNaNota";
-import { useEffect } from "react";
+
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormLabel from "@material-ui/core/FormLabel";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import { MenuItem } from '@material-ui/core';
+
+const axios = require("axios");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,8 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FormPedido = props => {
-  console.log("form pedido", props)
+const FormPedido = (props) => {
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   const history = useHistory();
@@ -40,24 +48,39 @@ const FormPedido = props => {
 
   const [open, setOpen] = React.useState(false);
 
-  const {tipo} = props
-  const {item} = props
+  const { tipo } = props;
+  const { item } = props;
 
-  const [itemFormaPag, setFormaPag] = React.useState("Dinheiro")
-  const [observacoesValue, setObservacoes] = React.useState("")
-  const [cpfRadio,setCpfRadio] = React.useState("")
-  const [valueRadio, setValueRadio] = React.useState("semCpf")
-  const [valueFormaExpedicao, setFormaExpedicao] = React.useState("")
-  const isCadastro = tipo === "Cadastrar"
+  const [produtos, setProdutos] = React.useState([]);
+  const [itemFormaPag, setFormaPag] = React.useState("dinheiro");
+  const [observacoesValue, setObservacoes] = React.useState("Nenhuma");
+  const [cpfNF, setCpfNF] = React.useState("");
+  const [valueFormaExpedicao, setFormaExpedicao] = React.useState("balcao");
+  const [endereco, setEndereco] = React.useState("");
+  const [cpfCliente, setCpfCliente] = React.useState("");
+  const [valorPedido, setValorPedido] = React.useState("00,00");
+  const [flagPago, setFlagPago] = React.useState("nao");
+  const [status, setStatus] = React.useState("nao");
+  const isCadastro = tipo === "Cadastrar";
 
   useEffect(() => {
-    if(item){
-      setFormaPag(item.pagamento)
-      setObservacoes(item.observacoes)
-      setCpfRadio(item.CPF)
-      setFormaExpedicao(item.expedicao)
+    // para a edicao
+    if (item) {
+      console.log('item', item)
+      setFormaPag(item.formaPagamento);
+      setObservacoes(item.observacoes);
+      setCpfNF(item.CPF);
+      setFormaExpedicao(item.formaExpedicao);
+      setStatus(item.statusPedido)
+      setValorPedido(item.valor)
+      if (item.cpfCliente) setCpfCliente(item.cpfCliente)
+      if (item.endereco) setEndereco(item.endereco)
+      if (item.statusPagamento) setFlagPago(item.statusPagamento)
+      if (item.produtos) setProdutos(item.produtos)
+      if (item.cpfNF) setCpfNF(item.cpfNF)
     }
-  }, [])
+  }, []);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -68,7 +91,7 @@ const FormPedido = props => {
 
   const toastStyle = {
     position: "top-right",
-    autoClose: 1500,
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -76,22 +99,94 @@ const FormPedido = props => {
     progress: undefined,
   };
 
-  const handleSave = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if(isCadastro){
-      toast.success("🍕 Pedido feito! Nota fiscal emitida!", {
-        toastStyle,
-      });
+
+    var today = new Date();
+
+    var date =
+      today.getFullYear() +
+      "-" +
+      ("0" + (today.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + today.getDate()).slice(-2);
+
+    var time =
+      ("0" + today.getHours()).slice(-2) +
+      ":" +
+      ("0" + today.getMinutes()).slice(-2) +
+      ":" +
+      ("0" + today.getSeconds()).slice(-2);
+
+    if (isCadastro) {
+      axios
+        .post("http://localhost:8080/pedido", {
+          produtos,
+          formaPagamento: itemFormaPag,
+          formaExpedicao: valueFormaExpedicao,
+          endereco: endereco,
+          data: date,
+          hora: time,
+          cpfCliente,
+          cpfNF,
+          observacoes: observacoesValue,
+          statusPedido: "realizado",
+          valor: parseFloat(valorPedido),
+          statusPagamento: flagPago,
+        })
+        .then(function (response) {
+          if (produtos.length > 0) {
+            console.log(response);
+            toast.success("🍕 Pedido feito! Nota fiscal emitida!", {
+              toastStyle,
+            });
+            setTimeout(() => {
+              history.push("/pedidos");
+            }, 2000);
+          } else {
+            toast.error("🍕 Por favor, selecione um item!", {
+              toastStyle,
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      axios
+        .patch("http://localhost:8080/pedido", {
+          produtos,
+          formaPagamento: itemFormaPag,
+          formaExpedicao: valueFormaExpedicao,
+          endereco: endereco,
+          data: item.data,
+          hora: item.time,
+          cpfCliente,
+          cpfNF,
+          observacoes: observacoesValue,
+          statusPedido: status,
+          valor: parseFloat(valorPedido),
+          statusPagamento: flagPago,
+          id: item._id
+        })
+        .then(function (response) {
+          toast.success("🍕 Pedido alterado com sucesso!", {
+            toastStyle,
+          });
+          setTimeout(() => {
+            history.push("/pedidos");
+          }, 2000);
+        })
+        .catch(function (error) {
+          toast.error(error.response?.data.message, {
+            toastStyle,
+          })
+          toast.error(error.response?.data.details, {
+            toastStyle,
+          })
+        });
     }
-    else{
-      toast.success("🍕 Pedido alterado!", {
-        toastStyle,
-      });
-    }
-    
-    setTimeout(() => {
-      history.push("/pedidos");
-    }, 2000);
+
   };
 
   return (
@@ -99,20 +194,60 @@ const FormPedido = props => {
       <Menubar currentUser={convertedUser} />
       <div className="RegistroPedido">
         <h2>{isCadastro ? "Registro de Pedido" : "Editar pedido"}</h2>
-        <form className={classes.root} onSubmit={handleSave}>
+        <form className={classes.root} onSubmit={handleSubmit}>
           <div className="divEsquerda">
-            <BarraPesquisa />
-            <TabelaProdutoPedido />
+            <TabelaProdutoPedido
+              produtosPedido={produtos}
+              valor={valorPedido}
+              setProdutosPedido={setProdutos}
+              setValor={setValorPedido}
+            />
           </div>
-
           <div className="divDireita">
-            <Pagamento formaPagamento={itemFormaPag} />
-            <Observacoes observacoes={observacoesValue}/>
-            <Expedicao type="funcionario" formaExpedicao={valueFormaExpedicao}/>
-            {isCadastro && (
-              <NotaFiscalCpf />
-            )}
-            
+            <TextField
+              style={{ width: 100 }}
+              id="valorPedido"
+              onChange={(event) => setValorPedido(event.target.value.replace("R$ ", ""))}
+              value={"R$ " + valorPedido}
+              label="Valor Total"
+            />
+            <Pagamento setPagamento={setFormaPag} formaPag={itemFormaPag} />
+            <Observacoes
+              setObs={setObservacoes}
+              observacoes={observacoesValue}
+            />
+            <Expedicao
+              type="funcionario"
+              setCliente={setCpfCliente}
+              setEndereco={setEndereco}
+              setExpedicao={setFormaExpedicao}
+              cpfCliente={cpfCliente}
+              endereco={endereco}
+              formaExpedicao={valueFormaExpedicao}
+            />
+            {isCadastro && <NotaFiscalCpf setCpfNF={setCpfNF} cpfNF={cpfNF} />}
+            <FormControl
+              required
+              component="RadioPagamento"
+              className="RPCampos"
+            >
+              <FormLabel component="legend">Pagamento recebido</FormLabel>
+              <RadioGroup
+                value={flagPago}
+                name="pagamento"
+                onChange={(event) => setFlagPago(event.target.value)}
+              >
+                <FormControlLabel value="sim" control={<Radio />} label="Sim" />
+                <FormControlLabel value="nao" control={<Radio />} label="Não" />
+              </RadioGroup>
+              <TextField className={classes.textField} onChange={event => setStatus(event.target.value)} value={status} select id="standard-select-currency" label="Status" required>
+                <MenuItem value={"realizado"}>Realizado</MenuItem>
+                <MenuItem value={"preparando"}>Em preparo</MenuItem>
+                <MenuItem value={"viagem"}>Na viagem</MenuItem>
+                <MenuItem value={"entregue"}>Entregue</MenuItem>
+                <MenuItem value={"cancelado"}>Cancelado</MenuItem>
+              </TextField>
+            </FormControl>
 
             <div className="RPBotoes">
               <Button
@@ -122,9 +257,12 @@ const FormPedido = props => {
               >
                 Voltar
               </Button>
+
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle id="alert-dialog-VoltarPedido">
-                  {isCadastro ? "Deseja continuar o registro do pedido?" : "Deseja continuar com a edição do pedido?"}
+                  {isCadastro
+                    ? "Deseja continuar o registro do pedido?"
+                    : "Deseja continuar com a edição do pedido?"}
                 </DialogTitle>
                 <DialogActions>
                   <Button
@@ -136,7 +274,6 @@ const FormPedido = props => {
                   >
                     Não
                   </Button>
-
                   <Button
                     variant="success"
                     onClick={handleClose}
@@ -147,7 +284,6 @@ const FormPedido = props => {
                   </Button>
                 </DialogActions>
               </Dialog>
-
               <Button
                 className="botaoRealizarPedido"
                 variant="success"

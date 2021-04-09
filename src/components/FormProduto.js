@@ -113,22 +113,153 @@ const FormProduto = props => {
 
     const handleSubmit = event => {
         event.preventDefault();
-        console.log(event.target.elements)
+        if (tipo == 'Cadastrar') {
+            if (isPizza) {
 
-        const response = axios.post('http://localhost:8080/produtos-finais', {
-            nome: nome,
-            valor: valor,
-            ingredientes: ingredientes,
-            ativado: true,
-            adicionais: adicionais,
-            tipo: 'Pizza'
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+                axios.post('http://localhost:8080/produtos-finais', {
+                    nome,
+                    valor,
+                    ingredientes,
+                    ativado: true,
+                    adicionais,
+                    tipo: 'Pizza',
+                    inicio_promo: data1Promo,
+                    fim_promo: data2Promo,
+                    valor_promocional: valorPromo ?? '',
+
+                }).then(result => {
+                    toast.success("🍕 Produto cadastrado com sucesso!", {
+                        toastStyle,
+                    })
+                    setTimeout(() => {
+                        history.push("/produtos")
+                    }, 3000);
+                })
+                    .catch(error => {
+                        if (error.response?.data) {
+                            toast.error(error.response.data.message, {
+                                toastStyle,
+                            })
+                            toast.error(error.response.data.details, {
+                                toastStyle,
+                            })
+                        }
+                        else {
+                            toast.error('Ocorrou um erro ao cadastrar o produto, tente novamente!', { toastStyle, })
+                        }
+
+                    })
+
+            }
+            else {
+                axios.post('http://localhost:8080/produtos-finais', {
+                    nome: nome,
+                    valor: valor,
+                    ativado: true,
+                    peso: peso,
+                    inicio_promo: data1Promo,
+                    fim_promo: data2Promo,
+                    valor_promocional: valorPromo ?? '',
+                    tipo: 'Normal'
+                })
+                    .then(function (response) {
+                        toast.success("🍕 Produto cadastrado com sucesso!", {
+                            toastStyle,
+                        })
+                        setTimeout(() => {
+                            history.push("/produtos")
+                        }, 3000);
+                    })
+                    .catch(function (error) {
+                        if (error.response?.data) {
+                            toast.error(error.response.data.message, {
+                                toastStyle,
+                            })
+                            toast.error(error.response.data.details, {
+                                toastStyle,
+                            })
+                        }
+                        else {
+                            toast.error('Ocorrou um erro ao cadastrar o produto, tente novamente!', { toastStyle, })
+                        }
+
+                    });
+            }
+        }
+        else {
+            if (isPizza) {
+
+                axios.patch('http://localhost:8080/produtos-finais', {
+                    nome,
+                    valor,
+                    ingredientes,
+                    ativado: true,
+                    adicionais,
+                    tipo: 'Pizza',
+                    inicio_promo: data1Promo,
+                    fim_promo: data2Promo,
+                    valor_promocional: valorPromo ?? '',
+
+                }).then(result => {
+                    toast.success("🍕 Produto editado com sucesso!", {
+                        toastStyle,
+                    })
+                    setTimeout(() => {
+                        history.push("/produtos")
+                    }, 3000);
+                })
+                    .catch(error => {
+                        if (error.response?.data) {
+                            toast.error(error.response.data.message, {
+                                toastStyle,
+                            })
+                            toast.error(error.response.data.details, {
+                                toastStyle,
+                            })
+                        }
+                        else {
+                            toast.error('Ocorrou um erro ao editar o produto, tente novamente!', { toastStyle, })
+                        }
+
+                    })
+
+            }
+            else {
+                axios.patch('http://localhost:8080/produtos-finais', {
+                    nome: nome,
+                    valor: valor,
+                    ativado: true,
+                    peso: peso,
+                    inicio_promo: data1Promo,
+                    fim_promo: data2Promo,
+                    valor_promocional: valorPromo ?? '',
+                    tipo: 'Normal'
+                })
+                    .then(function (response) {
+                        toast.success("🍕 Produto editado com sucesso!", {
+                            toastStyle,
+                        })
+                        setTimeout(() => {
+                            history.push("/produtos")
+                        }, 3000);
+                    })
+                    .catch(function (error) {
+                        if (error.response?.data) {
+                            toast.error(error.response.data.message, {
+                                toastStyle,
+                            })
+                            toast.error(error.response.data.details, {
+                                toastStyle,
+                            })
+                        }
+                        else {
+                            toast.error('Ocorrou um erro ao editar o produto, tente novamente!', { toastStyle, })
+                        }
+
+                    });
+            }
+        }
+
     }
 
     if (voltar)

@@ -1,6 +1,5 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { FiSearch } from "react-icons/fi";
 import { FormControl } from "react-bootstrap";
@@ -67,19 +66,6 @@ const TabelaCodigo = () => {
           </tbody>
         ))}
       </Table>
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        style={{
-          borderWidth: 1,
-          borderColor: "black",
-          margin: 20,
-          backgroundColor: "lightGray",
-        }}
-      >
-        Baixar
-      </Button>
     </>
   );
 };

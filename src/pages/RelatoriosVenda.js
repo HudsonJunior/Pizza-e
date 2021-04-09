@@ -7,6 +7,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
+import { Button } from "react-bootstrap";
 
 
 const RelatoriosVenda = () => {
@@ -20,7 +21,7 @@ const RelatoriosVenda = () => {
 
   const CarregaTabela = () => {
     return value === "data" ? (
-      (console.log(1), (<TabelaData />))
+      <TabelaData />
     ) : (
       <TabelaCodigo/>
     );
@@ -46,6 +47,19 @@ const RelatoriosVenda = () => {
         </RadioGroup>
       </FormControl>
       {CarregaTabela()}
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        style={{
+          borderWidth: 1,
+          borderColor: "black",
+          margin: 20,
+          backgroundColor: "lightGray",
+        }}
+      >
+        Salvar
+      </Button>
     </>
   );
 };
