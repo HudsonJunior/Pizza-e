@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-import { useHistory } from "react-router-dom";
+import { useHistory, pushState } from "react-router-dom";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl2 from "@material-ui/core/FormControl";
+
 
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
@@ -35,12 +36,21 @@ import { string } from "yup";
 import { TramRounded } from "@material-ui/icons";
 import { setPageStateUpdate } from "@material-ui/data-grid";
 
+import FacadeFuncionario from "../Facade/FacadeFuncionario";
+
+import FacadeEstoque from  "../Facade/FacadeEstoque";
+
+const facadeEstoque = new FacadeEstoque();
+const facadeFunc = new FacadeFuncionario();
+
 const axios = require('axios');
 const url = window.location.href.replace("http://localhost:3000/", "");
 
 const GenericTable = ({ data, title }) => {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
+  const [idEstoque, setIdEstoque] = React.useState("");
+  const [cpfFunc, setCpfFunc] = React.useState("");
   var itensQuantidade = [];
 
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza")
@@ -69,7 +79,17 @@ const GenericTable = ({ data, title }) => {
     progress: undefined,
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpenEstoque = (id) => {
+    setIdEstoque(id);
+    setOpen(true);
+  }
+
+  const handleClickOpenFuncionario = (cpf) => {
+    setCpfFunc(cpf);
+    setOpen(true);
+  }
+
+  const handleClickOpen = (id) => {
     setOpen(true);
   };
 
@@ -115,7 +135,6 @@ const GenericTable = ({ data, title }) => {
           toast.success("🍕 Pedido cancelado com sucesso!", {
             toastStyle,
           });
-          setState()
         })
         .catch(function (error) {
           console.log(error);
@@ -196,20 +215,45 @@ const GenericTable = ({ data, title }) => {
     }
   }
 
+  const deleteItemEstoque = () => {
+      setOpen(false);
+      facadeEstoque.delEstoque(idEstoque).then(result => { toast.success("🍕 Produto removido do estoque com sucesso!", {
+        toastStyle,
+      })
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
+          toast.error("🍕 Falha ao apagar produto do estoque!", {
+              toastStyle,
+          })
+      })
+  }
 
-  const handleClose = (url) => {
+  const deleteFuncionario = () => {
+      setOpen(false);
+      facadeFunc.delFuncionario(cpfFunc).then(result => { toast.success("🍕 Registro deletado com sucesso!", {
+        toastStyle,
+      })
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
+          toast.error("🍕 Falha ao apagar funcionário!", {
+              toastStyle,
+          })
+      })
+  }
+
+
+
+  const handleClose = (url, id) => {
     setOpen(false);
-
-    if (url === "funcionarios") {
-      toast.success("🍕 Registro deletado com sucesso!", {
-        toastStyle,
-      });
-    } else if (url === "estoque") {
-      toast.success("🍕 Produto removido do estoque com sucesso!", {
-        toastStyle,
-      });
-    }
-    else if (url === 'pedidos') {
+    if (url === 'pedidos') {
       toast.success("🍕 Pedido removido com sucesso!", {
         toastStyle,
       });
@@ -765,7 +809,7 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={handleClickOpen}>
+                    <Button variant="danger" onClick={value => handleClickOpenEstoque(item._id)}>
                       <FiXCircle size={20} color="#black" />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
@@ -785,7 +829,7 @@ const GenericTable = ({ data, title }) => {
                           <Button
                             className="botao"
                             variant="success"
-                            onClick={() => handleClose("estoque")}
+                            onClick={value => deleteItemEstoque()}
                             color="primary"
                             autoFocus
                           >
@@ -837,7 +881,7 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={handleClickOpen}>
+                    <Button variant="danger" onClick={value => handleClickOpenFuncionario(item.cpf)}>
                       <FiXCircle
                         size={20}
                         color="#black"
@@ -864,7 +908,7 @@ const GenericTable = ({ data, title }) => {
                           <Button
                             className="botao"
                             variant="success"
-                            onClick={() => handleClose("funcionarios")}
+                            onClick={() => deleteFuncionario()}
                             color="primary"
                             autoFocus
                           >

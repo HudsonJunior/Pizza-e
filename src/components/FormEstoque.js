@@ -20,6 +20,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { useHistory } from "react-router-dom";
 
+import FacadeEstoque from  "../Facade/FacadeEstoque";
+
+const facadeEstoque = new FacadeEstoque();
+
 const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
@@ -63,35 +67,35 @@ const FormularioEstoque = (props) => {
     event.preventDefault();
 
     if(tipo === "cadastrar"){
-      axios.post('http://localhost:8080/produtos-estoque', {
-        nome: nome,
-        valor: valor,
-        peso: peso,
-        validade: validade,
-        fabricacao: fabricacao,
-      }).then(result => toast.success("🍕 Cadastro feito!", {
+      facadeEstoque.postEstoque(
+        nome,
+        valor,
+        peso,
+        validade,
+        fabricacao).then(result => { toast.success("🍕 Cadastro feito!", {
         toastStyle,
-      }))
+      })
+        setTimeout(() => {
+          history.push("/estoque");
+        }, 3000);
+      })
       .catch(error => {
         console.log(error)
-          toast.error(error.response.data.message, {
-              toastStyle,
-          })
-          toast.error(error.response.data.details, {
+          toast.error("Erro durante o cadastro no estoque", {
               toastStyle,
           })
       })
   }
     if (tipo === "editar") {
-      console.log(item)
-      axios.patch('http://localhost:8080/produtos-estoque', {
-        id: item._id,
+      const id = item._id
+      facadeEstoque.patchEstoque(
+        id,
         nome,
         valor,
         peso,
         validade,
         fabricacao,
-      }).then(result => { toast.success("🍕 Dados atualizados!", {
+      ).then(result => { toast.success("🍕 Dados atualizados!", {
         toastStyle,
       })
       setTimeout(() => {
