@@ -16,8 +16,8 @@ const TabelaProdutoPedido = (props) => {
 
   useEffect(() => {
     if (nomeProduto === "") {
-      facadeProdutos.getProdutos(null, setProdutos);
-    } else facadeProdutos.getProdutos(nomeProduto, setProdutos);
+      facadeProdutos.getProdutos(null, setProdutos, true);
+    } else facadeProdutos.getProdutos(nomeProduto, setProdutos, true);
   }, [nomeProduto]);
 
   const getValor = () => {
@@ -46,7 +46,7 @@ const TabelaProdutoPedido = (props) => {
       props.produtosPedido.push(obj);
     }
     props.setProdutosPedido(props.produtosPedido);
-    facadeProdutos.getProdutos(null, setProdutos);
+    facadeProdutos.getProdutos(null, setProdutos, true);
     getValor();
   };
 
@@ -64,13 +64,13 @@ const TabelaProdutoPedido = (props) => {
       props.produtosPedido.splice(i, 1);
     }
     props.setProdutosPedido(props.produtosPedido);
-    facadeProdutos.getProdutos(null, setProdutos);
+    facadeProdutos.getProdutos(null, setProdutos, true);
     getValor();
   };
 
   const getValorItem = (item) => {
-    let fimPromo = item.fim_promo.split("T")[0];
-    let inicioPromo = item.inicio_promo.split("T")[0];
+    let fimPromo = item.fim_promo?.split("T")[0];
+    let inicioPromo = item.inicio_promo?.split("T")[0];
 
     var today = new Date();
     var date =
@@ -82,8 +82,8 @@ const TabelaProdutoPedido = (props) => {
 
     if (
       item.valor_promocial !== "" &&
-      fimPromo.localeCompare(date) === 1 &&
-      inicioPromo.localeCompare(date === -1)
+      fimPromo?.localeCompare(date) === 1 &&
+      inicioPromo?.localeCompare(date === -1)
     )
       return item.valor_promocial;
     else return item.valor;

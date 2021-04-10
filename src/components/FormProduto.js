@@ -14,6 +14,7 @@ import { MenuItem } from '@material-ui/core';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FacadeProduto from '../Facade/FacadeProduto';
 const axios = require('axios');
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,6 +57,7 @@ const FormProduto = props => {
         isPizza = tipoProduto === "Pizza"
     }
 
+    const facadeProduto = new FacadeProduto()
 
     const user = localStorage.getItem("user");
     const convertedUser = JSON.parse(user);
@@ -72,19 +74,20 @@ const FormProduto = props => {
     const [status, setStatus] = useState("")
 
     useEffect(() => {
-        if (item) {
+        if (item && tipo === 'Editar') {
             setNome(item.nome)
             setValor(parseFloat(item.valor))
             setValorPromo(parseFloat(item.valorPromocional))
             setData1Promo(item.inicioPromo)
             setData2Promo(item.fimPromo)
-            if (tipo === 'Editar' && isPizza) {
+            setStatus(item.ativado)
+
+            if (isPizza) {
                 setIngredientes(item.ingredientes)
                 setAdicionais(item.adicionais)
             }
-            else if (tipo === 'Editar' && !isPizza) {
+            else if (!isPizza) {
                 setPeso(item.peso)
-                setStatus(item.status)
             }
         }
 
@@ -114,9 +117,11 @@ const FormProduto = props => {
     const handleSubmit = event => {
         event.preventDefault();
         if (tipo == 'Cadastrar') {
+            let body = {}
+
             if (isPizza) {
 
-                axios.post('http://localhost:8080/produtos-finais', {
+                body = {
                     nome,
                     valor,
                     ingredientes,
@@ -126,33 +131,12 @@ const FormProduto = props => {
                     inicio_promo: data1Promo,
                     fim_promo: data2Promo,
                     valor_promocional: valorPromo ?? '',
-
-                }).then(result => {
-                    toast.success("🍕 Produto cadastrado com sucesso!", {
-                        toastStyle,
-                    })
-                    setTimeout(() => {
-                        history.push("/produtos")
-                    }, 3000);
-                })
-                    .catch(error => {
-                        if (error.response?.data) {
-                            toast.error(error.response.data.message, {
-                                toastStyle,
-                            })
-                            toast.error(error.response.data.details, {
-                                toastStyle,
-                            })
-                        }
-                        else {
-                            toast.error('Ocorrou um erro ao cadastrar o produto, tente novamente!', { toastStyle, })
-                        }
-
-                    })
-
+                }
             }
+
             else {
-                axios.post('http://localhost:8080/produtos-finais', {
+
+                body = {
                     nome: nome,
                     valor: valor,
                     ativado: true,
@@ -161,35 +145,17 @@ const FormProduto = props => {
                     fim_promo: data2Promo,
                     valor_promocional: valorPromo ?? '',
                     tipo: 'Normal'
-                })
-                    .then(function (response) {
-                        toast.success("🍕 Produto cadastrado com sucesso!", {
-                            toastStyle,
-                        })
-                        setTimeout(() => {
-                            history.push("/produtos")
-                        }, 3000);
-                    })
-                    .catch(function (error) {
-                        if (error.response?.data) {
-                            toast.error(error.response.data.message, {
-                                toastStyle,
-                            })
-                            toast.error(error.response.data.details, {
-                                toastStyle,
-                            })
-                        }
-                        else {
-                            toast.error('Ocorrou um erro ao cadastrar o produto, tente novamente!', { toastStyle, })
-                        }
-
-                    });
+                }
             }
+
+            facadeProduto.postProdutos(body, history)
+
         }
         else {
-            if (isPizza) {
+            let body = {}
 
-                axios.patch('http://localhost:8080/produtos-finais', {
+            if (isPizza) {
+                body = {
                     nome,
                     valor,
                     ingredientes,
@@ -199,33 +165,12 @@ const FormProduto = props => {
                     inicio_promo: data1Promo,
                     fim_promo: data2Promo,
                     valor_promocional: valorPromo ?? '',
+                }
 
-                }).then(result => {
-                    toast.success("🍕 Produto editado com sucesso!", {
-                        toastStyle,
-                    })
-                    setTimeout(() => {
-                        history.push("/produtos")
-                    }, 3000);
-                })
-                    .catch(error => {
-                        if (error.response?.data) {
-                            toast.error(error.response.data.message, {
-                                toastStyle,
-                            })
-                            toast.error(error.response.data.details, {
-                                toastStyle,
-                            })
-                        }
-                        else {
-                            toast.error('Ocorrou um erro ao editar o produto, tente novamente!', { toastStyle, })
-                        }
-
-                    })
 
             }
             else {
-                axios.patch('http://localhost:8080/produtos-finais', {
+                body = {
                     nome: nome,
                     valor: valor,
                     ativado: true,
@@ -234,30 +179,11 @@ const FormProduto = props => {
                     fim_promo: data2Promo,
                     valor_promocional: valorPromo ?? '',
                     tipo: 'Normal'
-                })
-                    .then(function (response) {
-                        toast.success("🍕 Produto editado com sucesso!", {
-                            toastStyle,
-                        })
-                        setTimeout(() => {
-                            history.push("/produtos")
-                        }, 3000);
-                    })
-                    .catch(function (error) {
-                        if (error.response?.data) {
-                            toast.error(error.response.data.message, {
-                                toastStyle,
-                            })
-                            toast.error(error.response.data.details, {
-                                toastStyle,
-                            })
-                        }
-                        else {
-                            toast.error('Ocorrou um erro ao editar o produto, tente novamente!', { toastStyle, })
-                        }
+                }
 
-                    });
             }
+
+            facadeProduto.patchProdutos(body, '🍕 Produto editado com sucesso!', 'Ocorrou um erro ao editar o produto, tente novamente!', false, history)
         }
 
     }
@@ -271,18 +197,23 @@ const FormProduto = props => {
             <div className="contentProdutos" style={{ margin: 20 }}>
                 <TextField className={classes.textField} onChange={event => setPeso(event.target.value)} value={peso} id="standard-basic" label="Peso" required />
                 <TextField className={classes.textField} onChange={event => setStatus(event.target.value)} value={status} select id="standard-select-currency" label="Status" required>
-                    <MenuItem value={1}>Ativado</MenuItem>
-                    <MenuItem value={2}>Desativado</MenuItem>
+                    <MenuItem value={"true"}>Ativado</MenuItem>
+                    <MenuItem value={"false"}>Desativado</MenuItem>
                 </TextField>
             </div>
 
             :
+            <>
+                <div className="contentProdutos">
+                    <TextField className={classes.textField} onChange={event => setIngredientes(event.target.value)} value={ingredientes} id="standard-basic" label="Ingredientes" multiline required />
+                    <TextField className={classes.textField} onChange={event => setAdicionais(event.target.value)} value={adicionais} id="standard-basic" label="Adicionais" multiline />
 
-            <div className="contentProdutos">
-                <TextField className={classes.textField} onChange={event => setIngredientes(event.target.value)} value={ingredientes} id="standard-basic" label="Ingredientes" multiline required />
-                <TextField className={classes.textField} onChange={event => setAdicionais(event.target.value)} value={adicionais} id="standard-basic" label="Adicionais" multiline />
-            </div>
-
+                </div>
+                <TextField className={classes.textField} onChange={event => setStatus(event.target.value)} value={status} select id="standard-select-currency" label="Status" required>
+                    <MenuItem value={"true"}>Ativado</MenuItem>
+                    <MenuItem value={"false"}>Desativado</MenuItem>
+                </TextField>
+            </>
         )
     }
 
@@ -348,6 +279,7 @@ const FormProduto = props => {
 
                     </div>
                     {getFields()}
+
                     <Button style={{ margin: 20 }} variant="light" onClick={value => setAddPromo(!addPromo)} data-tip="Lançar uma promoção do produto">Adicionar promoção</Button>
                     <ReactTooltip />
                     {getButtonsPromo()}
