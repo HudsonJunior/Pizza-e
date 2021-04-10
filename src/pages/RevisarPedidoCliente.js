@@ -16,30 +16,17 @@ import TextField from "@material-ui/core/TextField";
 
 import "react-toastify/dist/ReactToastify.css";
 
-const data = [
-  {
-    id: 1,
-    nome: "Frango G",
-    valor: 32.9,
-    valorPromocional: null,
-    descricao: "Pizza de frango com catupiry, tamanho grande.",
-  },
-  {
-    id: 11,
-    nome: "Refrigerante Bald-Cola 2L",
-    valor: 6.9,
-    valorPromocional: 4.85,
-  },
-];
-
-const Revisar = (props) => {
-  const { produtos, valorPedido } = props.location.state;
+const Revisar = () => {
   const history = useHistory();
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
-  const [open, setOpen] = useState(false);
-  const [produtosPedido, setProdutosPedido] = useState(produtos);
-  const [valor, setValor] = useState(valorPedido);
+  const [open, setOpen] = React.useState(false);
+  const [produtosPedido, setProdutosPedido] = useState(
+    JSON.parse(localStorage.getItem("produtosPedido"))
+  );
+  const [valor, setValor] = React.useState(
+    JSON.parse(localStorage.getItem("valorPedido"))
+  );
 
   const toastStyle = {
     position: "top-right",
@@ -117,11 +104,8 @@ const Revisar = (props) => {
   };
 
   const handleNext = () => {
-    if (produtos.length > 0) {
-      history.push("/concluir-pedido", {
-        produtosPedido: produtosPedido,
-        valor: valor,
-      });
+    if (produtosPedido.length > 0) {
+      history.push("/concluir-pedido");
     } else {
       toast.error(
         "🍕 Seu pedido está vazio, você será redirecionado ao cardápio!",
@@ -235,6 +219,7 @@ const Revisar = (props) => {
             onChange={(event) => setValor(event.target.value)}
             value={"R$ " + valor}
             label="Valor Total"
+            disabled
           />
         </div>
 
