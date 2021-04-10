@@ -27,44 +27,52 @@ const TabelaMinhaConta = (props) => {
   return (
     <>
       <p>Meus Pedidos:</p>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Hora</th>
-            <th>ID</th>
-            <th>Status</th>
-            <th>Descrição</th>
-            <th>Valor</th>
-            <th>Observações</th>
-            <th>Pagamento</th>
-            <th>Pago</th>
-            <th>Expedição</th>
-            <th>Endereço</th>
-          </tr>
-        </thead>
-        {props.meusPedidos.map((item) => (
-          <tbody>
+      {props.meusPedidos.length > 0 ? (
+        <Table striped bordered hover>
+          <thead>
             <tr>
-              <td>{formataData(item.data)}</td>
-              <td>{item.hora}</td>
-              <td style={{ width: 150, wordBreak: "break-word" }}>
-                {item._id}
-              </td>
-              <td>{item.statusPedido}</td>
-              <td style={{ whiteSpace: "pre-wrap" }}>
-                {getProdutosPedido(item.produtos)}
-              </td>
-              <td>R${item.valor}</td>
-              <td>{item.observacoes}</td>
-              <td>{item.formaPagamento}</td>
-              <td>{item.statusPagamento}</td>
-              <td>{item.formaExpedicao}</td>
-              <td>{item.endereco}</td>
+              <th>Data</th>
+              <th>Hora</th>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Observações</th>
+              <th>Pagamento</th>
+              <th>Pago</th>
+              <th>Expedição</th>
+              <th>Endereço</th>
             </tr>
-          </tbody>
-        ))}
-      </Table>
+          </thead>
+          {props.meusPedidos.map((item) => (
+            <tbody>
+              <tr>
+                <td>{formataData(item.data)}</td>
+                <td>{item.hora}</td>
+                <td style={{ width: 150, wordBreak: "break-word" }}>
+                  {item._id}
+                </td>
+                <td>{item.statusPedido}</td>
+                <td style={{ whiteSpace: "pre-wrap" }}>
+                  {getProdutosPedido(item.produtos)}
+                </td>
+                <td>R${item.valor}</td>
+                <td>{item.observacoes}</td>
+                <td>{item.formaPagamento}</td>
+                <td>{item.statusPagamento}</td>
+                <td>{item.formaExpedicao}</td>
+                <td>{item.endereco}</td>
+              </tr>
+            </tbody>
+          ))}
+        </Table>
+      ) : (
+        <div>
+          <pre>
+            <p>Nenhum pedido foi registrado ainda...</p>
+          </pre>
+        </div>
+      )}
     </>
   );
 };
