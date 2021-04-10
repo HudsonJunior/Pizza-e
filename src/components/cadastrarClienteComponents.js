@@ -1,5 +1,4 @@
-import React, {useEffect ,useState } from "react";
-import { FiCheckCircle, FiChevronLeft } from "react-icons/fi";
+import React, { useState } from "react";
 import "./styles/LoginComponentStyle.css";
 import pizza from "./../images/pizza.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -23,7 +22,7 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { green } from "@material-ui/core/colors";
 import { HistoryRounded } from "@material-ui/icons";
-//Mudar os buttons pra igual do huds e deixar um caminho mais simples sem tantas box'ss
+
 const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
@@ -55,28 +54,17 @@ const CadastrarClienteComponents = (props) => {
     telefone: "",
     showPassword: false,
     endereco: "",
-  }); 
+  });
 
-  const [nome, setNome] = useState("")
-  const [cpf, setCpf] = useState("")
-  const [password, setPassword] = useState("")
-  const [password2, setPassword2] = useState("")
-  const [email, setEmail] = useState("")
-  const [telefone, setTelefone] = useState("")
-  const [endereco, setEndereco] = useState("")
-
-  useEffect(() => {
-    
-    setNome("")
-    setCpf("")
-    setPassword("")
-    setPassword2("")
-    setEmail("")
-    setTelefone("")
-    setEndereco("")
-
-}, [])
-
+  const toastStyle = {
+    position: "top-right",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+};
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -138,9 +126,46 @@ const CadastrarClienteComponents = (props) => {
     setEnd(true);
   };
 
+  const handleSubmit = event => {
+    event.preventDefault();
+    console.log(event.target.elements)
+    console.log(nome)
+    axios.post('http://localhost:8080/clientes', {
+      
+        nome: values.nome,
+        endereco: values.endereco,
+        telefone: values.telefone,
+        email: values.email,
+        cpf: values.cpf,
+        senha:values. password
+    })
+    .then(result => {
+      toast.success("🍕 Cliente cadastrado com sucesso!", {
+          toastStyle,
+      })
+      setTimeout(() => {
+          history.push("/login")
+      }, 3000);
+  })
+      .catch(error => {
+          if (error.response?.data) {
+              toast.error(error.response.data.message, {
+                  toastStyle,
+              })
+              toast.error(error.response.data.details, {
+                  toastStyle,
+              })
+          }
+          else {
+              toast.error('Ocorrou um erro ao cadastrar o cliente, tente novamente!', { toastStyle, })
+          }
+
+      })
+  }
+
   const verificaCamposVazios = () => {
     if (
-      //values.nome === "" ||
+      values.nome === "" ||
       values.cpf === "" ||
       values.password === "" ||
       values.password2 === "" ||
@@ -155,164 +180,301 @@ const CadastrarClienteComponents = (props) => {
     }
   };
 
-  const toastStyle = {
-    position: "top-right",
-    autoClose: 1500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    console.log(event.target.elements)
-    console.log(nome)
-    axios.post('http://localhost:8080/clientes', {
-        nome: nome,
-        endereco: endereco,
-        telefone: telefone,
-        email: email,
-        cpf: cpf,
-        senha:password
-    })
-      .then(result => {
-        toast.success("🍕 Cliente cadastrado com sucesso!", {
-            toastStyle,
-        })
-        setTimeout(() => {
-            history.push("/login")
-        }, 3000);
-      })
-      .catch(error => {
-        if (error.response?.data) {
-            toast.error(error.response.data.message, {
-                toastStyle,
-            })
-            toast.error(error.response.data.details, {
-                toastStyle,
-            })
-        }
-        else {
-            toast.error('Ocorrou um erro ao cadastrar o cliente, tente novamente!', { toastStyle, })
-        }
-
-    });
-  }
+  const [nome, setNome] = useState("")
+  const [cpf, setCpf] = useState("")
+  const [password, setPassword] = useState("")
+  const [password2, setPassword2] = useState("")
+  const [email, setEmail] = useState("")
+  const [telefone, setTelefone] = useState("")
+  const [endereco, setEndereco] = useState("")
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
-      <div className="divi">
-        <div className="header">
-          <img src={pizza} alt="Pizza"></img>
-          <h1>Cadastrar Cliente</h1>
-        </div>
-        
+    <form>
+    <div className="divii">
+      <div className="header">
+        <img src={pizza} alt="Pizza"></img>
+        <h1>Cadastrar Cliente</h1>
+      </div>
+      <div>
         <div>
-          <div>
+          <TextField
+            id="nome"
+            label="Nome"
+            value={values.nome}
+            onChange={handleChange("nome")}
+            className={clsx(classes.margin, classes.textField)}
+          />
+          <TextField
+            id="cpf"
+            label="Cpf/Cnpj"
+            value={values.cpf}
+            onChange={handleChange("cpf")}
+            className={clsx(classes.margin, classes.textField)}
+          />
+        </div>
+        <div>
+          <TextField
+            id="email"
+            label="Email"
+            value={values.email}
+            onChange={handleChange("email")}
+            className={clsx(classes.margin, classes.textField)}
+          />
+          <TextField
+            id="telefone"
+            label="Telefone"
+            value={values.telefone}
+            onChange={handleChange("telefone")}
+            className={clsx(classes.margin, classes.textField)}
+          />
+        </div>
+        <div style={{ width: 460 }}>
+          <FormControl fullWidth className={classes.margin}>
             <TextField
-              id="standard-basic"
-              label="Nome"
-              onChange={event => setNome(event.target.value)}
-              value={nome}
-              className={clsx(classes.margin, classes.textField)}
-              required
+              id="endereco"
+              label="Endereço"
+              value={values.endereco}
+              onChange={handleChange("endereco")}
+              fullWidth
             />
+          </FormControl>
+        </div>
 
-            
-            
-            <TextField
-              id="cpf"
-              label="Cpf/Cnpj"
-              
-              onChange={event => setCpf(event.target.value)}
-              value={cpf}
-              className={clsx(classes.margin, classes.textField)}
-              required
+        <div>
+          <FormControl className={clsx(classes.margin, classes.textField)}>
+            <InputLabel htmlFor="standard-adornment-password">Senha</InputLabel>
+            <Input
+              id="standard-adornment-password"
+              type={values.showPassword ? "text" : "password"}
+              value={values.password}
+              onChange={handleChange("password")}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {values.showPassword ? <FiEye /> : <FiEyeOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
             />
-          </div>
-          <div>
-            <TextField
-              id="email"
-              label="Email"
-             
-              onChange={event => setEmail(event.target.value)}
-              value={email}
-              className={clsx(classes.margin, classes.textField)}
+          </FormControl>
+
+          <FormControl className={clsx(classes.margin, classes.textField)}>
+            <InputLabel htmlFor="standard-adornment-password">
+              Digite novamente
+            </InputLabel>
+            <Input
+              id="standard-adornment-password"
+              type={values.showPassword ? "text" : "password"}
+              value={values.password2}
+              onChange={handleChange("password2")}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {values.showPassword ? <FiEye /> : <FiEyeOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              error={values.password !== values.password2} // COmpara se as senhas sao iguais
             />
-            <TextField
-              id="telefone"
-              label="Telefone"
-              
-              onChange={event => setTelefone(event.target.value)}
-              value={telefone}
-              className={clsx(classes.margin, classes.textField)}
-              required
-            />
-          </div>
-          <div style={{ width: 460 }}>
-            <FormControl fullWidth className={classes.margin}>
-              <TextField
-                id="endereco"
-                label="Endereço"
-                
-                onChange={event => setEndereco(event.target.value)}
-                value={endereco}
-                required
-                fullWidth
-              />
-            </FormControl>
-          </div>
+          </FormControl>
+        </div>
 
-          <div style={{ width: 460 }}>
-            <FormControl  className={classes.margin}>
-              <TextField
-                id="senha"
-                label="Senha"
-                onChange={event => setPassword(event.target.value)}
-                value={password}
-                required
-                
-              />
-            </FormControl>
-          </div>
+        <div style={{ flexDirection: "row", display: "flex" }}>
+          <button
+            className="loginButton"
+            style={{ marginRight: "auto", marginTop: 30 }}
+            onClick={handleVoltar}
+          >
+            {""}
+            Voltar
+          </button>
+          <button
+            className="loginButton"
+            style={{ marginLeft: "auto", marginTop: 30 }}
+            onClick={handleSubmit}
+          >
+            {""}
+            Cadastrar
+          </button>
 
-          <div style={{ width: 460 }}>
-            <FormControl  className={classes.margin}>
-              <TextField
-                id="password"
-                label="Repita a senha"
-                onChange={event => setPassword2(event.target.value)}
-                value={password2}
-                required
-                
-              />
-            </FormControl>
-          </div>
+          {tipo === "pedido" && (
+            <>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Deseja finalizar o cadastro?"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Finalizar o cadastro e salvar suas informações no sistema
+                    permite que você cliente tenha acesso as funcionalidades da
+                    Pizza-e.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Não
+                  </Button>
+                  <Button onClick={fim,handleSubmit} color="primary" autoFocus>
+                    Sim
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                open={end}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Seu Cadastro foi realizado com sucesso!  "}
+                  <FiCheck size={35} color={"green"}></FiCheck>
+                </DialogTitle>
 
-          <div style={{ flexDirection: "row", display: "flex" }}>
-            <Button
-              className="voltarButton"
-              style={{ marginRight: "auto", marginTop: 30 }}
-              onClick={handleVoltar}
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Você será redirecionado para a página de login.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={finalizarCadastro} color="primary" autoFocus>
+                    Ok
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </>
+          )}
+          {tipo === "" && (
+            <>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Deseja finalizar o cadastro?"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Finalizar o cadastro e salvar suas informações no sistema
+                    permite que você cliente tenha acesso as funcionalidades da
+                    Pizza-e.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Não
+                  </Button>
+                  <Button onClick={fim} color="primary" autoFocus>
+                    Sim
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                open={end}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Seu Cadastro foi realizado com sucesso!  "}
+                  <FiCheck size={35} color={"green"}></FiCheck>
+                </DialogTitle>
+
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Você será redirecionado para a página de login.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={finalizarCadastro} color="primary" autoFocus>
+                    Ok
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </>
+          )}
+          <Dialog
+            open={verificar}
+            onClose={fecharVerificar}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Seu Cadastro não foi realizado!  "}
+              <FiX size={35} color={"red"}></FiX>
+            </DialogTitle>
+
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Por favor preencha todos os campos do cadastro corretamente!
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={fecharVerificar} color="primary" autoFocus>
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {tipo === "pedido" && (
+            <Dialog
+              open={confirmaVoltar}
+              onClose={closeVoltar}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
             >
-              <FiChevronLeft /> Voltar
-             
-            </Button>
-            <Button
-              className="loginButton"
-              style={{ marginLeft: "auto", marginTop: 30 }}
-              type="submit"
-              
-              variant="success"            
+              <DialogTitle id="alert-dialog-title">
+                {"Deseja voltar para seu pedido?"}
+              </DialogTitle>
+              <DialogContent></DialogContent>
+              <DialogActions>
+                <Button onClick={closeVoltar} color="primary">
+                  Não
+                </Button>
+                <Button onClick={voltar} color="primary" autoFocus>
+                  Sim
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
+          {tipo === "" && (
+            <Dialog
+              open={confirmaVoltar}
+              onClose={closeVoltar}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
             >
-              <FiCheckCircle /> Cadastrar
-            </Button>
-
-          </div>
+              <DialogTitle id="alert-dialog-title">
+                {"Deseja voltar para a tela de login?"}
+              </DialogTitle>
+              <DialogContent></DialogContent>
+              <DialogActions>
+                <Button onClick={closeVoltar} color="primary">
+                  Não
+                </Button>
+                <Button onClick={voltar} color="primary" autoFocus>
+                  Sim
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
         </div>
       </div>
+    </div>
     </form>
   );
 };
