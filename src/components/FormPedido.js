@@ -174,7 +174,7 @@ const FormPedido = (props) => {
         id: item._id,
       }
 
-      facadePedido.patchPedidos(body, '🍕 Pedido alterado com sucesso!', false, history)
+      facadePedido.patchPedidos(body, '🍕 Pedido alterado com sucesso!', false, history, toastStyle)
 
     }
   };

@@ -114,7 +114,7 @@ const GenericTable = ({ data, title }) => {
         cancelar: true,
       }
 
-      facadePedido.patchPedidos(body, '🍕 Pedido cancelado com sucesso!', true, history)
+      facadePedido.patchPedidos(body, '🍕 Pedido cancelado com sucesso!', true, history, toastStyle)
     }
   };
 
