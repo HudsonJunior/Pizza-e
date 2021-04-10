@@ -1,74 +1,75 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 import "./styles/TabelaData.css";
-
-
-const data = [
-  {
-    codigo: "1",
-    quantidade: 23,
-  },
-  {
-    codigo: "2",
-    quantidade: 13,
-  },
-  {
-    codigo: "3",
-    quantidade: 66,
-  },
-  {
-    codigo: "4",
-    quantidade: 224,
-  },
-  {
-    codigo: "5",
-    quantidade: 95,
-  },
-  {
-    codigo: "6",
-    quantidade: 135,
-  },
-];
+import FacadePedido from "../../Facade/FacadePedido";
+const facadePedido = new FacadePedido();
 
 const TabelaData = () => {
+  let today = new Date();
+  let currentDate =
+    today.getFullYear() +
+    "-" +
+    ("0" + (today.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + today.getDate()).slice(-2);
+  const [relatorio, setRelatorio] = React.useState([]);
+  const [dataI, setDataI] = React.useState(currentDate);
+  const [dataF, setDataF] = React.useState(currentDate);
+
+  useEffect(() => {
+    if (relatorio) facadePedido.getVendaData(dataI, dataF, setRelatorio);
+  }, [dataI, dataF]);
+
   return (
     <div>
       <TextField
         id="dateI"
         label="Data de início"
         type="date"
-        defaultValue="2020-05-24"
+        defaultValue={currentDate}
         InputLabelProps={{
           shrink: true,
         }}
+        value={dataI}
+        onChange={(event) => setDataI(event.target.value)}
       />
       <TextField
         id="dateF"
         label="Data final"
         type="date"
-        defaultValue="2020-06-24"
+        defaultValue={currentDate}
         InputLabelProps={{
           shrink: true,
         }}
+        value={dataF}
+        onChange={(event) => setDataF(event.target.value)}
       />
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <td>Código do produto</td>
-            <td>Quantidade Vendida</td>
-          </tr>
-        </thead>
-        {data.map((item) => (
-          <tbody>
+      {relatorio.length > 0 ? (
+        <Table striped bordered hover>
+          <thead>
             <tr>
-              <td>{item.codigo}</td>
-              <td>{item.quantidade}</td>
+              <td>ID do produto</td>
+              <td>Descrição</td>
+              <td>Quantidade Vendida</td>
             </tr>
-          </tbody>
-        ))}
-      </Table>
+          </thead>
+          {relatorio.map((item) => (
+            <tbody>
+              <tr>
+                <td>{item._id}</td>
+                <td>{item.nome}</td>
+                <td>{item.quantidade}</td>
+              </tr>
+            </tbody>
+          ))}
+        </Table>
+      ) : (
+        <pre>
+          <p>Nenhum pedido foi registrado nesta data...</p>
+        </pre>
+      )}
     </div>
   );
 };
