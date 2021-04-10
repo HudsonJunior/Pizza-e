@@ -46,7 +46,7 @@ export default class FacadeProduto {
             })
             setTimeout(() => {
                 history.push("/produtos")
-            }, 3000);
+            }, 2000);
         })
             .catch(error => {
                 if (error.response?.data) {
@@ -77,7 +77,7 @@ export default class FacadeProduto {
             else {
                 setTimeout(() => {
                     history.push("/produtos")
-                }, 3000);
+                }, 2000);
             }
         })
             .catch(error => {

@@ -119,7 +119,7 @@ const GenericTable = ({ data, title }) => {
   };
 
   const desativarProduto = (item) => {
-    const body = {}
+    let body = {}
     if (item.tipo == "Pizza") {
       body = {
         nome: item.nome,
