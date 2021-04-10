@@ -1,5 +1,5 @@
-const axios = require("axios");
 import { toast } from "react-toastify";
+const axios = require("axios");
 
 export default class FacadePedido {
   toastStyle = {
