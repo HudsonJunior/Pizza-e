@@ -147,7 +147,7 @@ const FormProduto = props => {
                 }
             }
 
-            facadeProduto.postProdutos(body)
+            facadeProduto.postProdutos(body, history)
 
         }
         else {
@@ -182,7 +182,7 @@ const FormProduto = props => {
 
             }
 
-            facadeProduto.patchProdutos(body, '🍕 Produto editado com sucesso!', 'Ocorrou um erro ao editar o produto, tente novamente!')
+            facadeProduto.patchProdutos(body, '🍕 Produto editado com sucesso!', 'Ocorrou um erro ao editar o produto, tente novamente!', false, history)
         }
 
     }

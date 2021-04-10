@@ -1,9 +1,23 @@
+import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 const axios = require("axios");
 
+
 export default class FacadeProduto {
+    toastStyle = {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    };
+
+
     baseUrl = 'http://localhost:8080/produtos-finais';
 
-    getProdutos = async (nomeProduto, setProdutos) => {
+    getProdutos = async (nomeProduto, setProdutos, ativado = false) => {
         try {
             if (nomeProduto != null) {
                 const response = await axios.get(
@@ -13,7 +27,7 @@ export default class FacadeProduto {
                 setProdutos(produtosResponse);
             } else {
                 const response = await axios.get(
-                    this.baseUrl
+                    `${this.baseUrl}?ativado=${ativado}`
                 );
                 const produtosResponse = await response.data;
                 setProdutos(produtosResponse);
@@ -23,12 +37,12 @@ export default class FacadeProduto {
         }
     };
 
-    postProdutos = async (body) => {
+    postProdutos = async (body, history) => {
         axios.post(this.baseUrl, {
             ...body,
         }).then(result => {
             toast.success("🍕 Produto cadastrado com sucesso!", {
-                toastStyle,
+                ...this.toastStyle,
             })
             setTimeout(() => {
                 history.push("/produtos")
@@ -37,25 +51,25 @@ export default class FacadeProduto {
             .catch(error => {
                 if (error.response?.data) {
                     toast.error(error.response.data.message, {
-                        toastStyle,
+                        ...this.toastStyle,
                     })
                     toast.error(error.response.data.details, {
-                        toastStyle,
+                        ...this.toastStyle,
                     })
                 }
                 else {
-                    toast.error('Ocorrou um erro ao cadastrar o produto, tente novamente!', { toastStyle, })
+                    toast.error('Ocorrou um erro ao cadastrar o produto, tente novamente!', { ...this.data })
                 }
 
             })
     }
 
-    patchProdutos = async (body, messageSuccess, messageError, desativar = false) => {
+    patchProdutos = async (body, messageSuccess, messageError, desativar = false, history) => {
         axios.patch(this.baseUrl, {
             ...body
         }).then(result => {
             toast.success(`${messageSuccess}`, {
-                toastStyle,
+                ...this.toastStyle,
             })
             if (desativar) {
                 history.go(0)
@@ -69,14 +83,17 @@ export default class FacadeProduto {
             .catch(error => {
                 if (error.response?.data) {
                     toast.error(error.response.data.message, {
-                        toastStyle,
+                        ...this.toastStyle,
                     })
                     toast.error(error.response.data.details, {
-                        toastStyle,
+                        ...this.toastStyle,
                     })
                 }
                 else {
-                    toast.error(`${messageError}`, { toastStyle, })
+                    toast.error(`${messageError}`, {
+                        ...this.toastStyle,
+
+                    })
                 }
 
             })

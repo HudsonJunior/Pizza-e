@@ -1,6 +1,17 @@
 const axios = require("axios");
+import { toast } from "react-toastify";
 
 export default class FacadePedido {
+  toastStyle = {
+    position: "top-right",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  };
+
   postPedido(
     produtos,
     formaPagamento,
@@ -87,14 +98,14 @@ export default class FacadePedido {
     }
   };
 
-  patchPedidos = async (body, messageSuccess, cancelar = false) => {
+  patchPedidos = async (body, messageSuccess, cancelar = false, history) => {
     axios
       .patch("http://localhost:8080/pedido", {
         ...body,
       })
       .then(function (response) {
         toast.success(messageSuccess, {
-          toastStyle,
+          ...this.toastStyle,
         });
         if (cancelar) {
           history.go(0)
@@ -107,10 +118,10 @@ export default class FacadePedido {
       })
       .catch(function (error) {
         toast.error(error.response?.data.message, {
-          toastStyle,
+          ...this.toastStyle,
         });
         toast.error(error.response?.data.details, {
-          toastStyle,
+          ...this.toastStyle,
         });
       });
   }

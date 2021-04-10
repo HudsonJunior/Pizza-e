@@ -47,6 +47,8 @@ const GenericTable = ({ data, title }) => {
 
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
   const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
+  const [statusGeneric, setStatusGeneric] = React.useState("ativado");
+  const [isAtivado, setIsAtivado] = React.useState('true');
   const [produtoSelecionado, setProdutoSelecionado] = React.useState({});
   const facadeProduto = new FacadeProduto()
   const facadePedido = new FacadePedido()
@@ -112,7 +114,7 @@ const GenericTable = ({ data, title }) => {
         cancelar: true,
       }
 
-      facadePedido.patchPedidos(body, '🍕 Pedido cancelado com sucesso!', true)
+      facadePedido.patchPedidos(body, '🍕 Pedido cancelado com sucesso!', true, history)
     }
   };
 
@@ -144,7 +146,7 @@ const GenericTable = ({ data, title }) => {
       }
     }
 
-    facadeProduto.patchProdutos(body, '🍕 Produto desativado com sucesso!', 'Ocorrou um erro ao desativar o produto, tente novamente!', true)
+    facadeProduto.patchProdutos(body, '🍕 Produto desativado com sucesso!', 'Ocorrou um erro ao desativar o produto, tente novamente!', true, history)
 
   };
 
@@ -280,28 +282,53 @@ const GenericTable = ({ data, title }) => {
       </InputGroup> */}
 
       {url === "produtos" && (
-        <FormControl2 style={{ margin: 10 }} component="RadioTipoProduto">
-          <FormLabel>Escolha o tipo do produto</FormLabel>
-          <RadioGroup
-            aria-label="TipoProduto"
-            name="TipoProduto"
-            value={valueGeneric}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              control={<Radio />}
-              value="pizza"
-              label="Pizza"
-              onChange={handleChangePizza}
-            />
-            <FormControlLabel
-              control={<Radio />}
-              value="normal"
-              label="Normal"
-              onChange={handleChangeProduto}
-            />
-          </RadioGroup>
-        </FormControl2>
+        <>
+          <FormControl2 style={{ margin: 10 }} component="RadioTipoProduto">
+            <FormLabel>Escolha o tipo do produto</FormLabel>
+            <RadioGroup
+              aria-label="TipoProduto"
+              name="TipoProduto"
+              value={valueGeneric}
+              onChange={handleChange}
+            >
+              <FormControlLabel
+                control={<Radio />}
+                value="pizza"
+                label="Pizza"
+                onChange={handleChangePizza}
+              />
+              <FormControlLabel
+                control={<Radio />}
+                value="normal"
+                label="Normal"
+                onChange={handleChangeProduto}
+              />
+            </RadioGroup>
+          </FormControl2>
+          <FormControl2 style={{ margin: 10 }} component="RadioStatusProduto">
+            <FormLabel>Status do Produto</FormLabel>
+            <RadioGroup
+              aria-label="StatusProduto"
+              name="StatusProduto"
+              value={statusGeneric}
+              onChange={(event) => setStatusGeneric(event.target.value)}
+            >
+              <FormControlLabel
+                control={<Radio />}
+                value="ativado"
+                label="Ativado"
+                onChange={() => setIsAtivado('true')}
+              />
+              <FormControlLabel
+                control={<Radio />}
+                value="desativado"
+                label="Desativado"
+                onChange={() => setIsAtivado('false')}
+              />
+            </RadioGroup>
+          </FormControl2>
+        </>
+
       )}
       <Table striped bordered hover>
         {url === "pedidos" && (
@@ -529,6 +556,7 @@ const GenericTable = ({ data, title }) => {
                     <td>Valor</td>
                     <td>Ingredientes</td>
                     <td>Adicionais</td>
+                    <td>Ativado</td>
                     <td>Valor promocional</td>
                     <td>Início da promoção</td>
                     <td>Fim da promoção</td>
@@ -536,7 +564,7 @@ const GenericTable = ({ data, title }) => {
                   </tr>
                 </thead>
                 {data.map((item) => {
-                  if (item.tipo === "Pizza") {
+                  if (item.tipo === "Pizza" && item.ativado == isAtivado) {
                     return (
                       <tbody>
                         <tr>
@@ -546,6 +574,7 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.valor}</td>
                           <td>{item.ingredientes}</td>
                           <td>{item.adicionais}</td>
+                          <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
                           <td>{item.valor_promocional || 0}</td>
                           <td>{formataData(item.inicio_promo)}</td>
                           <td>{formataData(item.fim_promo)}</td>
@@ -614,7 +643,7 @@ const GenericTable = ({ data, title }) => {
                     <td>Nome</td>
                     <td>Valor</td>
                     <td>Peso</td>
-                    <td>Status</td>
+                    <td>Ativado</td>
                     <td>Valor promocional</td>
                     <td>Início da promoção</td>
                     <td>Fim da promoção</td>
@@ -622,7 +651,7 @@ const GenericTable = ({ data, title }) => {
                   </tr>
                 </thead>
                 {data.map((item) => {
-                  if (item.tipo === "Normal") {
+                  if (item.tipo === "Normal" && item.ativado == isAtivado) {
                     return (
                       <tbody>
                         <tr>
@@ -631,7 +660,7 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.nome}</td>
                           <td>{item.valor}</td>
                           <td>{item.peso}</td>
-                          <td>{item.status}</td>
+                          <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
                           <td>{item.valor_promocional || 0}</td>
                           <td>{formataData(item.inicio_promo)}</td>
                           <td>{formataData(item.fim_promo)}</td>
