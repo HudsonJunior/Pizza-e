@@ -22,26 +22,12 @@ const Expedicao = (props) => {
   const classes = useStyles();
   var tipo = props.type;
 
-  /*   const [formaExpedicao, setFormaExpedicao] = React.useState("balcao");
-  const [endereco, setEndereco] = React.useState(""); */
-  /* 
-  const handleChangeExp = (event) => {
-    setFormaExpedicao(event.target.value);
-  };
-  const handleChangeBalcao = () => {
-    setFormaExpedicao("balcao");
-  }; */
-
   useEffect(() => {
     if (props.formaExpedicao && props.formaExpedicao === "entrega")
       props.setExpedicao("entrega");
     else if (props.formaExpedicao && props.formaExpedicao === "balcao")
       props.setExpedicao("balcao");
   }, []);
-
-  /*   const handleChangeEntrega = () => {
-    setFormaExpedicao("entrega");
-  }; */
 
   const handleLogin = () => {
     history.push("/login", { tipo: "pedido" });
@@ -71,14 +57,6 @@ const Expedicao = (props) => {
             label="CPF Cliente"
             required
           />
-          {/* <Button
-            variant="light"
-            onClick={handleBuscarCliente}
-            style={{ borderWidth: 1, borderColor: "black" }}
-          >
-            <FiUser size={15} color="black" />
-            Buscar Cliente
-          </Button> */}
           <p style={{ marginBottom: 0 }}>Ou</p>
           <Button variant="success" onClick={handleNovoCliente}>
             <FiPlus size={15} color="fff" />
@@ -124,7 +102,20 @@ const Expedicao = (props) => {
   };
 
   const chamaClienteLogado = () => {
-    return <div></div>;
+    return props.formaExpedicao === "entrega" ? (
+      <div className="RPCliente">
+        <TextField
+          className={classes.textField}
+          onChange={(event) => props.setEndereco(event.target.value)}
+          value={props.endereco}
+          id="standard-basic"
+          label="Endereço de entrega"
+          required
+        />
+      </div>
+    ) : (
+      <div></div>
+    );
   };
 
   return (
