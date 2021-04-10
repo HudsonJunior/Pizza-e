@@ -22,7 +22,7 @@ const TabelaData = () => {
   }, [dataI, dataF]);
 
   return (
-    <div>
+    <div id="relatorio">
       <TextField
         id="dateI"
         label="Data de início"
@@ -47,24 +47,28 @@ const TabelaData = () => {
       />
 
       {relatorio.length > 0 ? (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <td>ID do produto</td>
-              <td>Descrição</td>
-              <td>Quantidade Vendida</td>
-            </tr>
-          </thead>
-          {relatorio.map((item) => (
-            <tbody>
+        <div>
+          <Table striped bordered hover>
+            <thead>
               <tr>
-                <td>{item._id}</td>
-                <td>{item.nome}</td>
-                <td>{item.quantidade}</td>
+                <td>ID do produto</td>
+                <td>Descrição</td>
+                <td>Quantidade Vendida</td>
               </tr>
-            </tbody>
-          ))}
-        </Table>
+            </thead>
+            {relatorio.map((item) => {
+              return (
+                <tbody>
+                  <tr>
+                    <td>{item._id}</td>
+                    <td>{item.nome}</td>
+                    <td>{item.quantidade}</td>
+                  </tr>
+                </tbody>
+              );
+            })}
+          </Table>
+        </div>
       ) : (
         <pre>
           <p>Nenhum pedido foi registrado nesta data...</p>

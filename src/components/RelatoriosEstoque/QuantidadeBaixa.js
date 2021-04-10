@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 import FacadeRelatorioEstoque from "../../Facade/FacadeRelatorioEstoque";
 
 const facadeRelatorio = new FacadeRelatorioEstoque();
@@ -15,7 +14,7 @@ const QuantidadeBaixa = () => {
   });
 
   return (
-    <div>
+    <div id="relatorio">
       {relatorio.length > 0 ? (
         <Table striped bordered hover>
           <thead>
@@ -38,19 +37,6 @@ const QuantidadeBaixa = () => {
           <p>Não foi encontrado nenhum produto no estoque...</p>
         </pre>
       )}
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        style={{
-          borderWidth: 1,
-          borderColor: "black",
-          margin: 20,
-          backgroundColor: "lightGray",
-        }}
-      >
-        Baixar
-      </Button>
     </div>
   );
 };
