@@ -58,4 +58,27 @@ export default class FacadeEstoque {
             }
         })
     }
+
+
+    getEstoque = async (id, setEstoque) => {
+        try {
+            if (id != null) {
+                console.log('oi')
+                const response = await axios.get(
+                    `http://localhost:8080/produtos-estoque?id=${id}`
+                );
+                const estoqueResponse = await response.data;
+                console.log('response', estoqueResponse);
+                setEstoque(estoqueResponse);
+            } else {
+                const response = await axios.get(
+                    `http://localhost:8080/produtos-estoque`
+                );
+                const estoqueResponse = await response.data;
+                setEstoque(estoqueResponse);
+            }
+        } catch (error) {
+            setEstoque([]);
+        }
+    }
  }

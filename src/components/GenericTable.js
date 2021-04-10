@@ -357,20 +357,6 @@ const GenericTable = ({ data, title }) => {
 
   return (
     <>
-      {/* <InputGroup className="col-3 mb-3">
-        <InputGroup.Prepend>
-          <InputGroup.Text id="basic-addon1">
-            <FiSearch size={18} color="#000" />
-          </InputGroup.Text>
-        </InputGroup.Prepend>
-
-        <FormControl
-          placeholder={`Buscar ${title}`}
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-        />
-      </InputGroup> */}
-
       {url === "produtos" && (
         <FormControl2 style={{ margin: 10 }} component="RadioTipoProduto">
           <FormLabel>Escolha o tipo do produto</FormLabel>
@@ -779,7 +765,7 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
-                <td>Cod</td>
+                <td>Id</td>
                 <td>Nome</td>
                 <td>Valor do item</td>
                 <td>Peso do item</td>
