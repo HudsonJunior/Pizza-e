@@ -35,7 +35,7 @@ import { string } from "yup";
 import { TramRounded } from "@material-ui/icons";
 import { setPageStateUpdate } from "@material-ui/data-grid";
 
-const axios = require('axios');
+const axios = require("axios");
 const url = window.location.href.replace("http://localhost:3000/", "");
 
 const GenericTable = ({ data, title }) => {
@@ -43,9 +43,9 @@ const GenericTable = ({ data, title }) => {
   const [open, setOpen] = React.useState(false);
   var itensQuantidade = [];
 
-  const [valueTipoProduto, setTipoProduto] = React.useState("pizza")
-  const [valueGeneric, setTipoValueGeneric] = React.useState("pizza")
-  const [produtoSelecionado, setProdutoSelecionado] = React.useState({})
+  const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
+  const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
+  const [produtoSelecionado, setProdutoSelecionado] = React.useState({});
 
   const handleChangePizza = () => {
     setTipoProduto("pizza");
@@ -88,11 +88,10 @@ const GenericTable = ({ data, title }) => {
   };
 
   const cancelarPedido = (item) => {
-    console.log('item', item)
-    if (item.statusPedido == 'cancelado') {
-      toast.error('Pedido já está como cancelado!', toastStyle)
-    }
-    else {
+    console.log("item", item);
+    if (item.statusPedido == "cancelado") {
+      toast.error("Pedido já está como cancelado!", toastStyle);
+    } else {
       axios
         .patch("http://localhost:8080/pedido", {
           produtos: item.produtos,
@@ -115,87 +114,88 @@ const GenericTable = ({ data, title }) => {
           toast.success("🍕 Pedido cancelado com sucesso!", {
             toastStyle,
           });
-          setState()
         })
         .catch(function (error) {
           console.log(error);
           toast.error(error.response?.data.message, {
             toastStyle,
-          })
+          });
           toast.error(error.response?.data.details, {
             toastStyle,
-          })
+          });
         });
     }
-  }
+  };
 
   const desativarProduto = (item) => {
-    console.log('kkkkkkkkk', item)
+    console.log("kkkkkkkkk", item);
     if (item.tipo == "Pizza") {
-      axios.patch('http://localhost:8080/produtos-finais', {
-        nome: item.nome,
-        valor: item.valor,
-        ingredientes: item.ingredientes,
-        ativado: false,
-        adicionais: item.adicionais,
-        tipo: 'Pizza',
-        inicio_promo: item.inicioPromo,
-        fim_promo: item.fimPromo,
-        valor_promocional: item.valorPromocional ?? '',
-
-      }).then(result => {
-        toast.success("🍕 Produto desativado com sucesso!", {
-          toastStyle,
+      axios
+        .patch("http://localhost:8080/produtos-finais", {
+          nome: item.nome,
+          valor: item.valor,
+          ingredientes: item.ingredientes,
+          ativado: false,
+          adicionais: item.adicionais,
+          tipo: "Pizza",
+          inicio_promo: item.inicioPromo,
+          fim_promo: item.fimPromo,
+          valor_promocional: item.valorPromocional ?? "",
         })
-      })
-        .catch(error => {
+        .then((result) => {
+          toast.success("🍕 Produto desativado com sucesso!", {
+            toastStyle,
+          });
+        })
+        .catch((error) => {
           if (error.response?.data) {
             toast.error(error.response.data.message, {
               toastStyle,
-            })
+            });
             toast.error(error.response.data.details, {
               toastStyle,
-            })
+            });
+          } else {
+            toast.error(
+              "Ocorrou um erro ao desativar o produto, tente novamente!",
+              { toastStyle }
+            );
           }
-          else {
-            toast.error('Ocorrou um erro ao desativar o produto, tente novamente!', { toastStyle, })
-          }
-
+        });
+    } else {
+      axios
+        .patch("http://localhost:8080/produtos-finais", {
+          nome: item.nome,
+          valor: item.valor,
+          ativado: false,
+          peso: item.peso,
+          inicio_promo: item.inicioPromo,
+          fim_promo: item.fimPromo,
+          valor_promocional: item.valorPromocional ?? "",
+          tipo: "Normal",
         })
-    }
-    else {
-      axios.patch('http://localhost:8080/produtos-finais', {
-        nome: item.nome,
-        valor: item.valor,
-        ativado: false,
-        peso: item.peso,
-        inicio_promo: item.inicioPromo,
-        fim_promo: item.fimPromo,
-        valor_promocional: item.valorPromocional ?? '',
-        tipo: 'Normal'
-      })
         .then(function (response) {
           toast.success("🍕 Produto desativado com sucesso!", {
             toastStyle,
-          })
+          });
         })
         .catch(function (error) {
           if (error.response?.data) {
             toast.error(error.response.data.message, {
               toastStyle,
-            })
+            });
             toast.error(error.response.data.details, {
               toastStyle,
-            })
+            });
+          } else {
+            toast.error(
+              "Ocorrou um erro ao desativar o produto, tente novamente!",
+              { toastStyle }
+            );
           }
-          else {
-            toast.error('Ocorrou um erro ao desativar o produto, tente novamente!', { toastStyle, })
-          }
-
         });
     }
-  }
-
+  };
 
   const handleClose = (url) => {
     setOpen(false);
@@ -208,8 +208,7 @@ const GenericTable = ({ data, title }) => {
       toast.success("🍕 Produto removido do estoque com sucesso!", {
         toastStyle,
       });
-    }
-    else if (url === 'pedidos') {
+    } else if (url === "pedidos") {
       toast.success("🍕 Pedido removido com sucesso!", {
         toastStyle,
       });
@@ -221,15 +220,16 @@ const GenericTable = ({ data, title }) => {
   };
 
   const handleEdit = (item) => {
-    console.log(item)
+    console.log(item);
     {
       if (url === "pedidos") {
-        if (item.statusPedido == 'cancelado') {
-          toast.error("Não é possivel editar um pedido que já foi cancelado", toastStyle)
-        }
-        else {
+        if (item.statusPedido == "cancelado") {
+          toast.error(
+            "Não é possivel editar um pedido que já foi cancelado",
+            toastStyle
+          );
+        } else {
           history.push("/gerenciar-pedido", { tipo: "Editar", item: item });
-
         }
       }
     }
@@ -241,10 +241,11 @@ const GenericTable = ({ data, title }) => {
         history.push("/gerenciar-produto", { tipo: "Editar", item: item });
     }
     {
-      url === "estoque" && history.push("/editar-estoque", { item: item});
+      url === "estoque" && history.push("/editar-estoque", { item: item });
     }
     {
-      url === "funcionarios" && history.push("/editar-funcionario", {item:item});
+      url === "funcionarios" &&
+        history.push("/editar-funcionario", { item: item });
     }
   };
 
@@ -404,7 +405,10 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={() => cancelarPedido(item)}>
+                    <Button
+                      variant="danger"
+                      onClick={() => cancelarPedido(item)}
+                    >
                       <FiXCircle size={20} color="#black" />
                     </Button>
                   </td>
@@ -477,7 +481,7 @@ const GenericTable = ({ data, title }) => {
                     <Button
                       variant="danger"
                       data-tip="Desativar"
-                      onClick={(value) => { }}
+                      onClick={(value) => {}}
                     >
                       <ReactTooltip />
                       <FiXCircle size={20} color="#black" />
@@ -609,7 +613,11 @@ const GenericTable = ({ data, title }) => {
                               <ReactTooltip />
                               <FiEdit3 size={20} color="#black" />
                             </Button>
-                            <Button variant="danger" data-tip="Desativar" onClick={value => desativarProduto(item)}>
+                            <Button
+                              variant="danger"
+                              data-tip="Desativar"
+                              onClick={(value) => desativarProduto(item)}
+                            >
                               <ReactTooltip />
                               <FiXCircle size={20} color="#black" />
                             </Button>
@@ -690,7 +698,11 @@ const GenericTable = ({ data, title }) => {
                               <ReactTooltip />
                               <FiEdit3 size={20} color="#black" />
                             </Button>
-                            <Button variant="danger" data-tip="Desativar" onClick={value => desativarProduto(item)}>
+                            <Button
+                              variant="danger"
+                              data-tip="Desativar"
+                              onClick={(value) => desativarProduto(item)}
+                            >
                               <ReactTooltip />
                               <FiXCircle size={20} color="#black" />
                             </Button>
@@ -728,8 +740,7 @@ const GenericTable = ({ data, title }) => {
               </>
             )}
           </>
-        )
-        }
+        )}
         <FiPlus size={26} color="fff" />
         {url === "estoque" && (
           <>
@@ -741,14 +752,14 @@ const GenericTable = ({ data, title }) => {
                 <td>Peso do item</td>
                 <td>Data de validade</td>
                 <td>Data de fabricação</td>
-                <td>Ações</td> 
+                <td>Ações</td>
               </tr>
             </thead>
             {data.map((item) => (
               <tbody>
                 <tr>
                   <td>{item._id}</td>
-                  <td>{item.nome}</td>  
+                  <td>{item.nome}</td>
                   <td>{item.valor}</td>
                   <td>{item.peso}</td>
                   <td>{item.validade.split("T")[0]}</td>
@@ -761,7 +772,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={value => handleEdit(item)}
+                      onClick={(value) => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -782,14 +793,14 @@ const GenericTable = ({ data, title }) => {
                         >
                           Não
                         </Button>
-                          <Button
-                            className="botao"
-                            variant="success"
-                            onClick={() => handleClose("estoque")}
-                            color="primary"
-                            autoFocus
-                          >
-                            Sim
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={() => handleClose("estoque")}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
                         </Button>
                       </DialogActions>
                     </Dialog>
@@ -824,7 +835,7 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.cep}</td>
                   <td>{item.rua}</td>
                   <td>{item.numero}</td>
-                  <td>{item.complemento}</td> 
+                  <td>{item.complemento}</td>
                   <td>
                     <Button
                       variant="light"
@@ -833,7 +844,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={value => handleEdit(item)}
+                      onClick={(value) => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -841,7 +852,7 @@ const GenericTable = ({ data, title }) => {
                       <FiXCircle
                         size={20}
                         color="#black"
-                      // onclick={deleteItem(item.quantidade)}
+                        // onclick={deleteItem(item.quantidade)}
                       />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
@@ -861,25 +872,24 @@ const GenericTable = ({ data, title }) => {
                           Não
                         </Button>
 
-                          <Button
-                            className="botao"
-                            variant="success"
-                            onClick={() => handleClose("funcionarios")}
-                            color="primary"
-                            autoFocus
-                          >
-                            Sim
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={() => handleClose("funcionarios")}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
                         </Button>
-                        </DialogActions>
-                      </Dialog>
-                    </td>
-                  </tr>
-                </tbody>
-              ))}
-            </>
-          )
-        }
-      </Table >
+                      </DialogActions>
+                    </Dialog>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+          </>
+        )}
+      </Table>
       <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
         Adicionar
