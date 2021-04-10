@@ -1,85 +1,68 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { FiSearch } from "react-icons/fi";
 import { FormControl } from "react-bootstrap";
-
-const data = [
-  {
-    codigo: "3",
-    quantidade: 23,
-    dataInicio: "01-07-2020",
-    dataFinal: "31-07-2020",
-  },
-  {
-    codigo: "3",
-    quantidade: 13,
-    dataInicio: "01-08-2020",
-    dataFinal: "31-08-2020",
-  },
-  {
-    codigo: "3",
-    quantidade: 66,
-    dataInicio: "01-09-2020",
-    dataFinal: "31-09-2020",
-  },
-  {
-    codigo: "3",
-    quantidade: 224,
-    dataInicio: "01-10-2020",
-    dataFinal: "31-10-2020",
-  },
-];
+import FacadePedido from "../../Facade/FacadePedido";
+const facadePedido = new FacadePedido();
 
 const TabelaCodigo = () => {
+  const [nomeProduto, setNomeProduto] = React.useState("");
+  const [relatorio, setRelatorio] = React.useState([]);
+
+  useEffect(() => {
+    if (relatorio) {
+      facadePedido.getVendaProduto(nomeProduto, setRelatorio);
+    }
+  }, [nomeProduto]);
+
+  const getDataFormatada = (data) => {
+    const dataInteira = data.split("-");
+    return dataInteira[1] + "/" + dataInteira[0];
+  };
+
   return (
     <>
-      <InputGroup className="col-2 mb-3" styles={{ paddingLeft: 0 }}>
+      <InputGroup className="col-3 mb-3" styles={{ paddingLeft: 0 }}>
         <InputGroup.Prepend>
           <InputGroup.Text id="basic-addon1">
             <FiSearch size={18} color="#000" />
           </InputGroup.Text>
         </InputGroup.Prepend>
         <FormControl
-          placeholder={"3"}
-          aria-label="BuscarCodigoProduto"
+          placeholder={"Pizza..."}
+          aria-label="BuscarProduto"
           aria-describedby="basic-addon1"
+          value={nomeProduto}
+          onChange={(event) => setNomeProduto(event.target.value)}
         />
       </InputGroup>{" "}
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <td>Código do produto</td>
-            <td>Quantidade Vendida</td>
-            <td>Data início</td>
-            <td>Data final</td>
-          </tr>
-        </thead>
-        {data.map((item) => (
-          <tbody>
+      {nomeProduto && relatorio.length > 0 ? (
+        <Table striped bordered hover>
+          <thead>
             <tr>
-              <td>{item.codigo}</td>
-              <td>{item.quantidade}</td>
-              <td>{item.dataInicio}</td>
-              <td>{item.dataFinal}</td>
+              <td>ID do produto</td>
+              <td>Descrição</td>
+              <td>Mês/Ano</td>
+              <td>Quantidade Vendida</td>
             </tr>
-          </tbody>
-        ))}
-      </Table>
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        style={{
-          borderWidth: 1,
-          borderColor: "black",
-          margin: 20,
-          backgroundColor: "lightGray",
-        }}
-      >
-        Baixar
-      </Button>
+          </thead>
+          {relatorio.map((item) => (
+            <tbody>
+              <tr>
+                <td>{item._id}</td>
+                <td>{item.nome}</td>
+                <td>{getDataFormatada(item.data)}</td>
+                <td>{item.quantidade}</td>
+              </tr>
+            </tbody>
+          ))}
+        </Table>
+      ) : (
+        <pre>
+          <p>Nenhum pedido foi registrado com este produto...</p>
+        </pre>
+      )}
     </>
   );
 };

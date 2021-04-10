@@ -1,81 +1,70 @@
-import React, { useState } from "react";
-
+import React, { useEffect } from "react";
 import Menubar from "../components/MenubarComponent";
 import GenericTable from "../components/GenericTable";
+import TextField from "@material-ui/core/TextField";
+import { Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { FiPlus } from "react-icons/fi";
+
+import FacadePedido from "../Facade/FacadePedido.js";
+
+const facadePedido = new FacadePedido();
 
 const Pedidos = () => {
-
+  const history = useHistory();
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
+  const [pedidos, setPedidos] = React.useState([]);
+  let today = new Date();
+  let currentDate =
+    today.getFullYear() +
+    "-" +
+    ("0" + (today.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + today.getDate()).slice(-2);
 
-  // const [id_pedido, setIdPedido] = useState("");
+  const [date, setDate] = React.useState(currentDate);
 
-  // const BuscarPedido = (id_pedido) => {};
+  useEffect(() => {
+    if (pedidos) {
+      facadePedido.getPedidosData(date, setPedidos);
+    }
+  }, [date]);
 
-  const data = [
-    {
-      id: 1,
-      descricao: "Pizza P calabresa, refrigerante",
-      pagamento: "dinheiro",
-      expedicao: "retirado no balcao",
-      data: "12-09-2020",
-      CPF: "não cadastrado",
-      observacoes: "nenhuma",
-      valor: 30.00,
-      status: "Pedido Realizado"
-    },
-    {
-      id: 2,
-      descricao: "Pizza P frango, refrigerante",
-      pagamento: "dinheiro",
-      expedicao: "retirado no balcao",
-      data: "12-09-2020",
-      CPF: "não cadastrado",
-      observacoes: "nenhuma",
-      valor: 30.00,
-      status: "Em preparo"
-    },
-    {
-      id: 3,
-      descricao: "Pizza P frango e bacon, refrigerante",
-      pagamento: "dinheiro",
-      expedicao: "retirado no balcao",
-      data: "12-09-2020",
-      CPF: "não cadastrado",
-      observacoes: "nenhuma",
-      valor: 35.00,
-      status: "Na viagem"
-    },
-    {
-      id: 4,
-      descricao: "Pizza P brócolis, refrigerante",
-      pagamento: "dinheiro",
-      expedicao: "retirado no balcao",
-      data: "12-09-2020",
-      CPF: "não cadastrado",
-      observacoes: "nenhuma",
-      valor: 40.00,
-      status: "Entregue"
-    },
-    {
-      id: 5,
-      descricao: "Pizza P lombo, refrigerante",
-      pagamento: "dinheiro",
-      expedicao: "retirado no balcao",
-      data: "12-09-2020",
-      CPF: "não cadastrado",
-      observacoes: "nenhuma",
-      valor: 45.00,
-      status: "Cancelado"
-    },
-  ];
-
+  const direcionarCadastro = () => {
+    history.push("/gerenciar-pedido", { tipo: "Cadastro" });
+  };
   return (
     <>
       <Menubar currentUser={convertedUser} />
       <div className="pedidos">
         <h2>Pedidos:</h2>
-        <GenericTable data={data} title="Pedidos" />
+        <TextField
+          id="date"
+          label="Data"
+          type="date"
+          defaultValue={date}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={date}
+          onChange={(event) => setDate(event.target.value)}
+        />
+        <div style={{ margin: 15 }}>
+          {pedidos.length > 0 ? (
+            <GenericTable data={pedidos} title="Pedidos" />
+          ) : (
+            <div>
+              <pre>
+                <p>Nenhum pedido foi registrado nesta data...</p>
+              </pre>
+              <Button variant="success" onClick={direcionarCadastro}>
+                <FiPlus size={26} color="fff" />
+                Adicionar
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

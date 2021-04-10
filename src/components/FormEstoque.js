@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect } from 'react';
 
 import TextField from "@material-ui/core/TextField";
 
@@ -20,6 +20,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { useHistory } from "react-router-dom";
 
+const axios = require('axios');
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexWrap: "wrap",
@@ -31,9 +33,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const FormularioEstoque = (props) => {
   const history = useHistory();
   const classes = useStyles();
+  const item = props.item;
+
   var tipo = props.type;
   const [open, setOpen] = React.useState(false);
 
@@ -55,27 +61,79 @@ const FormularioEstoque = (props) => {
   };
   const handleSave = (event) => {
     event.preventDefault();
-    if (tipo === "cadastrar") {
-      toast.success("🍕 Cadastro feito!", {
+
+    if(tipo === "cadastrar"){
+      axios.post('http://localhost:8080/produtos-estoque', {
+        nome: nome,
+        valor: valor,
+        peso: peso,
+        validade: validade,
+        fabricacao: fabricacao,
+      }).then(result => toast.success("🍕 Cadastro feito!", {
         toastStyle,
-      });
-    }
+      }))
+      .catch(error => {
+        console.log(error)
+          toast.error(error.response.data.message, {
+              toastStyle,
+          })
+          toast.error(error.response.data.details, {
+              toastStyle,
+          })
+      })
+  }
     if (tipo === "editar") {
-      toast.success("🍕 Dados atualizados!", {
+      console.log(item)
+      axios.patch('http://localhost:8080/produtos-estoque', {
+        id: item._id,
+        nome,
+        valor,
+        peso,
+        validade,
+        fabricacao,
+      }).then(result => { toast.success("🍕 Dados atualizados!", {
         toastStyle,
-      });
+      })
+      setTimeout(() => {
+        history.push("/estoque");
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
+          toast.error(error.response.data.message, {
+              toastStyle,
+          })
+          toast.error(error.response.data.details, {
+              toastStyle,
+          })
+      })
     }
-    setTimeout(() => {
-      history.push("/estoque");
-    }, 1500);
   };
+
+  const [nome, setNome] = useState("")
+  const [valor, setValor] = useState("")
+  const [peso, setPeso] = useState("")
+  const [validade, setValidade] = useState("")
+  const [fabricacao, setFabricacao] = useState("")
+
+  useEffect(() => {
+    if(item){
+      setNome(item.nome)
+      setValor(item.valor)
+      setPeso(item.peso)
+      setValidade(item.validade.split("T")[0])
+      setFabricacao(item.fabricacao)
+    }
+  }, [])
+
+
 
   return (
     <>
       <form className={classes.root} onSubmit={handleSave}>
-        {tipo === "cadastrar" && (
-          <div className="contentForm">
-            <TextField
+        <div className="contentForm">
+        <TextField value={nome}
+        onChange={event => setNome(event.target.value)}
               required
               label="Nome"
               placeholder="Nome do produto"
@@ -83,52 +141,9 @@ const FormularioEstoque = (props) => {
                 margin: 8,
               }}
             />
-            <TextField
-              disabled
-              label="Código"
-              defaultValue="Automático"
-              style={{
-                margin: 8,
-              }}
-            />
           </div>
-        )}
-        {tipo === "editar" && (
           <div className="contentForm">
-            <TextField
-              disabled
-              label="Nome"
-              placeholder="Nome do produto"
-              style={{
-                margin: 8,
-              }}
-            />
-            <TextField
-              disabled
-              label="Código"
-              defaultValue="Automático"
-              style={{
-                margin: 8,
-              }}
-            />
-          </div>
-        )}
-        <div className="contentForm">
-          <TextField
-            required
-            label="Quantidade"
-            type="number"
-            style={{
-              margin: 8,
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
+          <TextField value={valor} onChange={event => setValor(event.target.value)}
             required
             label="Valor"
             style={{
@@ -140,7 +155,7 @@ const FormularioEstoque = (props) => {
           />
         </div>
         <div className="contentForm">
-          <TextField
+          <TextField value={peso} onChange={event => setPeso(event.target.value)}
             required
             label="Peso"
             style={{
@@ -150,19 +165,9 @@ const FormularioEstoque = (props) => {
               justifyContent: "space-between",
             }}
           />
-          <TextField
-            label="Marca"
-            name="marca"
-            style={{
-              margin: 8,
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          />
         </div>
         <div className="contentForm">
-          <TextField
+          <TextField value={validade} onChange={event => setValidade(event.target.value)}
             label="Data de Validade"
             type="date"
             style={{
@@ -176,7 +181,9 @@ const FormularioEstoque = (props) => {
               shrink: true,
             }}
           />
-          <TextField
+          </div>
+          <div className="contentForm">
+          <TextField value={fabricacao} onChange={event => setFabricacao(event.target.value)}
             label="Data de Fabricação"
             type="date"
             style={{

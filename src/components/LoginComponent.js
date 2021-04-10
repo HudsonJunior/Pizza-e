@@ -55,37 +55,49 @@ const Login = (props) => {
         type: "G",
         password: "123senha",
       },
+      {
+        id: Math.random(String()),
+        name: "09227240918",
+        type: "C",
+        password: "123senha",
+      },
     ];
 
     const currentUser = users.find((elemento) => elemento.name === user);
-    if (tipo === "pedido") {
-      if (currentUser.password === senha) {
-        toast.success("🍕 Login feito!", {
-          toastStyle,
-        });
-        localStorage.setItem("user", JSON.stringify(currentUser));
-        setTimeout(() => {
-          history.push("/concluir-pedido");
-        }, 1500);
+    if (currentUser) {
+      if (tipo === "pedido") {
+        if (currentUser.password === senha) {
+          toast.success("🍕 Login feito!", {
+            toastStyle,
+          });
+          localStorage.setItem("user", JSON.stringify(currentUser));
+          setTimeout(() => {
+            history.push("/concluir-pedido");
+          }, 1500);
+        } else {
+          return toast.error("🍕 Credenciais incorretas", {
+            toastStyle,
+          });
+        }
       } else {
-        return toast.error("🍕 Credenciais incorretas", {
-          toastStyle,
-        });
+        if (currentUser.password === senha) {
+          toast.success("🍕 Login feito!", {
+            toastStyle,
+          });
+          localStorage.setItem("user", JSON.stringify(currentUser));
+          setTimeout(() => {
+            history.push("/");
+          }, 1500);
+        } else {
+          return toast.error("🍕 Credenciais incorretas", {
+            toastStyle,
+          });
+        }
       }
     } else {
-      if (currentUser.password === senha) {
-        toast.success("🍕 Login feito!", {
-          toastStyle,
-        });
-        localStorage.setItem("user", JSON.stringify(currentUser));
-        setTimeout(() => {
-          history.push("/");
-        }, 1500);
-      } else {
-        return toast.error("🍕 Credenciais incorretas", {
-          toastStyle,
-        });
-      }
+      return toast.error("🍕 Usuário não encontrado", {
+        toastStyle,
+      });
     }
   };
 

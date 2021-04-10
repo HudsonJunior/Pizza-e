@@ -1,27 +1,36 @@
-import React from "react"
-import TextField from "@material-ui/core/TextField"
-import { useEffect } from "react"
+import React from "react";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import { useEffect } from "react";
 
-const Observacoes = props => {
+const useStyles = makeStyles((theme) => ({
+  formControl1: {
+    margin: theme.spacing(1),
+    minWidth: 150,
+    width: "22ch",
+  },
+}));
 
-  const [observacoes, setObservacoes] = React.useState("nenhuma")
+const Observacoes = (props) => {
+  const classes = useStyles();
 
   useEffect(() => {
-    setObservacoes("nenhuma")
-  }, [])
+    if (props.observacoes) {
+      props.setObs(props.observacoes);
+    }
+  }, []);
+  return (
+    <div className="RPCampos">
+      <TextField
+        id="txtFieldObs"
+        label="Observações"
+        multiline
+        value={props.observacoes}
+        onChange={(event) => props.setObs(event.target.value)}
+        rows={2}
+      />
+    </div>
+  );
+};
 
-    return (
-        <div className="RPCampos">
-              <TextField
-                id="txtFieldObs"
-                label="Observações"
-                multiline
-                value={observacoes}
-                onChange={event => setObservacoes(event.target.value)}
-                rows={2}
-              />
-            </div>
-    )
-}
-
-export default Observacoes
+export default Observacoes;

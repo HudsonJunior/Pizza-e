@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect } from 'react';
 
 import TextField from "@material-ui/core/TextField";
 
@@ -20,6 +20,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { useHistory } from "react-router-dom";
 
+const axios = require('axios');
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexWrap: "wrap",
@@ -34,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 const FormularioFuncionario = (props) => {
   const history = useHistory();
   const classes = useStyles();
+  const func = props.func;
   var tipo = props.type;
 
   const [open, setOpen] = React.useState(false);
@@ -59,18 +62,56 @@ const FormularioFuncionario = (props) => {
   const handleSave = (event) => {
     event.preventDefault();
     if (tipo === "cadastrar") {
-      toast.success("🍕 Cadastro feito!", {
+      axios.post('http://localhost:8080/funcionarios', {
+        nome: nome,
+        senha: senha,
+        cpf: cpf,
+        rg: rg,
+        carteira: carteira,
+        cep: cep,
+        rua: rua,
+        numero: numero
+      }).then(result => toast.success("🍕 Cadastro feito!", {
         toastStyle,
-      });
+      }))
+      .catch(error => {
+        console.log(error)
+          toast.error(error.response.data.message, {
+              toastStyle,
+          })
+          toast.error(error.response.data.details, {
+              toastStyle,
+          })
+      })
     }
     if (tipo === "editar") {
-      toast.success("🍕 Dados atualizados!", {
+      axios.patch('http://localhost:8080/funcionarios', {
+        id: func._id,
+        nome,
+        senha,
+        cpf,
+        rg,
+        carteira,
+        cep,
+        rua,
+        numero
+      }).then(result => { toast.success("🍕 Dados atualizados!", {
         toastStyle,
-      });
+      })
+      setTimeout(() => {
+        history.push("/funcionarios");
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
+          toast.error(error.response.data.message, {
+              toastStyle,
+          })
+          toast.error(error.response.data.details, {
+              toastStyle,
+          })
+      })
     }
-    setTimeout(() => {
-      history.push("/funcionarios");
-    }, 1500);
   };
 
   const handleBack = () => {
@@ -78,18 +119,40 @@ const FormularioFuncionario = (props) => {
     history.push("/funcionarios");
   };
 
+  const [nome, setNome] = useState("")
+  const [senha, setSenha] = useState("")
+  const [cpf, setCpf] = useState("")
+  const [rg, setRg] = useState("")
+  const [carteira, setCarteira] = useState("")
+  const [cep, setCep] = useState("")
+  const [rua, setRua] = useState("")
+  const [numero, setNumero] = useState("")
+
+  useEffect(() => {
+    if(func){
+      setNome(func.nome)
+      setSenha(func.senha)
+      setCpf(func.cpf)
+      setRg(func.rg)
+      setCarteira(func.carteira)
+      setCep(func.cep)
+      setRua(func.rua)
+      setNumero(func.numero)
+    }
+  }, [])
+
   return (
     <>
       <form className={classes.root} onSubmit={handleSave}>
         <div className="contentForm">
-          <TextField
+          <TextField value={nome} onChange={event => setNome(event.target.value)}
             required
             label="Nome"
             style={{
               margin: 8,
             }}
           />
-          <TextField
+          <TextField value={senha} onChange={event => setSenha(event.target.value)}
             required
             label="Senha"
             style={{
@@ -102,7 +165,7 @@ const FormularioFuncionario = (props) => {
         </div>
         {tipo === "cadastrar" && (
           <div className="contentForm">
-            <TextField
+            <TextField value={cpf} onChange={event => setCpf(event.target.value)}
               required
               label="CPF"
               style={{
@@ -115,7 +178,7 @@ const FormularioFuncionario = (props) => {
                 shrink: true,
               }}
             />
-            <TextField
+            <TextField value={rg} onChange={event => setRg(event.target.value)}
               required
               label="RG"
               style={{
@@ -129,7 +192,7 @@ const FormularioFuncionario = (props) => {
         )}
         {tipo === "editar" && (
           <div className="contentForm">
-            <TextField
+            <TextField value={cpf} onChange={event => setCpf(event.target.value)}
               disabled
               label="CPF"
               style={{
@@ -142,7 +205,7 @@ const FormularioFuncionario = (props) => {
                 shrink: true,
               }}
             />
-            <TextField
+            <TextField value={rg} onChange={event => setRg(event.target.value)}
               disabled
               label="RG"
               style={{
@@ -156,7 +219,7 @@ const FormularioFuncionario = (props) => {
         )}
         {tipo === "cadastrar" && (
           <div className="contentForm">
-            <TextField
+            <TextField value={carteira} onChange={event => setCarteira(event.target.value)}
               required
               label="Carteira de trabalho"
               style={{
@@ -166,7 +229,7 @@ const FormularioFuncionario = (props) => {
                 justifyContent: "space-between",
               }}
             />
-            <TextField
+            <TextField value={cep} onChange={event => setCep(event.target.value)}
               required
               label="CEP"
               style={{
@@ -177,7 +240,7 @@ const FormularioFuncionario = (props) => {
         )}
         {tipo === "editar" && (
           <div className="contentForm">
-            <TextField
+            <TextField value={carteira} onChange={event => setCarteira(event.target.value)}
               disabled
               label="Carteira de trabalho"
               style={{
@@ -187,7 +250,7 @@ const FormularioFuncionario = (props) => {
                 justifyContent: "space-between",
               }}
             />
-            <TextField
+            <TextField value={cep} onChange={event => setCep(event.target.value)}
               required
               label="CEP"
               style={{
@@ -197,7 +260,7 @@ const FormularioFuncionario = (props) => {
           </div>
         )}
         <div className="contentForm">
-          <TextField
+          <TextField value={rua} onChange={event => setRua(event.target.value)}
             required
             label="Rua"
             style={{
@@ -210,7 +273,7 @@ const FormularioFuncionario = (props) => {
               shrink: true,
             }}
           />
-          <TextField
+          <TextField value={numero} onChange={event => setNumero(event.target.value)}
             required
             label="Numero"
             style={{

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Menubar from "../components/MenubarComponent";
 import Pagamento from "../components/Pedido/PedidoPagamento";
 import Observacoes from "../components/Pedido/PedidoObservacao";
@@ -10,9 +10,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { ToastContainer, toast } from "react-toastify";
+import TextField from "@material-ui/core/TextField";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
 import "../components/styles/ConcluirPedidoStyle.css";
+
+import FacadePedido from "../Facade/FacadePedido";
+const facadePedido = new FacadePedido();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +33,25 @@ const Concluir = () => {
   const convertedUser = JSON.parse(user);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+
+  const [itemFormaPag, setFormaPag] = React.useState("dinheiro");
+  const [valueFormaExpedicao, setFormaExpedicao] = React.useState("balcao");
+  const [observacoesValue, setObservacoes] = React.useState("Nenhuma");
+  const [cpfNF, setCpfNF] = React.useState("");
+  const [endereco, setEndereco] = React.useState("");
+  const [produtosPedido, setProdutosPedido] = React.useState(
+    JSON.parse(localStorage.getItem("produtosPedido"))
+  );
+  const [valorPedido, setValorPedido] = React.useState(
+    JSON.parse(localStorage.getItem("valorPedido"))
+  );
+  const [flagPago] = React.useState("nao");
+  const [cpfCliente, setCpfCliente] = React.useState("");
+
+  useEffect(() => {
+    if (convertedUser) setCpfCliente(convertedUser.name);
+  });
+
   const toastStyle = {
     position: "top-right",
     autoClose: 1500,
@@ -48,12 +71,53 @@ const Concluir = () => {
   };
   const handleSave = (event) => {
     event.preventDefault();
-    toast.success("🍕 Pedido feito! Nota fiscal emitida!", {
-      toastStyle,
-    });
-    setTimeout(() => {
-      history.push("/");
-    }, 2000);
+
+    var today = new Date();
+
+    var date =
+      today.getFullYear() +
+      "-" +
+      ("0" + (today.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + today.getDate()).slice(-2);
+
+    var time =
+      ("0" + today.getHours()).slice(-2) +
+      ":" +
+      ("0" + today.getMinutes()).slice(-2) +
+      ":" +
+      ("0" + today.getSeconds()).slice(-2);
+
+    facadePedido
+      .postPedido(
+        produtosPedido,
+        itemFormaPag,
+        valueFormaExpedicao,
+        endereco,
+        date,
+        time,
+        cpfCliente,
+        cpfNF,
+        observacoesValue,
+        valorPedido,
+        flagPago
+      )
+      .then((result) => {
+        toast.success(
+          "🍕 Pedido feito e nota fiscal emitida! Acompanhe seu pedido na página Minha conta",
+          {
+            toastStyle,
+          }
+        );
+        setTimeout(() => {
+          history.push("/minhaConta");
+        }, 4000);
+      })
+      .catch((error) => {
+        toast.error("🍕 Ocorreu um erro ao registrar o pedido!", {
+          toastStyle,
+        });
+      });
   };
   return (
     <>
@@ -62,13 +126,37 @@ const Concluir = () => {
         <h1>Concluir Pedido</h1>
         <p>Por fim, preencha os seguintes campos.</p>
         <form className={classes.root} onSubmit={handleSave}>
-          <Pagamento />
-          <Observacoes />
+          <TextField
+            style={{ width: 100 }}
+            id="valorPedido"
+            onChange={(event) =>
+              setValorPedido(event.target.value.replace("R$ ", ""))
+            }
+            value={"R$ " + valorPedido}
+            label="Valor Total"
+            disabled
+          />
           {convertedUser && convertedUser.type === "C" && (
-            <Expedicao type="cliente" />
+            <Expedicao
+              type="cliente"
+              setEndereco={setEndereco}
+              setExpedicao={setFormaExpedicao}
+              endereco={endereco}
+              formaExpedicao={valueFormaExpedicao}
+            />
           )}
-          {!convertedUser && <Expedicao type="visitante" />}
-          <NotaFiscalCpf />
+          {!convertedUser && (
+            <Expedicao
+              type="visitante"
+              setEndereco={setEndereco}
+              setExpedicao={setFormaExpedicao}
+              endereco={endereco}
+              formaExpedicao={valueFormaExpedicao}
+            />
+          )}
+          <Pagamento setPagamento={setFormaPag} formaPag={itemFormaPag} />
+          <Observacoes setObs={setObservacoes} observacoes={observacoesValue} />
+          <NotaFiscalCpf setCpfNF={setCpfNF} cpfNF={cpfNF} />
 
           <div className="RPBotoes">
             <Button

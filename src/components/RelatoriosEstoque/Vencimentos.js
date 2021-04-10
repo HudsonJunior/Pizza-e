@@ -1,61 +1,82 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
+import FacadeRelatorioEstoque from "../../Facade/FacadeRelatorioEstoque";
 
-const data = [
-  {
-    data: "10-02-2020",
-    codigoProd: 1,
-    quantidade: 2,
-  },
-  {
-    data: "10-02-2020",
-    codigoProd: 2,
-    quantidade: 4,
-  },
-  {
-    data: "10-02-2020",
-    codigoProd: 3,
-    quantidade: 9,
-  },
-  {
-    data: "10-02-2020",
-    codigoProd: 4,
-    quantidade: 1,
-  },
-];
+const facadeRelatorio = new FacadeRelatorioEstoque();
 
 const Vencimentos = () => {
+  let today = new Date();
+  let currentDate =
+    today.getFullYear() +
+    "-" +
+    ("0" + (today.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + today.getDate()).slice(-2);
+
+  const [relatorio, setRelatorio] = React.useState([]);
+  const [data, setData] = React.useState(currentDate);
+
+  useEffect(() => {
+    if (relatorio) {
+      facadeRelatorio.getEstoqueVencido(data, setRelatorio);
+    }
+  }, [data]);
+
+  const formataData = (data) => {
+    const novaData = new Date(data);
+    return (
+      ("0" + (novaData.getDate() + 1)).slice(-2) +
+      "/" +
+      ("0" + (novaData.getMonth() + 1)).slice(-2) +
+      "/" +
+      novaData.getFullYear()
+    );
+  };
+
   return (
     <div>
       <TextField
         id="dateI"
         label="Data"
         type="date"
-        defaultValue="2020-02-10"
+        defaultValue={currentDate}
         InputLabelProps={{
           shrink: true,
         }}
+        value={data}
+        onChange={(event) => setData(event.target.value)}
       />
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <td>Data</td>
-            <td>Código do Produto</td>
-            <td>Quantidade</td>
-          </tr>
-        </thead>
-        {data.map((item) => (
-          <tbody>
+      {relatorio.length > 0 ? (
+        <Table striped bordered hover>
+          <thead>
             <tr>
-              <td>{item.data}</td>
-              <td>{item.codigoProd}</td>
-              <td>{item.quantidade}</td>
+              <th>Nome do Produto</th>
+              <th>Valor</th>
+              <th>Peso</th>
+              <th>Data de validade</th>
             </tr>
-          </tbody>
-        ))}
-      </Table>
+          </thead>
+          {relatorio.map((item) => (
+            <tbody>
+              <tr>
+                <td>{item.nome}</td>
+                <td>{item.valor}</td>
+                <td>{item.peso}</td>
+                <td>{formataData(item.validade)}</td>
+              </tr>
+            </tbody>
+          ))}
+        </Table>
+      ) : (
+        <pre>
+          <p>
+            Não foi encontrado nenhum produto no estoque vencido até esta
+            data...
+          </p>
+        </pre>
+      )}
       <Button
         variant="contained"
         color="primary"

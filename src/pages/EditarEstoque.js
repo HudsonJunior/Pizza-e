@@ -2,7 +2,12 @@ import React from "react";
 import Menubar from "../components/MenubarComponent";
 import FormEstoque from "../components/FormEstoque";
 import "../components/styles/FormStyle.css";
-const EditarEstoque = () => {
+
+
+const EditarEstoque = (props) => {
+  console.log('flag')
+  const { item } = props.location.state
+  console.log(item)
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   return (
@@ -12,7 +17,7 @@ const EditarEstoque = () => {
         <div className="contentForm">
           <h2>Editar produto no estoque</h2>
           <p>Atualize os dados desejados...</p>
-          <FormEstoque type="editar" />
+          <FormEstoque type="editar" item={item}/>
         </div>
       </div>
     </>
