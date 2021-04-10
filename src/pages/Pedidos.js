@@ -6,11 +6,9 @@ import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 
-import FacadePedido from "../Facade/FacedePedido.js";
+import FacadePedido from "../Facade/FacadePedido.js";
 
 const facadePedido = new FacadePedido();
-
-const axios = require("axios");
 
 const Pedidos = () => {
   const history = useHistory();

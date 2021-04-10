@@ -31,7 +31,6 @@ export default class FacadePedido {
           statusPagamento,
         });
         resolve();
-        console.log("aaaaaa");
       } catch (error) {
         reject(error);
       }
@@ -61,6 +60,30 @@ export default class FacadePedido {
       setPedidos(pedidosResponse);
     } catch (error) {
       setPedidos([]);
+    }
+  };
+
+  getVendaData = async (dataI, dataF, setRelatorio) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/pedido/datas?dataI=${dataI}&dataF=${dataF}`
+      );
+      const vendaDatas = await response.data;
+      setRelatorio(vendaDatas);
+    } catch (error) {
+      setRelatorio([]);
+    }
+  };
+
+  getVendaProduto = async (nome, setRelatorio) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/pedido/produto?nomeProduto=${nome}`
+      );
+      const vendaProduto = await response.data;
+      setRelatorio(vendaProduto);
+    } catch (error) {
+      setRelatorio([]);
     }
   };
 }

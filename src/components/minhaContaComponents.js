@@ -11,7 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TabelaMinhaConta from "./TabelaMinhaConta";
-import FacadePedido from "../Facade/FacedePedido.js";
+import FacadePedido from "../Facade/FacadePedido";
 import "./styles/cadastrarCliente.css";
 
 import clsx from "clsx";

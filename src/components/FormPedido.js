@@ -29,7 +29,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import { MenuItem } from "@material-ui/core";
 
-import FacadePedido from "../Facade/FacedePedido.js";
+import FacadePedido from "../Facade/FacadePedido";
 
 const facadePedido = new FacadePedido();
 

@@ -15,7 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
 import "../components/styles/ConcluirPedidoStyle.css";
 
-import FacadePedido from "../Facade/FacedePedido.js";
+import FacadePedido from "../Facade/FacadePedido";
 const facadePedido = new FacadePedido();
 
 const useStyles = makeStyles((theme) => ({
