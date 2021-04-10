@@ -1,73 +1,66 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
+import FacadeRelatorioEstoque from "../../Facade/FacadeRelatorioEstoque";
 
-const data = [
-  {
-    data: "10-02-2020",
-    codigoProd: 1,
-    acao: "adição",
-    quantidade: 2,
-    usuario: "gerente",
-  },
-  {
-    data: "10-02-2020",
-    codigoProd: 2,
-    acao: "remoção",
-    quantidade: 4,
-    usuario: "funcionário",
-  },
-  {
-    data: "10-02-2020",
-    codigoProd: 3,
-    acao: "adição",
-    quantidade: 9,
-    usuario: "gerente",
-  },
-  {
-    data: "10-02-2020",
-    codigoProd: 4,
-    acao: "cadastro",
-    quantidade: 1,
-    usuario: "gerente",
-  },
-];
+const facadeRelatorio = new FacadeRelatorioEstoque();
 
 const Movimentacoes = () => {
+  let today = new Date();
+  let currentDate =
+    today.getFullYear() +
+    "-" +
+    ("0" + (today.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + today.getDate()).slice(-2);
+
+  const [relatorio, setRelatorio] = React.useState([]);
+  const [data, setData] = React.useState(currentDate);
+
+  useEffect(() => {
+    if (relatorio) {
+      facadeRelatorio.getMovimentacoes(data, setRelatorio);
+    }
+  }, [data]);
+
   return (
     <div>
       <TextField
         id="dateI"
         label="Data"
         type="date"
-        defaultValue="2020-02-10"
+        defaultValue={currentDate}
         InputLabelProps={{
           shrink: true,
         }}
+        value={data}
+        onChange={(event) => setData(event.target.value)}
       />
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <td>Data</td>
-            <td>Código do Produto</td>
-            <td>Ação</td>
-            <td>Quantidade</td>
-            <td>Usuário</td>
-          </tr>
-        </thead>
-        {data.map((item) => (
-          <tbody>
+      {relatorio.length > 0 ? (
+        <Table striped bordered hover>
+          <thead>
             <tr>
-              <td>{item.data}</td>
-              <td>{item.codigoProd}</td>
-              <td>{item.acao}</td>
-              <td>{item.quantidade}</td>
-              <td>{item.usuario}</td>
+              <th>ID do Produto</th>
+              <th>Nome do Produto</th>
+              <th>Ação</th>
             </tr>
-          </tbody>
-        ))}
-      </Table>
+          </thead>
+          {relatorio.map((item) => (
+            <tbody>
+              <tr>
+                <td>{item.idProduto}</td>
+                <td>{item.nomeProduto}</td>
+                <td>{item.acao}</td>
+              </tr>
+            </tbody>
+          ))}
+        </Table>
+      ) : (
+        <pre>
+          <p>Nenhuma movimentação no estoque foi registrada nesta data...</p>
+        </pre>
+      )}
       <Button
         variant="contained"
         color="primary"
