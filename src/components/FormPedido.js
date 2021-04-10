@@ -158,38 +158,24 @@ const FormPedido = (props) => {
         });
       }
     } else {
-      axios
-        .patch("http://localhost:8080/pedido", {
-          produtos,
-          formaPagamento: itemFormaPag,
-          formaExpedicao: valueFormaExpedicao,
-          endereco: endereco,
-          data: item.data,
-          hora: item.time,
-          cpfCliente,
-          cpfNF,
-          observacoes: observacoesValue,
-          statusPedido: status,
-          valor: parseFloat(valorPedido),
-          statusPagamento: flagPago,
-          id: item._id,
-        })
-        .then(function (response) {
-          toast.success("🍕 Pedido alterado com sucesso!", {
-            toastStyle,
-          });
-          setTimeout(() => {
-            history.push("/pedidos");
-          }, 2000);
-        })
-        .catch(function (error) {
-          toast.error(error.response?.data.message, {
-            toastStyle,
-          });
-          toast.error(error.response?.data.details, {
-            toastStyle,
-          });
-        });
+      const body = {
+        produtos,
+        formaPagamento: itemFormaPag,
+        formaExpedicao: valueFormaExpedicao,
+        endereco: endereco,
+        data: item.data,
+        hora: item.time,
+        cpfCliente,
+        cpfNF,
+        observacoes: observacoesValue,
+        statusPedido: status,
+        valor: parseFloat(valorPedido),
+        statusPagamento: flagPago,
+        id: item._id,
+      }
+
+      facadePedido.patchPedidos(body, '🍕 Pedido alterado com sucesso!')
+
     }
   };
 

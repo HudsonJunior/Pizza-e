@@ -34,6 +34,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { string } from "yup";
 import { TramRounded } from "@material-ui/icons";
 import { setPageStateUpdate } from "@material-ui/data-grid";
+import FacadeProduto from "../Facade/FacadeProduto";
+import FacadePedido from "../Facade/FacadePedido";
 
 const axios = require("axios");
 const url = window.location.href.replace("http://localhost:3000/", "");
@@ -46,6 +48,8 @@ const GenericTable = ({ data, title }) => {
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
   const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
   const [produtoSelecionado, setProdutoSelecionado] = React.useState({});
+  const facadeProduto = new FacadeProduto()
+  const facadePedido = new FacadePedido()
 
   const handleChangePizza = () => {
     setTipoProduto("pizza");
@@ -88,113 +92,60 @@ const GenericTable = ({ data, title }) => {
   };
 
   const cancelarPedido = (item) => {
-    console.log("item", item);
     if (item.statusPedido == "cancelado") {
       toast.error("Pedido já está como cancelado!", toastStyle);
     } else {
-      axios
-        .patch("http://localhost:8080/pedido", {
-          produtos: item.produtos,
-          formaPagamento: item.formaPagamento,
-          formaExpedicao: item.formaExpedicao,
-          endereco: item.endereco,
-          data: item.data,
-          hora: item.hora,
-          cpfCliente: item.cpfCliente,
-          cpfNF: item.cpfNF,
-          observacoes: item.observacoes,
-          statusPedido: item.statusPedido,
-          valor: parseFloat(item.valor),
-          statusPagamento: item.statusPagamento,
-          id: item._id,
-          cancelar: true,
-        })
-        .then(function (response) {
-          console.log(response);
-          toast.success("🍕 Pedido cancelado com sucesso!", {
-            toastStyle,
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-          toast.error(error.response?.data.message, {
-            toastStyle,
-          });
-          toast.error(error.response?.data.details, {
-            toastStyle,
-          });
-        });
+      const body = {
+        produtos: item.produtos,
+        formaPagamento: item.formaPagamento,
+        formaExpedicao: item.formaExpedicao,
+        endereco: item.endereco,
+        data: item.data,
+        hora: item.hora,
+        cpfCliente: item.cpfCliente,
+        cpfNF: item.cpfNF,
+        observacoes: item.observacoes,
+        statusPedido: item.statusPedido,
+        valor: parseFloat(item.valor),
+        statusPagamento: item.statusPagamento,
+        id: item._id,
+        cancelar: true,
+      }
+
+      facadePedido.patchPedidos(body, '🍕 Pedido cancelado com sucesso!', true)
     }
   };
 
   const desativarProduto = (item) => {
-    console.log("kkkkkkkkk", item);
+    const body = {}
     if (item.tipo == "Pizza") {
-      axios
-        .patch("http://localhost:8080/produtos-finais", {
-          nome: item.nome,
-          valor: item.valor,
-          ingredientes: item.ingredientes,
-          ativado: false,
-          adicionais: item.adicionais,
-          tipo: "Pizza",
-          inicio_promo: item.inicioPromo,
-          fim_promo: item.fimPromo,
-          valor_promocional: item.valorPromocional ?? "",
-        })
-        .then((result) => {
-          toast.success("🍕 Produto desativado com sucesso!", {
-            toastStyle,
-          });
-        })
-        .catch((error) => {
-          if (error.response?.data) {
-            toast.error(error.response.data.message, {
-              toastStyle,
-            });
-            toast.error(error.response.data.details, {
-              toastStyle,
-            });
-          } else {
-            toast.error(
-              "Ocorrou um erro ao desativar o produto, tente novamente!",
-              { toastStyle }
-            );
-          }
-        });
+      body = {
+        nome: item.nome,
+        valor: item.valor,
+        ingredientes: item.ingredientes,
+        ativado: false,
+        adicionais: item.adicionais,
+        tipo: "Pizza",
+        inicio_promo: item.inicioPromo,
+        fim_promo: item.fimPromo,
+        valor_promocional: item.valorPromocional ?? "",
+      }
+
     } else {
-      axios
-        .patch("http://localhost:8080/produtos-finais", {
-          nome: item.nome,
-          valor: item.valor,
-          ativado: false,
-          peso: item.peso,
-          inicio_promo: item.inicioPromo,
-          fim_promo: item.fimPromo,
-          valor_promocional: item.valorPromocional ?? "",
-          tipo: "Normal",
-        })
-        .then(function (response) {
-          toast.success("🍕 Produto desativado com sucesso!", {
-            toastStyle,
-          });
-        })
-        .catch(function (error) {
-          if (error.response?.data) {
-            toast.error(error.response.data.message, {
-              toastStyle,
-            });
-            toast.error(error.response.data.details, {
-              toastStyle,
-            });
-          } else {
-            toast.error(
-              "Ocorrou um erro ao desativar o produto, tente novamente!",
-              { toastStyle }
-            );
-          }
-        });
+      body = {
+        nome: item.nome,
+        valor: item.valor,
+        ativado: false,
+        peso: item.peso,
+        inicio_promo: item.inicioPromo,
+        fim_promo: item.fimPromo,
+        valor_promocional: item.valorPromocional ?? "",
+        tipo: "Normal",
+      }
     }
+
+    facadeProduto.patchProdutos(body, '🍕 Produto desativado com sucesso!', 'Ocorrou um erro ao desativar o produto, tente novamente!', true)
+
   };
 
   const handleClose = (url) => {
@@ -481,7 +432,7 @@ const GenericTable = ({ data, title }) => {
                     <Button
                       variant="danger"
                       data-tip="Desativar"
-                      onClick={(value) => {}}
+                      onClick={(value) => { }}
                     >
                       <ReactTooltip />
                       <FiXCircle size={20} color="#black" />
@@ -852,7 +803,7 @@ const GenericTable = ({ data, title }) => {
                       <FiXCircle
                         size={20}
                         color="#black"
-                        // onclick={deleteItem(item.quantidade)}
+                      // onclick={deleteItem(item.quantidade)}
                       />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
