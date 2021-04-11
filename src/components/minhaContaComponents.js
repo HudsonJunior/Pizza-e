@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MinhaConta = ({ currentUser }) => {
   const user = localStorage.getItem("user");
-  const cpfCliente = JSON.parse(user).name;
+  const cpfCliente = JSON.parse(user).cpf;
   const history = useHistory();
   const classes = useStyles();
   const [alterar, setAlterar] = React.useState(false);

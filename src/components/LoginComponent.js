@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { FiChevronLeft } from "react-icons/fi";
+import FacadeGeral from "../Facade/FacadeGeral";
 
 const Login = (props) => {
   const history = useHistory();
@@ -36,69 +37,39 @@ const Login = (props) => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    const users = [
-      {
-        id: Math.random(String()),
-        name: "cliente",
-        type: "C",
-        password: "123senha",
-      },
-      {
-        id: Math.random(String()),
-        name: "funcionario",
-        type: "F",
-        password: "123senha",
-      },
-      {
-        id: Math.random(String()),
-        name: "gerente",
-        type: "G",
-        password: "123senha",
-      },
-      {
-        id: Math.random(String()),
-        name: "09227240918",
-        type: "C",
-        password: "123senha",
-      },
-    ];
 
-    const currentUser = users.find((elemento) => elemento.name === user);
-    if (currentUser) {
-      if (tipo === "pedido") {
-        if (currentUser.password === senha) {
-          toast.success("🍕 Login feito!", {
-            toastStyle,
-          });
-          localStorage.setItem("user", JSON.stringify(currentUser));
-          setTimeout(() => {
-            history.push("/concluir-pedido");
-          }, 1500);
-        } else {
-          return toast.error("🍕 Credenciais incorretas", {
-            toastStyle,
-          });
+    var facadeGeral = new FacadeGeral()
+
+    var currentUser = null
+
+    facadeGeral.login(user, senha, toastStyle)
+      .then(result => {
+        currentUser = result.data.data
+
+
+        if (currentUser) {
+          if (tipo === "pedido") {
+            toast.success("🍕 Login feito!", {
+              toastStyle,
+            });
+            localStorage.setItem("user", JSON.stringify(currentUser));
+            setTimeout(() => {
+              history.push("/concluir-pedido");
+            }, 1500);
+
+          } else {
+
+            localStorage.setItem("user", JSON.stringify(currentUser));
+            setTimeout(() => {
+              history.push("/");
+            }, 1500);
+          }
         }
-      } else {
-        if (currentUser.password === senha) {
-          toast.success("🍕 Login feito!", {
-            toastStyle,
-          });
-          localStorage.setItem("user", JSON.stringify(currentUser));
-          setTimeout(() => {
-            history.push("/");
-          }, 1500);
-        } else {
-          return toast.error("🍕 Credenciais incorretas", {
-            toastStyle,
-          });
-        }
-      }
-    } else {
-      return toast.error("🍕 Usuário não encontrado", {
-        toastStyle,
-      });
-    }
+      }).catch(error => {
+        console.log(error)
+      })
+
+
   };
 
   return (
