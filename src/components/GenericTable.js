@@ -45,6 +45,8 @@ const GenericTable = ({ data, title }) => {
   const [open, setOpen] = React.useState(false);
   var itensQuantidade = [];
 
+  const [cpfCliente,setCpfCliente] = React.useState("");
+
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
   const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
   const [statusGeneric, setStatusGeneric] = React.useState("ativado");
@@ -78,6 +80,13 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+  
+  const editarCliente = (cpfCliente) =>{
+    
+    setCpfCliente(cpfCliente);
+    console.log(cpfCliente);
+    handleClickOpen();
+  }
 
   const [end, setEnd] = React.useState(false);
 
@@ -425,7 +434,7 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
-                <td>ID</td>
+                
                 <td>CPF</td>
                 <td>Nome</td>
                 <td>Endereco</td>
@@ -437,7 +446,7 @@ const GenericTable = ({ data, title }) => {
             {data.map((item) => (
               <tbody>
                 <tr>
-                  <td>{item.id}</td>
+                  
                   <td>{item.cpf}</td>
                   <td>{item.nome}</td>
                   <td>{item.endereco}</td>
@@ -452,7 +461,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={handleClickOpen}
+                      onClick={()=>editarCliente(item.cpf)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -481,7 +490,7 @@ const GenericTable = ({ data, title }) => {
                       id="name"
                       label="Nome"
                       type="name"
-                      fullWidth
+                      fullWidth   
                     />
                     <TextField
                       autoFocus
