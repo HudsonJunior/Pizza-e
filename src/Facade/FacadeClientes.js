@@ -3,33 +3,30 @@ const axios = require("axios");
 
 export default class FacadeClientes {
 
-    patchClientes = async (body, messageSuccess, cancelar = false, history, toastStyle) => {
-        axios
-          .patch("http://localhost:8080/clientes", {
-            ...body,
-          })
-          .then(function (response) {
-            toast.success(messageSuccess,
-              toastStyle,
+    getCliente = async (cpf,setCliente) => {
+        try {
+           
+            const response = await axios.get(
+                `http://localhost:8080/clientes?cpf=${cpf}`
             );
-            if (cancelar) {
-              history.go(0)
-            }
-            else {
-              setTimeout(() => {
-                history.push("/clientes");
-              }, 2000);
-            }
-          })
-          .catch(function (error) {
-            toast.error(error.response?.data.message,
-              toastStyle,
-            );
-            toast.error(error.response?.data.details,
-              toastStyle,
-            );
-          });
-    }
+            const produtosResponse = await response.data;
+            setCliente(produtosResponse[0]);
+            console.log("facade",produtosResponse[0])
+        } catch (error) {
+            setCliente([]);
+        }
+    };
+
+    delCliente(cpf){
+      return new Promise(function(resolve, reject){
+          try{
+              axios.delete(`http://localhost:8080/clientes?cpf=${cpf}`, {});
+              resolve();
+          }catch(error){
+              reject(error);
+          }
+      })
+  }
 
 
 }

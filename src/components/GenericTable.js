@@ -36,7 +36,7 @@ import { TramRounded } from "@material-ui/icons";
 import { setPageStateUpdate } from "@material-ui/data-grid";
 import FacadeProduto from "../Facade/FacadeProduto";
 import FacadePedido from "../Facade/FacadePedido";
-
+import FacadeClientes from "../Facade/FacadeClientes";
 const axios = require("axios");
 const url = window.location.href.replace("http://localhost:3000/", "");
 
@@ -54,6 +54,7 @@ const GenericTable = ({ data, title }) => {
   const [produtoSelecionado, setProdutoSelecionado] = React.useState({});
   const facadeProduto = new FacadeProduto()
   const facadePedido = new FacadePedido()
+  const facadeClientes = new FacadeClientes()
 
   const handleChangePizza = () => {
     setTipoProduto("pizza");
@@ -80,14 +81,33 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
-  //MAEDA: testando nova versao de navagacao
-  const editarCliente = (cpfCliente) =>{
-    
-    setCpfCliente(cpfCliente);
-    console.log(cpfCliente);
-    handleClickOpen();
+  const [openDelCliente,setOpenDelCliente]=React.useState("");
+
+  const handleClickCloseCliente = ()=>{
+    setOpenDelCliente(false);
   }
+
+  const handleClickOpenCliente =(cpf)=>{
+    setCpfCliente(cpf);
+    setOpenDelCliente(true);
+  }
+
+  const deleteCliente = () => {
+    //setOpen(false);
+    facadeClientes.delCliente(cpfCliente).then(result => { toast.success("🍕 Registro deletado com sucesso!", {
+      toastStyle,
+    })
+    setTimeout(() => {
+      history.go(0);
+    }, 3000);
+  })
+    .catch(error => {
+      console.log(error)
+        toast.error("🍕 Falha ao apagar Cliente!", {
+            toastStyle,
+        })
+    })
+}
 
   const [end, setEnd] = React.useState(false);
 
@@ -469,11 +489,40 @@ const GenericTable = ({ data, title }) => {
                     <Button
                       variant="danger"
                       data-tip="Desativar"
-                      onClick={(value) => { }}
+                      onClick={(value) => {handleClickOpenCliente(item.cpf)}}
                     >
                       <ReactTooltip />
                       <FiXCircle size={20} color="#black" />
                     </Button>
+
+                    <Dialog open={openDelCliente} onClose={handleClickCloseCliente}>
+                      <DialogTitle id="alert-dialog-apagar">
+                        {
+                          "Deseja realmente deletar os registros do Cliente?"
+                        }
+                      </DialogTitle>
+                      <DialogActions>
+                        <Button
+                          variant="danger"
+                          className="botao"
+                    
+                          onClick={handleClickCloseCliente}
+                          color="primary"
+                        >
+                          Não
+                        </Button>
+
+                          <Button
+                            className="botao"
+                            variant="success"
+                            onClick={() => deleteCliente()}
+                            color="primary"
+                            autoFocus
+                          >
+                            Sim
+                        </Button>
+                        </DialogActions>
+                      </Dialog>
                   </td>
                 </tr>
                 

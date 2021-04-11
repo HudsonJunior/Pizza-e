@@ -12,6 +12,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TabelaMinhaConta from "./TabelaMinhaConta";
 import FacadePedido from "../Facade/FacadePedido";
+import FacadeClientes from "../Facade/FacadeClientes";
 import "./styles/cadastrarCliente.css";
 
 import clsx from "clsx";
@@ -20,6 +21,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { HistoryTwoTone } from "@material-ui/icons";
 import { parseJSON } from "date-fns";
 
+const facadeClientes = new FacadeClientes();
 const facadePedido = new FacadePedido();
 
 const useStyles = makeStyles((theme) => ({
@@ -40,8 +42,19 @@ const MinhaConta = ({ currentUser }) => {
   const [mensagem, setMensagem] = React.useState(false);
   const [pedidos, setPedidos] = React.useState([]);
 
+  
+
   useEffect(() => {
+    
+    
     facadePedido.getPedidosCPF(cpfCliente, setPedidos);
+    facadeClientes.getCliente(cpfCliente,setCliente);
+
+
+    console.log("-------------",cliente);
+
+
+
   }, []);
 
   const mostrarMensagem = () => {
@@ -95,7 +108,7 @@ const MinhaConta = ({ currentUser }) => {
                 disabled
                 id="standart-required"
                 label="CPF"
-                defaultValue={data.cpf}
+                defaultValue={cpfCliente}
               />
               <TextField
                 required
@@ -139,7 +152,7 @@ const MinhaConta = ({ currentUser }) => {
                 disabled
                 id="standart-required"
                 label="CPF"
-                defaultValue={func.cpf}
+                defaultValue={cpfCliente}
               />
               <TextField
                 disabled
