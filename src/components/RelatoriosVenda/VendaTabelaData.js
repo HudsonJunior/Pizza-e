@@ -51,9 +51,9 @@ const TabelaData = () => {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <td>ID do produto</td>
-                <td>Descrição</td>
-                <td>Quantidade Vendida</td>
+                <th>ID do produto</th>
+                <th>Descrição</th>
+                <th>Quantidade Vendida</th>
               </tr>
             </thead>
             {relatorio.map((item) => {
