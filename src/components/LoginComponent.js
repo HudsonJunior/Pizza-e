@@ -66,9 +66,7 @@ const Login = (props) => {
           }
         }
       }).catch(error => {
-        toast.error("🍕 Usuário não encontrado", {
-          toastStyle,
-        });
+        console.log(error)
       })
 
 
