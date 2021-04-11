@@ -22,7 +22,7 @@ const TabelaCodigo = () => {
   };
 
   return (
-    <>
+    <div id="relatorio">
       <InputGroup className="col-3 mb-3" styles={{ paddingLeft: 0 }}>
         <InputGroup.Prepend>
           <InputGroup.Text id="basic-addon1">
@@ -47,7 +47,7 @@ const TabelaCodigo = () => {
               <td>Quantidade Vendida</td>
             </tr>
           </thead>
-          {relatorio.map((item) => (
+          {relatorio.reverse().map((item) => (
             <tbody>
               <tr>
                 <td>{item._id}</td>
@@ -63,7 +63,7 @@ const TabelaCodigo = () => {
           <p>Nenhum pedido foi registrado com este produto...</p>
         </pre>
       )}
-    </>
+    </div>
   );
 };
 export default TabelaCodigo;

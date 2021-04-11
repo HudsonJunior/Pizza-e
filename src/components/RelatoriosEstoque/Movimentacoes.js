@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 import TextField from "@material-ui/core/TextField";
 import FacadeRelatorioEstoque from "../../Facade/FacadeRelatorioEstoque";
 
@@ -25,7 +24,7 @@ const Movimentacoes = () => {
   }, [data]);
 
   return (
-    <div>
+    <div id="relatorio">
       <TextField
         id="dateI"
         label="Data"
@@ -61,19 +60,6 @@ const Movimentacoes = () => {
           <p>Nenhuma movimentação no estoque foi registrada nesta data...</p>
         </pre>
       )}
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        style={{
-          borderWidth: 1,
-          borderColor: "black",
-          margin: 20,
-          backgroundColor: "lightGray",
-        }}
-      >
-        Baixar
-      </Button>
     </div>
   );
 };

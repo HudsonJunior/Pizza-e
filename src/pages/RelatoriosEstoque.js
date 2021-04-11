@@ -8,6 +8,10 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Movimentacoes from "../components/RelatoriosEstoque/Movimentacoes";
 import Vencimentos from "../components/RelatoriosEstoque/Vencimentos";
 import QuantidadeBaixa from "../components/RelatoriosEstoque/QuantidadeBaixa";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import { Button } from "react-bootstrap";
 
 const RelatoriosVenda = () => {
   const user = localStorage.getItem("user");
@@ -27,6 +31,28 @@ const RelatoriosVenda = () => {
       return <QuantidadeBaixa />;
     }
   }
+
+  const salvar = () => {
+    var titulo = "";
+    if (value === "mov") {
+      titulo = "Relatorio_Estoque_Movimentacoes.pdf";
+    } else if (value === "venc") {
+      titulo = "Relatorio_Estoque_Vencimento.pdf";
+    } else {
+      titulo = "Relatorio_Estoque_Quantidade.pdf";
+    }
+    const input = document.querySelector("#relatorio");
+    html2canvas(input).then((canvas) => {
+      document.body.appendChild(canvas);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      const imgProps = pdf.getImageProperties(canvas);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(titulo);
+    });
+  };
 
   return (
     <>
@@ -58,6 +84,21 @@ const RelatoriosVenda = () => {
         </RadioGroup>
       </FormControl>
       {CarregaTabela()}
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        style={{
+          borderWidth: 1,
+          borderColor: "black",
+          margin: 20,
+          backgroundColor: "lightGray",
+        }}
+        onClick={() => salvar()}
+      >
+        <GetAppIcon />
+        Salvar
+      </Button>
     </>
   );
 };

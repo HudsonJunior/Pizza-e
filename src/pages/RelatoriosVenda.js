@@ -8,6 +8,9 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import { Button } from "react-bootstrap";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 const RelatoriosVenda = () => {
   const user = localStorage.getItem("user");
@@ -20,6 +23,26 @@ const RelatoriosVenda = () => {
 
   const CarregaTabela = () => {
     return value === "data" ? <TabelaData /> : <TabelaCodigo />;
+  };
+
+  const salvar = () => {
+    var titulo = "";
+    if (value === "data") {
+      titulo = "Relatorio_Venda_Intervalo_Datas.pdf";
+    } else {
+      titulo = "Relatorio_Venda_Nome_Produto.pdf";
+    }
+    const input = document.querySelector("#relatorio");
+    html2canvas(input).then((canvas) => {
+      document.body.appendChild(canvas);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      const imgProps = pdf.getImageProperties(canvas);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(titulo);
+    });
   };
 
   return (
@@ -57,7 +80,9 @@ const RelatoriosVenda = () => {
           margin: 20,
           backgroundColor: "lightGray",
         }}
+        onClick={() => salvar()}
       >
+        <GetAppIcon />
         Salvar
       </Button>
     </>
