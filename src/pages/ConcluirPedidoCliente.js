@@ -109,6 +109,8 @@ const Concluir = () => {
             toastStyle,
           }
         );
+        localStorage.removeItem("produtosPedido");
+        localStorage.removeItem("valorPedido");
         setTimeout(() => {
           history.push("/minhaConta");
         }, 4000);
@@ -168,13 +170,12 @@ const Concluir = () => {
             </Button>
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle id="alert-dialog-VoltarPedido">
-                {"Deseja continuar o registro do pedido?"}
+                {"Deseja revisar o pedido novamente?"}
               </DialogTitle>
               <DialogActions>
                 <Button
                   className="botaoNaoPedido"
                   variant="danger"
-                  href="/cardapio"
                   onClick={handleClose}
                   color="primary"
                 >
@@ -184,6 +185,7 @@ const Concluir = () => {
                 <Button
                   variant="success"
                   onClick={handleClose}
+                  href="/revisar-pedido"
                   color="primary"
                   autoFocus
                 >
