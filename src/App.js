@@ -1,13 +1,12 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import "./components/styles/App.css";
-import { Widget } from 'react-chat-widget';
-import 'react-chat-widget/lib/styles.css';
 
 import Login from "../src/pages/Login";
 import Header from "./components/HeaderComponent";
 import Footer from "./components/FooterComponent";
 
+import Chatbot from "./pages/Chatbot"
 import Cardapio from "./pages/Cardapio";
 import Home from "./pages/HomePage";
 import minhaConta from "./pages/minhaConta";
@@ -70,10 +69,7 @@ const App = () => {
             <Route path="/concluir-pedido" component={ConcluirPedidoCliente} />
           </Switch>
           <div className="push"></div>
-          <Widget
-            title="Chat de Atendimento"
-            subtitle="Faça seu pedido com mais facilidade :)"
-          />
+          <Chatbot/>
         </div>
         <Footer className="footer" />
       </div>
