@@ -5,7 +5,10 @@ import TextField from "@material-ui/core/TextField";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
-const axios = require("axios");
+
+import FacadePedido from "../Facade/FacadePedido.js";
+
+const facadePedido = new FacadePedido();
 
 const Pedidos = () => {
   const history = useHistory();
@@ -24,21 +27,9 @@ const Pedidos = () => {
 
   useEffect(() => {
     if (pedidos) {
-      getPedidos(date);
+      facadePedido.getPedidosData(date, setPedidos);
     }
   }, [date]);
-
-  const getPedidos = async (date) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/pedido/data?data=${date}`
-      );
-      const pedidosResponse = await response.data;
-      setPedidos(pedidosResponse);
-    } catch (error) {
-      setPedidos([]);
-    }
-  };
 
   const direcionarCadastro = () => {
     history.push("/gerenciar-pedido", { tipo: "Cadastro" });

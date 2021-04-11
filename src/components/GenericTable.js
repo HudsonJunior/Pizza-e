@@ -35,6 +35,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { string } from "yup";
 import { TramRounded } from "@material-ui/icons";
 import { setPageStateUpdate } from "@material-ui/data-grid";
+import FacadeProduto from "../Facade/FacadeProduto";
+import FacadePedido from "../Facade/FacadePedido";
 
 import FacadeFuncionario from "../Facade/FacadeFuncionario";
 
@@ -53,9 +55,15 @@ const GenericTable = ({ data, title }) => {
   const [cpfFunc, setCpfFunc] = React.useState("");
   var itensQuantidade = [];
 
-  const [valueTipoProduto, setTipoProduto] = React.useState("pizza")
-  const [valueGeneric, setTipoValueGeneric] = React.useState("pizza")
-  const [produtoSelecionado, setProdutoSelecionado] = React.useState({})
+  const [cpfCliente,setCpfCliente] = React.useState("");
+
+  const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
+  const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
+  const [statusGeneric, setStatusGeneric] = React.useState("ativado");
+  const [isAtivado, setIsAtivado] = React.useState('true');
+  const [produtoSelecionado, setProdutoSelecionado] = React.useState({});
+  const facadeProduto = new FacadeProduto()
+  const facadePedido = new FacadePedido()
 
   const handleChangePizza = () => {
     setTipoProduto("pizza");
@@ -92,6 +100,13 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpen = (id) => {
     setOpen(true);
   };
+  
+  const editarCliente = (cpfCliente) =>{
+    
+    setCpfCliente(cpfCliente);
+    console.log(cpfCliente);
+    handleClickOpen();
+  }
 
   const [end, setEnd] = React.useState(false);
 
@@ -108,110 +123,56 @@ const GenericTable = ({ data, title }) => {
   };
 
   const cancelarPedido = (item) => {
-    console.log('item', item)
-    if (item.statusPedido == 'cancelado') {
-      toast.error('Pedido já está como cancelado!', toastStyle)
+    if (item.statusPedido == "cancelado") {
+      toast.error("Pedido já está como cancelado!", toastStyle);
+    } else {
+      const body = {
+        produtos: item.produtos,
+        formaPagamento: item.formaPagamento,
+        formaExpedicao: item.formaExpedicao,
+        endereco: item.endereco,
+        data: item.data,
+        hora: item.hora,
+        cpfCliente: item.cpfCliente,
+        cpfNF: item.cpfNF,
+        observacoes: item.observacoes,
+        statusPedido: item.statusPedido,
+        valor: parseFloat(item.valor),
+        statusPagamento: item.statusPagamento,
+        id: item._id,
+        cancelar: true,
+      }
+
+      facadePedido.patchPedidos(body, '🍕 Pedido cancelado com sucesso!', true, history, toastStyle)
     }
-    else {
-      axios
-        .patch("http://localhost:8080/pedido", {
-          produtos: item.produtos,
-          formaPagamento: item.formaPagamento,
-          formaExpedicao: item.formaExpedicao,
-          endereco: item.endereco,
-          data: item.data,
-          hora: item.hora,
-          cpfCliente: item.cpfCliente,
-          cpfNF: item.cpfNF,
-          observacoes: item.observacoes,
-          statusPedido: item.statusPedido,
-          valor: parseFloat(item.valor),
-          statusPagamento: item.statusPagamento,
-          id: item._id,
-          cancelar: true,
-        })
-        .then(function (response) {
-          console.log(response);
-          toast.success("🍕 Pedido cancelado com sucesso!", {
-            toastStyle,
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-          toast.error(error.response?.data.message, {
-            toastStyle,
-          })
-          toast.error(error.response?.data.details, {
-            toastStyle,
-          })
-        });
-    }
-  }
+  };
 
   const desativarProduto = (item) => {
-    console.log('kkkkkkkkk', item)
+    let body = {}
     if (item.tipo == "Pizza") {
-      axios.patch('http://localhost:8080/produtos-finais', {
+      body = {
         nome: item.nome,
         valor: item.valor,
         ingredientes: item.ingredientes,
         ativado: false,
         adicionais: item.adicionais,
-        tipo: 'Pizza',
+        tipo: "Pizza",
         inicio_promo: item.inicioPromo,
         fim_promo: item.fimPromo,
-        valor_promocional: item.valorPromocional ?? '',
+        valor_promocional: item.valorPromocional ?? "",
+      }
 
-      }).then(result => {
-        toast.success("🍕 Produto desativado com sucesso!", {
-          toastStyle,
-        })
-      })
-        .catch(error => {
-          if (error.response?.data) {
-            toast.error(error.response.data.message, {
-              toastStyle,
-            })
-            toast.error(error.response.data.details, {
-              toastStyle,
-            })
-          }
-          else {
-            toast.error('Ocorrou um erro ao desativar o produto, tente novamente!', { toastStyle, })
-          }
-
-        })
-    }
-    else {
-      axios.patch('http://localhost:8080/produtos-finais', {
+    } else {
+      body = {
         nome: item.nome,
         valor: item.valor,
         ativado: false,
         peso: item.peso,
         inicio_promo: item.inicioPromo,
         fim_promo: item.fimPromo,
-        valor_promocional: item.valorPromocional ?? '',
-        tipo: 'Normal'
-      })
-        .then(function (response) {
-          toast.success("🍕 Produto desativado com sucesso!", {
-            toastStyle,
-          })
-        })
-        .catch(function (error) {
-          if (error.response?.data) {
-            toast.error(error.response.data.message, {
-              toastStyle,
-            })
-            toast.error(error.response.data.details, {
-              toastStyle,
-            })
-          }
-          else {
-            toast.error('Ocorrou um erro ao desativar o produto, tente novamente!', { toastStyle, })
-          }
-
-        });
+        valor_promocional: item.valorPromocional ?? "",
+        tipo: "Normal",
+      }
     }
   }
 
@@ -265,15 +226,16 @@ const GenericTable = ({ data, title }) => {
   };
 
   const handleEdit = (item) => {
-    console.log(item)
+    console.log(item);
     {
       if (url === "pedidos") {
-        if (item.statusPedido == 'cancelado') {
-          toast.error("Não é possivel editar um pedido que já foi cancelado", toastStyle)
-        }
-        else {
+        if (item.statusPedido == "cancelado") {
+          toast.error(
+            "Não é possivel editar um pedido que já foi cancelado",
+            toastStyle
+          );
+        } else {
           history.push("/gerenciar-pedido", { tipo: "Editar", item: item });
-
         }
       }
     }
@@ -285,10 +247,11 @@ const GenericTable = ({ data, title }) => {
         history.push("/gerenciar-produto", { tipo: "Editar", item: item });
     }
     {
-      url === "estoque" && history.push("/editar-estoque", { item: item});
+      url === "estoque" && history.push("/editar-estoque", { item: item });
     }
     {
-      url === "funcionarios" && history.push("/editar-funcionario", {item:item});
+      url === "funcionarios" &&
+        history.push("/editar-funcionario", { item: item });
     }
   };
 
@@ -358,28 +321,53 @@ const GenericTable = ({ data, title }) => {
   return (
     <>
       {url === "produtos" && (
-        <FormControl2 style={{ margin: 10 }} component="RadioTipoProduto">
-          <FormLabel>Escolha o tipo do produto</FormLabel>
-          <RadioGroup
-            aria-label="TipoProduto"
-            name="TipoProduto"
-            value={valueGeneric}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              control={<Radio />}
-              value="pizza"
-              label="Pizza"
-              onChange={handleChangePizza}
-            />
-            <FormControlLabel
-              control={<Radio />}
-              value="normal"
-              label="Normal"
-              onChange={handleChangeProduto}
-            />
-          </RadioGroup>
-        </FormControl2>
+        <>
+          <FormControl2 style={{ margin: 10 }} component="RadioTipoProduto">
+            <FormLabel>Escolha o tipo do produto</FormLabel>
+            <RadioGroup
+              aria-label="TipoProduto"
+              name="TipoProduto"
+              value={valueGeneric}
+              onChange={handleChange}
+            >
+              <FormControlLabel
+                control={<Radio />}
+                value="pizza"
+                label="Pizza"
+                onChange={handleChangePizza}
+              />
+              <FormControlLabel
+                control={<Radio />}
+                value="normal"
+                label="Normal"
+                onChange={handleChangeProduto}
+              />
+            </RadioGroup>
+          </FormControl2>
+          <FormControl2 style={{ margin: 10 }} component="RadioStatusProduto">
+            <FormLabel>Status do Produto</FormLabel>
+            <RadioGroup
+              aria-label="StatusProduto"
+              name="StatusProduto"
+              value={statusGeneric}
+              onChange={(event) => setStatusGeneric(event.target.value)}
+            >
+              <FormControlLabel
+                control={<Radio />}
+                value="ativado"
+                label="Ativado"
+                onChange={() => setIsAtivado('true')}
+              />
+              <FormControlLabel
+                control={<Radio />}
+                value="desativado"
+                label="Desativado"
+                onChange={() => setIsAtivado('false')}
+              />
+            </RadioGroup>
+          </FormControl2>
+        </>
+
       )}
       <Table striped bordered hover>
         {url === "pedidos" && (
@@ -434,7 +422,10 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={() => cancelarPedido(item)}>
+                    <Button
+                      variant="danger"
+                      onClick={() => cancelarPedido(item)}
+                    >
                       <FiXCircle size={20} color="#black" />
                     </Button>
                   </td>
@@ -473,7 +464,7 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
-                <td>ID</td>
+                
                 <td>CPF</td>
                 <td>Nome</td>
                 <td>Endereco</td>
@@ -485,7 +476,7 @@ const GenericTable = ({ data, title }) => {
             {data.map((item) => (
               <tbody>
                 <tr>
-                  <td>{item.id}</td>
+                  
                   <td>{item.cpf}</td>
                   <td>{item.nome}</td>
                   <td>{item.endereco}</td>
@@ -500,7 +491,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={handleClickOpen}
+                      onClick={()=>editarCliente(item.cpf)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -529,7 +520,7 @@ const GenericTable = ({ data, title }) => {
                       id="name"
                       label="Nome"
                       type="name"
-                      fullWidth
+                      fullWidth   
                     />
                     <TextField
                       autoFocus
@@ -604,6 +595,7 @@ const GenericTable = ({ data, title }) => {
                     <td>Valor</td>
                     <td>Ingredientes</td>
                     <td>Adicionais</td>
+                    <td>Ativado</td>
                     <td>Valor promocional</td>
                     <td>Início da promoção</td>
                     <td>Fim da promoção</td>
@@ -611,7 +603,7 @@ const GenericTable = ({ data, title }) => {
                   </tr>
                 </thead>
                 {data.map((item) => {
-                  if (item.tipo === "Pizza") {
+                  if (item.tipo === "Pizza" && item.ativado == isAtivado) {
                     return (
                       <tbody>
                         <tr>
@@ -621,6 +613,7 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.valor}</td>
                           <td>{item.ingredientes}</td>
                           <td>{item.adicionais}</td>
+                          <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
                           <td>{item.valor_promocional || 0}</td>
                           <td>{formataData(item.inicio_promo)}</td>
                           <td>{formataData(item.fim_promo)}</td>
@@ -639,7 +632,11 @@ const GenericTable = ({ data, title }) => {
                               <ReactTooltip />
                               <FiEdit3 size={20} color="#black" />
                             </Button>
-                            <Button variant="danger" data-tip="Desativar" onClick={value => desativarProduto(item)}>
+                            <Button
+                              variant="danger"
+                              data-tip="Desativar"
+                              onClick={(value) => desativarProduto(item)}
+                            >
                               <ReactTooltip />
                               <FiXCircle size={20} color="#black" />
                             </Button>
@@ -685,7 +682,7 @@ const GenericTable = ({ data, title }) => {
                     <td>Nome</td>
                     <td>Valor</td>
                     <td>Peso</td>
-                    <td>Status</td>
+                    <td>Ativado</td>
                     <td>Valor promocional</td>
                     <td>Início da promoção</td>
                     <td>Fim da promoção</td>
@@ -693,7 +690,7 @@ const GenericTable = ({ data, title }) => {
                   </tr>
                 </thead>
                 {data.map((item) => {
-                  if (item.tipo === "Normal") {
+                  if (item.tipo === "Normal" && item.ativado == isAtivado) {
                     return (
                       <tbody>
                         <tr>
@@ -702,7 +699,7 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.nome}</td>
                           <td>{item.valor}</td>
                           <td>{item.peso}</td>
-                          <td>{item.status}</td>
+                          <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
                           <td>{item.valor_promocional || 0}</td>
                           <td>{formataData(item.inicio_promo)}</td>
                           <td>{formataData(item.fim_promo)}</td>
@@ -720,7 +717,11 @@ const GenericTable = ({ data, title }) => {
                               <ReactTooltip />
                               <FiEdit3 size={20} color="#black" />
                             </Button>
-                            <Button variant="danger" data-tip="Desativar" onClick={value => desativarProduto(item)}>
+                            <Button
+                              variant="danger"
+                              data-tip="Desativar"
+                              onClick={(value) => desativarProduto(item)}
+                            >
                               <ReactTooltip />
                               <FiXCircle size={20} color="#black" />
                             </Button>
@@ -758,8 +759,7 @@ const GenericTable = ({ data, title }) => {
               </>
             )}
           </>
-        )
-        }
+        )}
         <FiPlus size={26} color="fff" />
         {url === "estoque" && (
           <>
@@ -771,14 +771,14 @@ const GenericTable = ({ data, title }) => {
                 <td>Peso do item</td>
                 <td>Data de validade</td>
                 <td>Data de fabricação</td>
-                <td>Ações</td> 
+                <td>Ações</td>
               </tr>
             </thead>
             {data.map((item) => (
               <tbody>
                 <tr>
                   <td>{item._id}</td>
-                  <td>{item.nome}</td>  
+                  <td>{item.nome}</td>
                   <td>{item.valor}</td>
                   <td>{item.peso}</td>
                   <td>{item.validade.split("T")[0]}</td>
@@ -791,7 +791,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={value => handleEdit(item)}
+                      onClick={(value) => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -854,7 +854,7 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.cep}</td>
                   <td>{item.rua}</td>
                   <td>{item.numero}</td>
-                  <td>{item.complemento}</td> 
+                  <td>{item.complemento}</td>
                   <td>
                     <Button
                       variant="light"
@@ -863,7 +863,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={value => handleEdit(item)}
+                      onClick={(value) => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -900,16 +900,15 @@ const GenericTable = ({ data, title }) => {
                           >
                             Sim
                         </Button>
-                        </DialogActions>
-                      </Dialog>
-                    </td>
-                  </tr>
-                </tbody>
-              ))}
-            </>
-          )
-        }
-      </Table >
+                      </DialogActions>
+                    </Dialog>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+          </>
+        )}
+      </Table>
       <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
         Adicionar

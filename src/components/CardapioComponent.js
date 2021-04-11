@@ -8,6 +8,7 @@ import { Table } from "react-bootstrap";
 import TextField from "@material-ui/core/TextField";
 
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 const axios = require("axios");
 
@@ -15,6 +16,16 @@ const Cardapio = () => {
   const history = useHistory();
   const [valorPedido, setValorPedido] = useState("00,00");
   const [produtos, setProdutos] = useState([]);
+
+  useEffect(() => {
+    if (
+      localStorage.getItem("produtosPedido") &&
+      localStorage.getItem("valorPedido")
+    ) {
+      setProdutos(JSON.parse(localStorage.getItem("produtosPedido")));
+      setValorPedido(JSON.parse(localStorage.getItem("valorPedido")));
+    }
+  });
 
   const toastStyle = {
     position: "top-right",
@@ -28,10 +39,9 @@ const Cardapio = () => {
 
   const handleNext = () => {
     if (produtos.length > 0) {
-      history.push("/revisar-pedido", {
-        produtos: produtos,
-        valorPedido: valorPedido,
-      });
+      localStorage.setItem("produtosPedido", JSON.stringify(produtos));
+      localStorage.setItem("valorPedido", JSON.stringify(valorPedido));
+      history.push("/revisar-pedido");
     } else {
       toast.error("🍕 Por favor, selecione um item!", {
         toastStyle,
@@ -105,6 +115,7 @@ const Cardapio = () => {
             onChange={(event) => setValorPedido(event.target.value)}
             value={"R$ " + valorPedido}
             label="Valor Total"
+            disabled
           />
         </div>
 

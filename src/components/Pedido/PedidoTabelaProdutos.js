@@ -12,12 +12,12 @@ import FacadeProduto from "../../Facade/FacadeProduto";
 const TabelaProdutoPedido = (props) => {
   const [nomeProduto, setNomeProduto] = React.useState("");
   const [produtos, setProdutos] = React.useState([]);
-  const facadeProdutos = new FacadeProduto()
+  const facadeProdutos = new FacadeProduto();
 
   useEffect(() => {
     if (nomeProduto === "") {
-      facadeProdutos.getProdutos(null, setProdutos);
-    } else facadeProdutos.getProdutos(nomeProduto, setProdutos);
+      facadeProdutos.getProdutos(null, setProdutos, true);
+    } else facadeProdutos.getProdutos(nomeProduto, setProdutos, true);
   }, [nomeProduto]);
 
   const getValor = () => {
@@ -46,7 +46,7 @@ const TabelaProdutoPedido = (props) => {
       props.produtosPedido.push(obj);
     }
     props.setProdutosPedido(props.produtosPedido);
-    facadeProdutos.getProdutos(null, setProdutos);
+    facadeProdutos.getProdutos(null, setProdutos, true);
     getValor();
   };
 
@@ -64,13 +64,13 @@ const TabelaProdutoPedido = (props) => {
       props.produtosPedido.splice(i, 1);
     }
     props.setProdutosPedido(props.produtosPedido);
-    facadeProdutos.getProdutos(null, setProdutos);
+    facadeProdutos.getProdutos(null, setProdutos, true);
     getValor();
   };
 
   const getValorItem = (item) => {
-    let fimPromo = item.fim_promo.split("T")[0];
-    let inicioPromo = item.inicio_promo.split("T")[0];
+    let fimPromo = item.fim_promo?.split("T")[0];
+    let inicioPromo = item.inicio_promo?.split("T")[0];
 
     var today = new Date();
     var date =
@@ -82,8 +82,8 @@ const TabelaProdutoPedido = (props) => {
 
     if (
       item.valor_promocial !== "" &&
-      fimPromo.localeCompare(date) === 1 &&
-      inicioPromo.localeCompare(date === -1)
+      fimPromo?.localeCompare(date) === 1 &&
+      inicioPromo?.localeCompare(date === -1)
     )
       return item.valor_promocial;
     else return item.valor;
@@ -108,52 +108,59 @@ const TabelaProdutoPedido = (props) => {
           onChange={(event) => setNomeProduto(event.target.value)}
         />
       </InputGroup>
-
-      <Table striped bordered hover className="tableProdutosPedido">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Valor Unitário</th>
-            <th>Quantidade</th>
-          </tr>
-        </thead>
-        {produtos.map((item) => (
-          <tbody>
+      {produtos.length > 0 ? (
+        <Table striped bordered hover className="tableProdutosPedido">
+          <thead>
             <tr>
-              <td>{item.nome}</td>
-              <td>{getValorItem(item)}</td>
-              <td>
-                <div style={{ textAlign: "center" }}>
-                  <Fab
-                    size="small"
-                    aria-label="remove"
-                    style={{ backgroundColor: red[500] }}
-                    onClick={() => handleSub(item._id)}
-                  >
-                    <RemoveIcon />
-                  </Fab>
-                  <TextField
-                    style={{ width: 17 }}
-                    id="quantidade"
-                    value={getQtdeProdutos(item._id)}
-                    disabled
-                  />
-                  <Fab
-                    size="small"
-                    aria-label="add"
-                    style={{ backgroundColor: green[500] }}
-                    onClick={() =>
-                      handleAdd(item._id, item.nome, getValorItem(item))
-                    }
-                  >
-                    <AddIcon />
-                  </Fab>
-                </div>
-              </td>
+              <th>Nome</th>
+              <th>Valor Unitário</th>
+              <th>Quantidade</th>
             </tr>
-          </tbody>
-        ))}
-      </Table>
+          </thead>
+          {produtos.map((item) => (
+            <tbody>
+              <tr>
+                <td>{item.nome}</td>
+                <td>{getValorItem(item)}</td>
+                <td>
+                  <div style={{ textAlign: "center" }}>
+                    <Fab
+                      size="small"
+                      aria-label="remove"
+                      style={{ backgroundColor: red[500] }}
+                      onClick={() => handleSub(item._id)}
+                    >
+                      <RemoveIcon />
+                    </Fab>
+                    <TextField
+                      style={{ width: 17 }}
+                      id="quantidade"
+                      value={getQtdeProdutos(item._id)}
+                      disabled
+                    />
+                    <Fab
+                      size="small"
+                      aria-label="add"
+                      style={{ backgroundColor: green[500] }}
+                      onClick={() =>
+                        handleAdd(item._id, item.nome, getValorItem(item))
+                      }
+                    >
+                      <AddIcon />
+                    </Fab>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ))}
+        </Table>
+      ) : (
+        <div>
+          <pre>
+            <p>Nenhum produto está disponível...</p>
+          </pre>
+        </div>
+      )}
     </div>
   );
 };
