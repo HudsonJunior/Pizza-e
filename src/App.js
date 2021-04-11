@@ -20,6 +20,7 @@ import EditarEstoque from "./pages/EditarEstoque";
 import CadastrarFuncionario from "./pages/CadastrarFuncionario";
 import EditarFuncionario from "./pages/EditarFuncionario";
 import RelatoriosVenda from "./pages/RelatoriosVenda";
+import EditarClientes from "./pages/EditarClientes";
 import RelatoriosEstoque from "./pages/RelatoriosEstoque";
 import GerenciarProduto from "./pages/GerenciarProduto";
 import CadastrarCliente from "./pages/CadastrarCliente";
@@ -52,6 +53,7 @@ const App = () => {
               component={CadastrarFuncionario}
             />
             <Route path="/editar-funcionario" component={EditarFuncionario} />
+            <Route path="/editar-clientes" component={EditarClientes}/>
             <Route path="/relatorios-venda" component={RelatoriosVenda} />
             <Route
               path="/relatorios-satisfacao"

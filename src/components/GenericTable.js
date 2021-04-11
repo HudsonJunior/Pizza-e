@@ -81,6 +81,7 @@ const GenericTable = ({ data, title }) => {
     setOpen(true);
   };
   
+  //MAEDA: testando nova versao de navagacao
   const editarCliente = (cpfCliente) =>{
     
     setCpfCliente(cpfCliente);
@@ -196,7 +197,7 @@ const GenericTable = ({ data, title }) => {
       }
     }
     {
-      url === "clientes" && history.push("/");
+      url === "clientes" && history.push("/editar-clientes",{item : item});
     }
     {
       url === "produtos" &&
@@ -461,7 +462,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={()=>editarCliente(item.cpf)}
+                      onClick={()=>handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -475,79 +476,7 @@ const GenericTable = ({ data, title }) => {
                     </Button>
                   </td>
                 </tr>
-                <Dialog
-                  open={open}
-                  onClose={gerenciarFechar}
-                  aria-labelledby="form-dialog-title"
-                >
-                  <DialogTitle id="form-dialog-title">
-                    Editar as informações do cliente
-                  </DialogTitle>
-                  <DialogContent>
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Nome"
-                      type="name"
-                      fullWidth   
-                    />
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Endereço"
-                      type="name"
-                      fullWidth
-                    />
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Email"
-                      type="email"
-                      fullWidth
-                    />
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Telefone"
-                      type="name"
-                      fullWidth
-                    />
-                  </DialogContent>
-                  <DialogActions>
-                    <Botao onClick={gerenciarFechar} color="primary">
-                      Cancel
-                    </Botao>
-                    <Botao onClick={fim} color="primary">
-                      Alterar
-                    </Botao>
-                  </DialogActions>
-                </Dialog>
-                <Dialog
-                  open={end}
-                  onClose={endClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Os dados foram alterados com sucesso!  "}
-                    <FiCheck size={35} color={"green"}></FiCheck>
-                  </DialogTitle>
-
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                      Dados alterados com sucesso.
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={endClose} color="primary" autoFocus>
-                      Ok
-                    </Button>
-                  </DialogActions>
-                </Dialog>
+                
               </tbody>
             ))}
           </>
