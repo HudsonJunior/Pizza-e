@@ -49,7 +49,7 @@ const Concluir = () => {
   const [cpfCliente, setCpfCliente] = React.useState("");
 
   useEffect(() => {
-    if (convertedUser) setCpfCliente(convertedUser.name);
+    if (convertedUser) setCpfCliente(convertedUser.cpf);
   });
 
   const toastStyle = {

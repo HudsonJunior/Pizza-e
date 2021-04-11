@@ -10,7 +10,7 @@ const Home = (props) => {
     <>
       <Menubar currentUser={convertedUser} />
       <div className="containerHome">
-        <h2>Bem vindo, {convertedUser ? convertedUser.name : "Visitante"}</h2>
+        <h2>Bem vindo, {convertedUser ? convertedUser.nome : "Visitante"}</h2>
         <div classname="textGroup">
           <h3>Nossa história</h3>
           <p className="text">
