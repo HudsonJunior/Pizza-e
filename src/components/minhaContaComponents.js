@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 
 const MinhaConta = ({ currentUser }) => {
   const user = localStorage.getItem("user");
-  const cpfCliente = JSON.parse(user).name;
   const history = useHistory();
   const classes = useStyles();
   const [alterar, setAlterar] = React.useState(false);
@@ -41,7 +40,10 @@ const MinhaConta = ({ currentUser }) => {
   const [pedidos, setPedidos] = React.useState([]);
 
   useEffect(() => {
-    facadePedido.getPedidosCPF(cpfCliente, setPedidos);
+    if (user) {
+      const cpfCliente = JSON.parse(user).name;
+      facadePedido.getPedidosCPF(cpfCliente, setPedidos);
+    }
   }, []);
 
   const mostrarMensagem = () => {
