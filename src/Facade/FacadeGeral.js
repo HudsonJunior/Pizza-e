@@ -15,7 +15,7 @@ export default class FacadeGeral {
             try {
                 axios.post("http://localhost:8080/login", { cpf: cpf, senha: senha })
                     .then(result => {
-                        toast.success('Login realizado com sucesso', toastStyle)
+                        toast.success('🍕 Login realizado com sucesso', toastStyle)
                         resolve(result);
                     }).catch(error => {
                         if (error.response?.data) {
