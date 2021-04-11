@@ -1,6 +1,8 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import "./components/styles/App.css";
+import { Widget } from 'react-chat-widget';
+import 'react-chat-widget/lib/styles.css';
 
 import Login from "../src/pages/Login";
 import Header from "./components/HeaderComponent";
@@ -68,6 +70,10 @@ const App = () => {
             <Route path="/concluir-pedido" component={ConcluirPedidoCliente} />
           </Switch>
           <div className="push"></div>
+          <Widget
+            title="Chat de Atendimento"
+            subtitle="Faça seu pedido com mais facilidade :)"
+          />
         </div>
         <Footer className="footer" />
       </div>
