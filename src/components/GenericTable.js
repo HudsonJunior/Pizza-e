@@ -45,15 +45,15 @@ const GenericTable = ({ data, title }) => {
   const [open, setOpen] = React.useState(false);
   var itensQuantidade = [];
 
-  const [cpfCliente,setCpfCliente] = React.useState("");
+  const [cpfCliente, setCpfCliente] = React.useState("");
 
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
   const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
   const [statusGeneric, setStatusGeneric] = React.useState("ativado");
-  const [isAtivado, setIsAtivado] = React.useState('true');
+  const [isAtivado, setIsAtivado] = React.useState("true");
   const [produtoSelecionado, setProdutoSelecionado] = React.useState({});
-  const facadeProduto = new FacadeProduto()
-  const facadePedido = new FacadePedido()
+  const facadeProduto = new FacadeProduto();
+  const facadePedido = new FacadePedido();
 
   const handleChangePizza = () => {
     setTipoProduto("pizza");
@@ -80,13 +80,12 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
-  const editarCliente = (cpfCliente) =>{
-    
+
+  const editarCliente = (cpfCliente) => {
     setCpfCliente(cpfCliente);
     console.log(cpfCliente);
     handleClickOpen();
-  }
+  };
 
   const [end, setEnd] = React.useState(false);
 
@@ -121,14 +120,20 @@ const GenericTable = ({ data, title }) => {
         statusPagamento: item.statusPagamento,
         id: item._id,
         cancelar: true,
-      }
+      };
 
-      facadePedido.patchPedidos(body, '🍕 Pedido cancelado com sucesso!', true, history, toastStyle)
+      facadePedido.patchPedidos(
+        body,
+        "🍕 Pedido cancelado com sucesso!",
+        true,
+        history,
+        toastStyle
+      );
     }
   };
 
   const desativarProduto = (item) => {
-    let body = {}
+    let body = {};
     if (item.tipo == "Pizza") {
       body = {
         nome: item.nome,
@@ -140,8 +145,7 @@ const GenericTable = ({ data, title }) => {
         inicio_promo: item.inicioPromo,
         fim_promo: item.fimPromo,
         valor_promocional: item.valorPromocional ?? "",
-      }
-
+      };
     } else {
       body = {
         nome: item.nome,
@@ -152,11 +156,16 @@ const GenericTable = ({ data, title }) => {
         fim_promo: item.fimPromo,
         valor_promocional: item.valorPromocional ?? "",
         tipo: "Normal",
-      }
+      };
     }
 
-    facadeProduto.patchProdutos(body, '🍕 Produto desativado com sucesso!', 'Ocorrou um erro ao desativar o produto, tente novamente!', true, history)
-
+    facadeProduto.patchProdutos(
+      body,
+      "🍕 Produto desativado com sucesso!",
+      "Ocorrou um erro ao desativar o produto, tente novamente!",
+      true,
+      history
+    );
   };
 
   const handleClose = (url) => {
@@ -326,18 +335,17 @@ const GenericTable = ({ data, title }) => {
                 control={<Radio />}
                 value="ativado"
                 label="Ativado"
-                onChange={() => setIsAtivado('true')}
+                onChange={() => setIsAtivado("true")}
               />
               <FormControlLabel
                 control={<Radio />}
                 value="desativado"
                 label="Desativado"
-                onChange={() => setIsAtivado('false')}
+                onChange={() => setIsAtivado("false")}
               />
             </RadioGroup>
           </FormControl2>
         </>
-
       )}
       <Table striped bordered hover>
         {url === "pedidos" && (
@@ -356,7 +364,6 @@ const GenericTable = ({ data, title }) => {
                 <th>Expedição</th>
                 <th>Endereço</th>
                 <th>CPF Cliente</th>
-                <th>CPF NF</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -379,7 +386,6 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.formaExpedicao}</td>
                   <td>{item.endereco}</td>
                   <td>{item.cpfCliente}</td>
-                  <td>{item.cpfNF}</td>
                   <td>
                     <Button
                       variant="light"
@@ -434,7 +440,6 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
-                
                 <td>CPF</td>
                 <td>Nome</td>
                 <td>Endereco</td>
@@ -446,7 +451,6 @@ const GenericTable = ({ data, title }) => {
             {data.map((item) => (
               <tbody>
                 <tr>
-                  
                   <td>{item.cpf}</td>
                   <td>{item.nome}</td>
                   <td>{item.endereco}</td>
@@ -461,14 +465,14 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={()=>editarCliente(item.cpf)}
+                      onClick={() => editarCliente(item.cpf)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
                     <Button
                       variant="danger"
                       data-tip="Desativar"
-                      onClick={(value) => { }}
+                      onClick={(value) => {}}
                     >
                       <ReactTooltip />
                       <FiXCircle size={20} color="#black" />
@@ -490,7 +494,7 @@ const GenericTable = ({ data, title }) => {
                       id="name"
                       label="Nome"
                       type="name"
-                      fullWidth   
+                      fullWidth
                     />
                     <TextField
                       autoFocus
@@ -583,7 +587,7 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.valor}</td>
                           <td>{item.ingredientes}</td>
                           <td>{item.adicionais}</td>
-                          <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
+                          <td>{item.ativado == "true" ? "Sim" : "Não"}</td>
                           <td>{item.valor_promocional || 0}</td>
                           <td>{formataData(item.inicio_promo)}</td>
                           <td>{formataData(item.fim_promo)}</td>
@@ -669,7 +673,7 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.nome}</td>
                           <td>{item.valor}</td>
                           <td>{item.peso}</td>
-                          <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
+                          <td>{item.ativado == "true" ? "Sim" : "Não"}</td>
                           <td>{item.valor_promocional || 0}</td>
                           <td>{formataData(item.inicio_promo)}</td>
                           <td>{formataData(item.fim_promo)}</td>
@@ -841,7 +845,7 @@ const GenericTable = ({ data, title }) => {
                       <FiXCircle
                         size={20}
                         color="#black"
-                      // onclick={deleteItem(item.quantidade)}
+                        // onclick={deleteItem(item.quantidade)}
                       />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>

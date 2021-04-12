@@ -21,6 +21,7 @@ import Observacoes from "./Pedido/PedidoObservacao";
 import Expedicao from "./Pedido/PedidoExpedicao";
 import TabelaProdutoPedido from "./Pedido/PedidoTabelaProdutos";
 import NotaFiscalCpf from "./Pedido/PedidoCpfNaNota";
+import FormDialogAjuda from "./Pedido/DialogAjuda";
 
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -28,12 +29,11 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import { MenuItem } from "@material-ui/core";
+import { DialogContent, DialogContentText } from "@material-ui/core";
 
 import FacadePedido from "../Facade/FacadePedido";
 
 const facadePedido = new FacadePedido();
-
-const axios = require("axios");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +49,7 @@ const FormPedido = (props) => {
   const convertedUser = JSON.parse(user);
   const history = useHistory();
   const classes = useStyles();
-
+  const [showDialog, setShowDialog] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
   const { tipo } = props;
@@ -84,7 +84,7 @@ const FormPedido = (props) => {
       if (item.produtos) setProdutos(item.produtos);
       if (item.cpfNF) setCpfNF(item.cpfNF);
     }
-  }, []);
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -172,10 +172,15 @@ const FormPedido = (props) => {
         valor: parseFloat(valorPedido),
         statusPagamento: flagPago,
         id: item._id,
-      }
+      };
 
-      facadePedido.patchPedidos(body, '🍕 Pedido alterado com sucesso!', false, history, toastStyle)
-
+      facadePedido.patchPedidos(
+        body,
+        "🍕 Pedido alterado com sucesso!",
+        false,
+        history,
+        toastStyle
+      );
     }
   };
 
@@ -193,7 +198,8 @@ const FormPedido = (props) => {
               setValor={setValorPedido}
             />
           </div>
-          <div className="divDireita">
+          <div className="divDireita" style={{ marginTop: 70 }}>
+            {isCadastro ? <FormDialogAjuda /> : <div></div>}
             <TextField
               style={{ width: 100 }}
               id="valorPedido"
@@ -204,11 +210,6 @@ const FormPedido = (props) => {
               label="Valor Total"
               disabled
             />
-            <Pagamento setPagamento={setFormaPag} formaPag={itemFormaPag} />
-            <Observacoes
-              setObs={setObservacoes}
-              observacoes={observacoesValue}
-            />
             <Expedicao
               type="funcionario"
               setCliente={setCpfCliente}
@@ -217,6 +218,11 @@ const FormPedido = (props) => {
               cpfCliente={cpfCliente}
               endereco={endereco}
               formaExpedicao={valueFormaExpedicao}
+            />
+            <Pagamento setPagamento={setFormaPag} formaPag={itemFormaPag} />
+            <Observacoes
+              setObs={setObservacoes}
+              observacoes={observacoesValue}
             />
             {isCadastro && <NotaFiscalCpf setCpfNF={setCpfNF} cpfNF={cpfNF} />}
             <FormControl
@@ -266,14 +272,13 @@ const FormPedido = (props) => {
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle id="alert-dialog-VoltarPedido">
                   {isCadastro
-                    ? "Deseja continuar o registro do pedido?"
-                    : "Deseja continuar com a edição do pedido?"}
+                    ? "Deseja voltar à consulta de pedidos? O registro deste pedido será cancelado"
+                    : "Deseja voltar à consulta de pedidos? A edição do pedido será cancelado"}
                 </DialogTitle>
                 <DialogActions>
                   <Button
                     className="botaoNaoPedido"
                     variant="danger"
-                    href="/pedidos"
                     onClick={handleClose}
                     color="primary"
                   >
@@ -284,11 +289,13 @@ const FormPedido = (props) => {
                     onClick={handleClose}
                     color="primary"
                     autoFocus
+                    href="/pedidos"
                   >
                     Sim
                   </Button>
                 </DialogActions>
               </Dialog>
+
               <Button
                 className="botaoRealizarPedido"
                 variant="success"

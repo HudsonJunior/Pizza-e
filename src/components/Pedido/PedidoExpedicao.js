@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 import { FiUser, FiPlus } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
 import { TextField } from "@material-ui/core";
+import FormDialogCliente from "./DialogCliente";
 
 const useStyles = makeStyles((theme) => ({
   formControl2: {
@@ -49,19 +50,21 @@ const Expedicao = (props) => {
     return props.formaExpedicao === "entrega" ? (
       <div className="RPCliente">
         <FormControl style={{ alignItems: "center" }}>
-          <TextField
-            className={classes.textField}
-            onChange={(event) => props.setCliente(event.target.value)}
-            value={props.cpfCliente}
-            id="standard-basic"
-            label="CPF Cliente"
-            required
-          />
-          <p style={{ marginBottom: 0 }}>Ou</p>
-          <Button variant="success" onClick={handleNovoCliente}>
-            <FiPlus size={15} color="fff" />
-            Novo Cliente
-          </Button>
+          <div>
+            <FormDialogCliente
+              setCliente={props.setCliente}
+              cpfCliente={props.cpfCliente}
+              setEndereco={props.setEndereco}
+              endereco={props.endereco}
+            />
+            <div>
+              <p style={{ marginBottom: 0, padding: 5 }}>Ou</p>
+              <Button variant="success" onClick={handleNovoCliente}>
+                <FiPlus size={15} color="fff" />
+                Novo Cliente
+              </Button>
+            </div>
+          </div>
           <TextField
             className={classes.textField}
             onChange={(event) => props.setEndereco(event.target.value)}

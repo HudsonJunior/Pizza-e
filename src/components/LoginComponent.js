@@ -38,38 +38,32 @@ const Login = (props) => {
   const handleLogin = (event) => {
     event.preventDefault();
 
-    var facadeGeral = new FacadeGeral()
+    var facadeGeral = new FacadeGeral();
 
-    var currentUser = null
+    var currentUser = null;
 
-    facadeGeral.login(user, senha, toastStyle)
-      .then(result => {
-        currentUser = result.data.data
-
+    facadeGeral
+      .login(user, senha, toastStyle)
+      .then((result) => {
+        currentUser = result.data.data;
 
         if (currentUser) {
           if (tipo === "pedido") {
-            toast.success("🍕 Login feito!", {
-              toastStyle,
-            });
             localStorage.setItem("user", JSON.stringify(currentUser));
             setTimeout(() => {
               history.push("/concluir-pedido");
             }, 1500);
-
           } else {
-
             localStorage.setItem("user", JSON.stringify(currentUser));
             setTimeout(() => {
               history.push("/");
             }, 1500);
           }
         }
-      }).catch(error => {
-        console.log(error)
       })
-
-
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
