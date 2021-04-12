@@ -110,9 +110,14 @@ const Revisar = () => {
 
   const handleNext = () => {
     if (produtosPedido.length > 0) {
-      if (!localStorage.getItem("user"))
-        history.push("/login", { tipo: "pedido" });
-      else {
+      if (!localStorage.getItem("user")) {
+        toast.success("🍕 Redirecionando para o login!", {
+          toastStyle,
+        });
+        setTimeout(() => {
+          history.push("/login", { tipo: "pedido" });
+        }, 3000);
+      } else {
         history.push("/concluir-pedido");
       }
     } else {

@@ -41,7 +41,7 @@ const MinhaConta = ({ currentUser }) => {
 
   useEffect(() => {
     if (user) {
-      const cpfCliente = JSON.parse(user).name;
+      const cpfCliente = JSON.parse(user).cpf;
       facadePedido.getPedidosCPF(cpfCliente, setPedidos);
     }
   }, []);
