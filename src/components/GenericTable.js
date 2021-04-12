@@ -18,6 +18,7 @@ import {
   FiSearch,
   FiCheck,
   FiDelete,
+  FiChevronLeft,
 } from "react-icons/fi";
 import { Dialog } from "@material-ui/core";
 import Botao from "@material-ui/core/Button";
@@ -76,6 +77,10 @@ const GenericTable = ({ data, title }) => {
   const handleChange = (event) => {
     setTipoValueGeneric(event.target.value);
   };
+
+  function goBack() {
+    window.history.back();
+  }
 
   const toastStyle = {
     position: "top-right",
@@ -909,6 +914,14 @@ const GenericTable = ({ data, title }) => {
           </>
         )}
       </Table>
+      <Button
+          className="botao"
+          variant="ligth"
+          style={{ marginRight: 10, borderWidth: 1, borderColor: "black" }}
+          onClick={goBack}
+        >
+          <FiChevronLeft /> Voltar
+        </Button>
       <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
         Adicionar
