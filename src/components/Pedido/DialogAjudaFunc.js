@@ -30,13 +30,9 @@ export default function FormDialogAjuda() {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Ajuda online de contexto
+          Ajuda online de contexto para registrar pedido
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            A qualquer momento da realização do pedido, você pode voltar à
-            consulta de pedidos clicando no botão "Voltar".
-          </DialogContentText>
           <DialogContentText>
             Siga esses passos para registrar um pedido:
           </DialogContentText>

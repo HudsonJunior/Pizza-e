@@ -15,7 +15,6 @@ const axios = require("axios");
 
 export default function FormDialogCliente(props) {
   const [open, setOpen] = React.useState(false);
-  //const [cpf, setCPF] = React.useState("");
 
   const toastStyle = {
     position: "top-right",
@@ -59,6 +58,7 @@ export default function FormDialogCliente(props) {
         } else {
           props.setEndereco(cliente.endereco);
         }
+        props.setNome(cliente.nome);
         toast.success("🍕 Achamos o cliente !", {
           toastStyle,
         });

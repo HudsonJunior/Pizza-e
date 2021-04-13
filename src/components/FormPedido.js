@@ -21,7 +21,7 @@ import Observacoes from "./Pedido/PedidoObservacao";
 import Expedicao from "./Pedido/PedidoExpedicao";
 import TabelaProdutoPedido from "./Pedido/PedidoTabelaProdutos";
 import NotaFiscalCpf from "./Pedido/PedidoCpfNaNota";
-import FormDialogAjuda from "./Pedido/DialogAjuda";
+import FormDialogAjuda from "./Pedido/DialogAjudaFunc";
 
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -29,7 +29,6 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import { MenuItem } from "@material-ui/core";
-import { DialogContent, DialogContentText } from "@material-ui/core";
 
 import FacadePedido from "../Facade/FacadePedido";
 
@@ -49,7 +48,6 @@ const FormPedido = (props) => {
   const convertedUser = JSON.parse(user);
   const history = useHistory();
   const classes = useStyles();
-  const [showDialog, setShowDialog] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
   const { tipo } = props;
@@ -84,13 +82,30 @@ const FormPedido = (props) => {
       if (item.produtos) setProdutos(item.produtos);
       if (item.cpfNF) setCpfNF(item.cpfNF);
     }
-  });
+    if (
+      localStorage.getItem("produtosPedido") &&
+      localStorage.getItem("valorPedido")
+    ) {
+      setProdutos(JSON.parse(localStorage.getItem("produtosPedido")));
+      setValorPedido(JSON.parse(localStorage.getItem("valorPedido")));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (produtos && valorPedido) {
+      localStorage.setItem("produtosPedido", JSON.stringify(produtos));
+      localStorage.setItem("valorPedido", JSON.stringify(valorPedido));
+    } else {
+      limpaStorage();
+    }
+  }, [produtos, valorPedido]);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    limpaStorage();
     setOpen(false);
   };
 
@@ -106,7 +121,7 @@ const FormPedido = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    limpaStorage();
     var today = new Date();
 
     var date =
@@ -184,11 +199,22 @@ const FormPedido = (props) => {
     }
   };
 
+  const limpaStorage = () => {
+    if (
+      localStorage.getItem("produtosPedido") &&
+      localStorage.getItem("valorPedido")
+    ) {
+      localStorage.removeItem("produtosPedido");
+      localStorage.removeItem("valorPedido");
+    }
+  };
+
   return (
     <>
       <Menubar currentUser={convertedUser} />
       <div className="RegistroPedido">
         <h2>{isCadastro ? "Registro de Pedido" : "Editar pedido"}</h2>
+        {isCadastro ? <FormDialogAjuda /> : <div></div>}
         <form className={classes.root} onSubmit={handleSubmit}>
           <div className="divEsquerda">
             <TabelaProdutoPedido
@@ -199,7 +225,6 @@ const FormPedido = (props) => {
             />
           </div>
           <div className="divDireita" style={{ marginTop: 70 }}>
-            {isCadastro ? <FormDialogAjuda /> : <div></div>}
             <TextField
               style={{ width: 100 }}
               id="valorPedido"
@@ -260,7 +285,7 @@ const FormPedido = (props) => {
               )}
             </FormControl>
 
-            <div className="RPBotoes">
+            <div className="RPBotoes" style={{ paddingBottom: 10 }}>
               <Button
                 variant="ligth"
                 style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}

@@ -22,6 +22,7 @@ const Expedicao = (props) => {
   const history = useHistory();
   const classes = useStyles();
   var tipo = props.type;
+  const [nome, setNome] = React.useState("");
 
   useEffect(() => {
     if (props.formaExpedicao && props.formaExpedicao === "entrega")
@@ -38,10 +39,6 @@ const Expedicao = (props) => {
     history.push("/cadastrar-cliente", { tipo: "pedido" });
   };
 
-  const handleBuscarCliente = () => {
-    history.push("/clientes", { tipo: "pedidoFunc" });
-  };
-
   const handleNovoCliente = () => {
     history.push("/funcionario-cadastrar-cliente", { tipo: "pedido" });
   };
@@ -56,6 +53,8 @@ const Expedicao = (props) => {
               cpfCliente={props.cpfCliente}
               setEndereco={props.setEndereco}
               endereco={props.endereco}
+              setNome={setNome}
+              nome={nome}
             />
             <div>
               <p style={{ marginBottom: 0, padding: 5 }}>Ou</p>
@@ -67,6 +66,15 @@ const Expedicao = (props) => {
           </div>
           <TextField
             className={classes.textField}
+            onChange={(event) => setNome(event.target.value)}
+            value={nome}
+            id="standard-basic"
+            label="Nome do cliente"
+            disabled
+            required
+          />
+          <TextField
+            className={classes.textField}
             onChange={(event) => props.setEndereco(event.target.value)}
             value={props.endereco}
             id="standard-basic"
@@ -76,7 +84,35 @@ const Expedicao = (props) => {
         </FormControl>
       </div>
     ) : (
-      <div></div>
+      <div>
+        <FormControl style={{ alignItems: "center", marginTop: 15 }}>
+          <div>
+            <FormDialogCliente
+              setCliente={props.setCliente}
+              cpfCliente={props.cpfCliente}
+              setEndereco={props.setEndereco}
+              endereco={props.endereco}
+              setNome={setNome}
+              nome={nome}
+            />
+            <div>
+              <p style={{ marginBottom: 0, padding: 5 }}>Ou</p>
+              <Button variant="success" onClick={handleNovoCliente}>
+                <FiPlus size={15} color="fff" />
+                Novo Cliente
+              </Button>
+            </div>
+          </div>
+          <TextField
+            className={classes.textField}
+            onChange={(event) => setNome(event.target.value)}
+            value={nome}
+            id="standard-basic"
+            label="Nome do cliente"
+            disabled
+          />
+        </FormControl>
+      </div>
     );
   };
 
