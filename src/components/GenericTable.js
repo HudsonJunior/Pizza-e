@@ -41,7 +41,7 @@ import FacadePedido from "../Facade/FacadePedido";
 
 import FacadeFuncionario from "../Facade/FacadeFuncionario";
 
-import FacadeEstoque from  "../Facade/FacadeEstoque";
+import FacadeEstoque from "../Facade/FacadeEstoque";
 
 const facadeEstoque = new FacadeEstoque();
 const facadeFunc = new FacadeFuncionario();
@@ -56,7 +56,7 @@ const GenericTable = ({ data, title }) => {
   const [cpfFunc, setCpfFunc] = React.useState("");
   var itensQuantidade = [];
 
-  const [cpfCliente,setCpfCliente] = React.useState("");
+  const [cpfCliente, setCpfCliente] = React.useState("");
 
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
   const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
@@ -105,9 +105,9 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpen = (id) => {
     setOpen(true);
   };
-  
-  const editarCliente = (cpfCliente) =>{
-    
+
+  const editarCliente = (cpfCliente) => {
+
     setCpfCliente(cpfCliente);
     console.log(cpfCliente);
     handleClickOpen();
@@ -182,8 +182,9 @@ const GenericTable = ({ data, title }) => {
   }
 
   const deleteItemEstoque = () => {
-      setOpen(false);
-      facadeEstoque.delEstoque(idEstoque).then(result => { toast.success("🍕 Produto removido do estoque com sucesso!", {
+    setOpen(false);
+    facadeEstoque.delEstoque(idEstoque).then(result => {
+      toast.success("🍕 Produto removido do estoque com sucesso!", {
         toastStyle,
       })
       setTimeout(() => {
@@ -192,15 +193,16 @@ const GenericTable = ({ data, title }) => {
     })
       .catch(error => {
         console.log(error)
-          toast.error("🍕 Falha ao apagar produto do estoque!", {
-              toastStyle,
-          })
+        toast.error("🍕 Falha ao apagar produto do estoque!", {
+          toastStyle,
+        })
       })
   }
 
   const deleteFuncionario = () => {
-      setOpen(false);
-      facadeFunc.delFuncionario(cpfFunc).then(result => { toast.success("🍕 Registro deletado com sucesso!", {
+    setOpen(false);
+    facadeFunc.delFuncionario(cpfFunc).then(result => {
+      toast.success("🍕 Registro deletado com sucesso!", {
         toastStyle,
       })
       setTimeout(() => {
@@ -209,9 +211,9 @@ const GenericTable = ({ data, title }) => {
     })
       .catch(error => {
         console.log(error)
-          toast.error("🍕 Falha ao apagar funcionário!", {
-              toastStyle,
-          })
+        toast.error("🍕 Falha ao apagar funcionário!", {
+          toastStyle,
+        })
       })
   }
 
@@ -469,7 +471,7 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
-                
+
                 <td>CPF</td>
                 <td>Nome</td>
                 <td>Endereco</td>
@@ -481,7 +483,7 @@ const GenericTable = ({ data, title }) => {
             {data.map((item) => (
               <tbody>
                 <tr>
-                  
+
                   <td>{item.cpf}</td>
                   <td>{item.nome}</td>
                   <td>{item.endereco}</td>
@@ -496,7 +498,7 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={()=>editarCliente(item.cpf)}
+                      onClick={() => editarCliente(item.cpf)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
@@ -525,7 +527,7 @@ const GenericTable = ({ data, title }) => {
                       id="name"
                       label="Nome"
                       type="name"
-                      fullWidth   
+                      fullWidth
                     />
                     <TextField
                       autoFocus
@@ -700,7 +702,7 @@ const GenericTable = ({ data, title }) => {
                       <tbody>
                         <tr>
                           <td>{item.tipo}</td>
-                          <td>{item.codigo}</td>
+                          <td>{item._id}</td>
                           <td>{item.nome}</td>
                           <td>{item.valor}</td>
                           <td>{item.peso}</td>
@@ -817,14 +819,14 @@ const GenericTable = ({ data, title }) => {
                         >
                           Não
                         </Button>
-                          <Button
-                            className="botao"
-                            variant="success"
-                            onClick={value => deleteItemEstoque()}
-                            color="primary"
-                            autoFocus
-                          >
-                            Sim
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={value => deleteItemEstoque()}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
                         </Button>
                       </DialogActions>
                     </Dialog>
@@ -896,14 +898,14 @@ const GenericTable = ({ data, title }) => {
                           Não
                         </Button>
 
-                          <Button
-                            className="botao"
-                            variant="success"
-                            onClick={() => deleteFuncionario()}
-                            color="primary"
-                            autoFocus
-                          >
-                            Sim
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={() => deleteFuncionario()}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
                         </Button>
                       </DialogActions>
                     </Dialog>
@@ -915,12 +917,12 @@ const GenericTable = ({ data, title }) => {
         )}
       </Table>
       <Button
-          className="botao"
-          variant="ligth"
-          style={{ marginRight: 10, borderWidth: 1, borderColor: "black" }}
-          onClick={goBack}
-        >
-          <FiChevronLeft /> Voltar
+        className="botao"
+        variant="ligth"
+        style={{ marginRight: 10, borderWidth: 1, borderColor: "black" }}
+        onClick={goBack}
+      >
+        <FiChevronLeft /> Voltar
         </Button>
       <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
