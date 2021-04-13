@@ -702,7 +702,7 @@ const GenericTable = ({ data, title }) => {
                       <tbody>
                         <tr>
                           <td>{item.tipo}</td>
-                          <td>{item.codigo}</td>
+                          <td>{item._id}</td>
                           <td>{item.nome}</td>
                           <td>{item.valor}</td>
                           <td>{item.peso}</td>
