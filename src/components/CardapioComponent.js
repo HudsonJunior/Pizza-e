@@ -9,11 +9,12 @@ import TextField from "@material-ui/core/TextField";
 
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
-
-const axios = require("axios");
+import FormDialogAjuda from "./Pedido/DialogAjudaCliente";
 
 const Cardapio = () => {
   const history = useHistory();
+  const user = localStorage.getItem("user");
+  const convertedUser = JSON.parse(user);
   const [valorPedido, setValorPedido] = useState("00,00");
   const [produtos, setProdutos] = useState([]);
 
@@ -25,7 +26,7 @@ const Cardapio = () => {
       setProdutos(JSON.parse(localStorage.getItem("produtosPedido")));
       setValorPedido(JSON.parse(localStorage.getItem("valorPedido")));
     }
-  });
+  }, []);
 
   const toastStyle = {
     position: "top-right",
@@ -51,91 +52,102 @@ const Cardapio = () => {
 
   return (
     <div>
-      <h1>Cardápio</h1>
-      <p style={{ paddingLeft: 15 }}>Adicione os itens do seu pedido...</p>
-      <div style={{ width: "50%", display: "inline-block", float: "left" }}>
-        <TabelaProdutoPedido
-          produtosPedido={produtos}
-          valor={valorPedido}
-          setProdutosPedido={setProdutos}
-          setValor={setValorPedido}
-        />
-      </div>
+      {(convertedUser && convertedUser.type === "C") || !convertedUser ? (
+        <div>
+          <h1>Cardápio</h1>
+          <p>Adicione os itens do seu pedido...</p>
+          <FormDialogAjuda etapa={1} />
+          <div style={{ width: "50%", display: "inline-block", float: "left" }}>
+            <TabelaProdutoPedido
+              produtosPedido={produtos}
+              valor={valorPedido}
+              setProdutosPedido={setProdutos}
+              setValor={setValorPedido}
+            />
+          </div>
 
-      <div
-        style={{
-          width: "50%",
-          float: "left",
-          paddingLeft: 25,
-          paddingRight: 25,
-          paddingTop: 32,
-        }}
-      >
-        <h4>Meu Pedido</h4>
-        {produtos.length > 0 ? (
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Valor Total</th>
-              </tr>
-            </thead>
-            {produtos.map((item) => (
-              <tbody>
-                <tr>
-                  <td>{item.nome}</td>
-                  <td>{item.quantidade}</td>
-                  <td>{item.valor * item.quantidade}</td>
-                </tr>
-              </tbody>
-            ))}
-          </Table>
-        ) : (
-          <p>Nenhum produto foi adicionado...</p>
-        )}
-      </div>
+          <div
+            style={{
+              width: "50%",
+              float: "left",
+              paddingLeft: 25,
+              paddingRight: 25,
+              paddingTop: 32,
+            }}
+          >
+            <h4>Meu Pedido</h4>
+            {produtos.length > 0 ? (
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Valor Total</th>
+                  </tr>
+                </thead>
+                {produtos.map((item) => (
+                  <tbody>
+                    <tr>
+                      <td>{item.nome}</td>
+                      <td>{item.quantidade}</td>
+                      <td>{item.valor * item.quantidade}</td>
+                    </tr>
+                  </tbody>
+                ))}
+              </Table>
+            ) : (
+              <p>Nenhum produto foi adicionado...</p>
+            )}
+          </div>
 
-      <div
-        style={{
-          marginTop: 15,
-          float: "right",
-          paddingRight: 25,
-          whiteSpace: "nowrap",
-          position: "relative",
-          display: "flex",
-          bottom: 0,
-          justifyContent: "space-between",
-        }}
-      >
-        <div style={{ marginRight: 20 }}>
-          <TextField
-            style={{ width: 100 }}
-            id="valorPedido"
-            onChange={(event) => setValorPedido(event.target.value)}
-            value={"R$ " + valorPedido}
-            label="Valor Total"
-            disabled
-          />
+          <div
+            style={{
+              marginTop: 15,
+              float: "right",
+              paddingRight: 25,
+              whiteSpace: "nowrap",
+              position: "relative",
+              display: "flex",
+              bottom: 0,
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ marginRight: 20 }}>
+              <TextField
+                style={{ width: 100 }}
+                id="valorPedido"
+                onChange={(event) => setValorPedido(event.target.value)}
+                value={"R$ " + valorPedido}
+                label="Valor Total"
+                disabled
+              />
+            </div>
+
+            <Button
+              className="botao"
+              style={{
+                marginBottom: 0,
+                borderWidth: 1,
+                borderColor: "black",
+                padding: 12,
+              }}
+              type="submit"
+              variant="success"
+              onClick={() => handleNext()}
+            >
+              Próximo
+              <FiArrowRight style={{ marginLeft: 3 }} />
+            </Button>
+          </div>
+          <ToastContainer />
         </div>
-
-        <Button
-          className="botao"
-          style={{
-            marginBottom: 0,
-            borderWidth: 1,
-            borderColor: "black",
-            padding: 12,
-          }}
-          type="submit"
-          variant="success"
-          onClick={() => handleNext()}
-        >
-          Próximo
-          <FiArrowRight style={{ marginLeft: 3 }} />
-        </Button>
-      </div>
-      <ToastContainer />
+      ) : (
+        <div>
+          <h3>Esta página é exclusiva para clientes e visitantes!</h3>
+          <p>Para registrar um pedido, você deve seguir o fluxo:</p>
+          <p>{"Área de Funcionários > Pedidos > + Adicionar"} </p>
+        </div>
+      )}
     </div>
   );
 };

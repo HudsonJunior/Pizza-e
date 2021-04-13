@@ -21,6 +21,7 @@ import Observacoes from "./Pedido/PedidoObservacao";
 import Expedicao from "./Pedido/PedidoExpedicao";
 import TabelaProdutoPedido from "./Pedido/PedidoTabelaProdutos";
 import NotaFiscalCpf from "./Pedido/PedidoCpfNaNota";
+import FormDialogAjuda from "./Pedido/DialogAjudaFunc";
 
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -32,8 +33,6 @@ import { MenuItem } from "@material-ui/core";
 import FacadePedido from "../Facade/FacadePedido";
 
 const facadePedido = new FacadePedido();
-
-const axios = require("axios");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +48,6 @@ const FormPedido = (props) => {
   const convertedUser = JSON.parse(user);
   const history = useHistory();
   const classes = useStyles();
-
   const [open, setOpen] = React.useState(false);
 
   const { tipo } = props;
@@ -84,13 +82,30 @@ const FormPedido = (props) => {
       if (item.produtos) setProdutos(item.produtos);
       if (item.cpfNF) setCpfNF(item.cpfNF);
     }
+    if (
+      localStorage.getItem("produtosPedido") &&
+      localStorage.getItem("valorPedido")
+    ) {
+      setProdutos(JSON.parse(localStorage.getItem("produtosPedido")));
+      setValorPedido(JSON.parse(localStorage.getItem("valorPedido")));
+    }
   }, []);
+
+  useEffect(() => {
+    if (produtos && valorPedido) {
+      localStorage.setItem("produtosPedido", JSON.stringify(produtos));
+      localStorage.setItem("valorPedido", JSON.stringify(valorPedido));
+    } else {
+      limpaStorage();
+    }
+  }, [produtos, valorPedido]);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    limpaStorage();
     setOpen(false);
   };
 
@@ -106,7 +121,7 @@ const FormPedido = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    limpaStorage();
     var today = new Date();
 
     var date =
@@ -172,10 +187,25 @@ const FormPedido = (props) => {
         valor: parseFloat(valorPedido),
         statusPagamento: flagPago,
         id: item._id,
-      }
+      };
 
-      facadePedido.patchPedidos(body, '🍕 Pedido alterado com sucesso!', false, history, toastStyle)
+      facadePedido.patchPedidos(
+        body,
+        "🍕 Pedido alterado com sucesso!",
+        false,
+        history,
+        toastStyle
+      );
+    }
+  };
 
+  const limpaStorage = () => {
+    if (
+      localStorage.getItem("produtosPedido") &&
+      localStorage.getItem("valorPedido")
+    ) {
+      localStorage.removeItem("produtosPedido");
+      localStorage.removeItem("valorPedido");
     }
   };
 
@@ -184,6 +214,7 @@ const FormPedido = (props) => {
       <Menubar currentUser={convertedUser} />
       <div className="RegistroPedido">
         <h2>{isCadastro ? "Registro de Pedido" : "Editar pedido"}</h2>
+        {isCadastro ? <FormDialogAjuda /> : <div></div>}
         <form className={classes.root} onSubmit={handleSubmit}>
           <div className="divEsquerda">
             <TabelaProdutoPedido
@@ -193,7 +224,7 @@ const FormPedido = (props) => {
               setValor={setValorPedido}
             />
           </div>
-          <div className="divDireita">
+          <div className="divDireita" style={{ marginTop: 70 }}>
             <TextField
               style={{ width: 100 }}
               id="valorPedido"
@@ -204,11 +235,6 @@ const FormPedido = (props) => {
               label="Valor Total"
               disabled
             />
-            <Pagamento setPagamento={setFormaPag} formaPag={itemFormaPag} />
-            <Observacoes
-              setObs={setObservacoes}
-              observacoes={observacoesValue}
-            />
             <Expedicao
               type="funcionario"
               setCliente={setCpfCliente}
@@ -217,6 +243,11 @@ const FormPedido = (props) => {
               cpfCliente={cpfCliente}
               endereco={endereco}
               formaExpedicao={valueFormaExpedicao}
+            />
+            <Pagamento setPagamento={setFormaPag} formaPag={itemFormaPag} />
+            <Observacoes
+              setObs={setObservacoes}
+              observacoes={observacoesValue}
             />
             {isCadastro && <NotaFiscalCpf setCpfNF={setCpfNF} cpfNF={cpfNF} />}
             <FormControl
@@ -254,7 +285,7 @@ const FormPedido = (props) => {
               )}
             </FormControl>
 
-            <div className="RPBotoes">
+            <div className="RPBotoes" style={{ paddingBottom: 10 }}>
               <Button
                 variant="ligth"
                 style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
@@ -266,14 +297,13 @@ const FormPedido = (props) => {
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle id="alert-dialog-VoltarPedido">
                   {isCadastro
-                    ? "Deseja continuar o registro do pedido?"
-                    : "Deseja continuar com a edição do pedido?"}
+                    ? "Deseja voltar à consulta de pedidos? O registro deste pedido será cancelado"
+                    : "Deseja voltar à consulta de pedidos? A edição do pedido será cancelado"}
                 </DialogTitle>
                 <DialogActions>
                   <Button
                     className="botaoNaoPedido"
                     variant="danger"
-                    href="/pedidos"
                     onClick={handleClose}
                     color="primary"
                   >
@@ -284,11 +314,13 @@ const FormPedido = (props) => {
                     onClick={handleClose}
                     color="primary"
                     autoFocus
+                    href="/pedidos"
                   >
                     Sim
                   </Button>
                 </DialogActions>
               </Dialog>
+
               <Button
                 className="botaoRealizarPedido"
                 variant="success"

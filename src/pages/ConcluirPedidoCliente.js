@@ -14,7 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
 import "../components/styles/ConcluirPedidoStyle.css";
-
+import FormDialogAjuda from "../components/Pedido/DialogAjudaCliente";
 import FacadePedido from "../Facade/FacadePedido";
 const facadePedido = new FacadePedido();
 
@@ -127,6 +127,7 @@ const Concluir = () => {
       <div className="concluirPage">
         <h1>Concluir Pedido</h1>
         <p>Por fim, preencha os seguintes campos.</p>
+        <FormDialogAjuda etapa={3} />
         <form className={classes.root} onSubmit={handleSave}>
           <TextField
             style={{ width: 100 }}

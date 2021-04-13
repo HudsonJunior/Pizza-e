@@ -13,7 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { green, red } from "@material-ui/core/colors";
 import TextField from "@material-ui/core/TextField";
-
+import FormDialogAjuda from "../components/Pedido/DialogAjudaCliente";
 import "react-toastify/dist/ReactToastify.css";
 
 const Revisar = () => {
@@ -138,6 +138,7 @@ const Revisar = () => {
       <Menubar currentUser={convertedUser} />
       <h1>Revisar Pedido</h1>
       <p>Agora, verifique se seu pedido está correto.</p>
+      <FormDialogAjuda etapa={2} />
       {produtosPedido.length > 0 ? (
         <Table striped bordered hover>
           <thead>
