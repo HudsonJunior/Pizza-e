@@ -8,7 +8,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl2 from "@material-ui/core/FormControl";
 
-
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
 import {
@@ -41,12 +40,12 @@ import FacadePedido from "../Facade/FacadePedido";
 
 import FacadeFuncionario from "../Facade/FacadeFuncionario";
 
-import FacadeEstoque from  "../Facade/FacadeEstoque";
+import FacadeEstoque from "../Facade/FacadeEstoque";
 
 const facadeEstoque = new FacadeEstoque();
 const facadeFunc = new FacadeFuncionario();
 
-const axios = require('axios');
+const axios = require("axios");
 const url = window.location.href.replace("http://localhost:3000/", "");
 
 const GenericTable = ({ data, title }) => {
@@ -95,12 +94,12 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpenEstoque = (id) => {
     setIdEstoque(id);
     setOpen(true);
-  }
+  };
 
   const handleClickOpenFuncionario = (cpf) => {
     setCpfFunc(cpf);
     setOpen(true);
-  }
+  };
 
   const handleClickOpen = (id) => {
     setOpen(true);
@@ -183,7 +182,6 @@ const GenericTable = ({ data, title }) => {
         tipo: "Normal",
       };
     }
-  }
 
     facadeProduto.patchProdutos(
       body,
@@ -194,44 +192,48 @@ const GenericTable = ({ data, title }) => {
     );
   };
   const deleteItemEstoque = () => {
-      setOpen(false);
-      facadeEstoque.delEstoque(idEstoque).then(result => { toast.success("🍕 Produto removido do estoque com sucesso!", {
-        toastStyle,
+    setOpen(false);
+    facadeEstoque
+      .delEstoque(idEstoque)
+      .then((result) => {
+        toast.success("🍕 Produto removido do estoque com sucesso!", {
+          toastStyle,
+        });
+        setTimeout(() => {
+          history.go(0);
+        }, 3000);
       })
-      setTimeout(() => {
-        history.go(0);
-      }, 3000);
-    })
-      .catch(error => {
-        console.log(error)
-          toast.error("🍕 Falha ao apagar produto do estoque!", {
-              toastStyle,
-          })
-      })
-  }
+      .catch((error) => {
+        console.log(error);
+        toast.error("🍕 Falha ao apagar produto do estoque!", {
+          toastStyle,
+        });
+      });
+  };
 
   const deleteFuncionario = () => {
-      setOpen(false);
-      facadeFunc.delFuncionario(cpfFunc).then(result => { toast.success("🍕 Registro deletado com sucesso!", {
-        toastStyle,
+    setOpen(false);
+    facadeFunc
+      .delFuncionario(cpfFunc)
+      .then((result) => {
+        toast.success("🍕 Registro deletado com sucesso!", {
+          toastStyle,
+        });
+        setTimeout(() => {
+          history.go(0);
+        }, 3000);
       })
-      setTimeout(() => {
-        history.go(0);
-      }, 3000);
-    })
-      .catch(error => {
-        console.log(error)
-          toast.error("🍕 Falha ao apagar funcionário!", {
-              toastStyle,
-          })
-      })
-  }
-
-
+      .catch((error) => {
+        console.log(error);
+        toast.error("🍕 Falha ao apagar funcionário!", {
+          toastStyle,
+        });
+      });
+  };
 
   const handleClose = (url, id) => {
     setOpen(false);
-    if (url === 'pedidos') {
+    if (url === "pedidos") {
       toast.success("🍕 Pedido removido com sucesso!", {
         toastStyle,
       });
@@ -807,7 +809,10 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={value => handleClickOpenEstoque(item._id)}>
+                    <Button
+                      variant="danger"
+                      onClick={(value) => handleClickOpenEstoque(item._id)}
+                    >
                       <FiXCircle size={20} color="#black" />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
@@ -824,14 +829,14 @@ const GenericTable = ({ data, title }) => {
                         >
                           Não
                         </Button>
-                          <Button
-                            className="botao"
-                            variant="success"
-                            onClick={value => deleteItemEstoque()}
-                            color="primary"
-                            autoFocus
-                          >
-                            Sim
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={(value) => deleteItemEstoque()}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
                         </Button>
                       </DialogActions>
                     </Dialog>
@@ -879,7 +884,10 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={value => handleClickOpenFuncionario(item.cpf)}>
+                    <Button
+                      variant="danger"
+                      onClick={(value) => handleClickOpenFuncionario(item.cpf)}
+                    >
                       <FiXCircle
                         size={20}
                         color="#black"
@@ -903,14 +911,14 @@ const GenericTable = ({ data, title }) => {
                           Não
                         </Button>
 
-                          <Button
-                            className="botao"
-                            variant="success"
-                            onClick={() => deleteFuncionario()}
-                            color="primary"
-                            autoFocus
-                          >
-                            Sim
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={() => deleteFuncionario()}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
                         </Button>
                       </DialogActions>
                     </Dialog>
@@ -922,13 +930,13 @@ const GenericTable = ({ data, title }) => {
         )}
       </Table>
       <Button
-          className="botao"
-          variant="ligth"
-          style={{ marginRight: 10, borderWidth: 1, borderColor: "black" }}
-          onClick={goBack}
-        >
-          <FiChevronLeft /> Voltar
-        </Button>
+        className="botao"
+        variant="ligth"
+        style={{ marginRight: 10, borderWidth: 1, borderColor: "black" }}
+        onClick={goBack}
+      >
+        <FiChevronLeft /> Voltar
+      </Button>
       <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
         Adicionar
