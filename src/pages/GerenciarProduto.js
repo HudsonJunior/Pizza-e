@@ -2,15 +2,14 @@ import React from 'react'
 import FormProduto from './../components/FormProduto'
 
 const GerenciarProduto = props => {
-    console.log(props.location.state)
-    const {tipo} = props.location.state
-    const {item} = props.location.state
+    const tipo = props.location?.state?.tipo
+    const item = props.location?.state?.item
     var tipoProduto = null
 
-    if(!item)
-        tipoProduto = props.location.state.tipoProduto
+    if (!item)
+        tipoProduto = props.location?.state?.tipoProduto
 
-    return(
+    return (
         tipo === 'Editar' ?
             <FormProduto
                 tipo="Editar"
