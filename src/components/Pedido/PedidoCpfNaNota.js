@@ -6,6 +6,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import TextField from "@material-ui/core/TextField";
 import { useEffect } from "react";
+import InputMask from "react-input-mask";
 
 const NotaFiscalCpf = (props) => {
   const [value, setValue] = React.useState("semCpf");
@@ -18,13 +19,16 @@ const NotaFiscalCpf = (props) => {
 
   const criaCampoCpf = () => {
     return value === "comCpf" ? (
-      <TextField
-        required
-        id="CampoCpf"
-        label="CPF na Nota Fiscal"
-        value={props.cpfNF}
-        onChange={(event) => props.setCpfNF(event.target.value)}
-      />
+      <div style={{ marginBottom: 10 }}>
+        <InputMask
+          mask="999.999.999-99"
+          required
+          id="CampoCpf"
+          label="CPF na Nota Fiscal"
+          value={props.cpfNF}
+          onChange={(event) => props.setCpfNF(event.target.value)}
+        />
+      </div>
     ) : (
       <></>
     );
