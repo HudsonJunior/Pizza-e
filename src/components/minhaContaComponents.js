@@ -13,7 +13,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import TabelaMinhaConta from "./TabelaMinhaConta";
 import FacadePedido from "../Facade/FacadePedido";
 import FacadeClientes from "../Facade/FacadeClientes";
-import FacadeFuncionario from "../Facade/FacadeFuncionarios";
+import FacadeFuncionario from "../Facade/FacadeFuncionario";
 import "./styles/cadastrarCliente.css";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -72,7 +72,17 @@ const MinhaConta = ({ currentUser }) => {
       facadeClientes.altCliente(cliente);
     }
     else{
-      facadeFuncionario.altFuncionario(funcionario);
+      //facadeFuncionario.altFuncionario(funcionario);
+      facadeFuncionario.patchFunc(
+        funcionario.id,
+        funcionario.nome,
+        funcionario.senha,
+        funcionario.cpf,
+        funcionario.rg,
+        funcionario.carteira,
+        funcionario.cep,
+        funcionario.rua,
+        funcionario.numero)
     }
     setMensagem(true);
   };
@@ -168,7 +178,7 @@ const MinhaConta = ({ currentUser }) => {
                 disabled
                 id="standart-required"
                 label="CPF"
-                defaultValue={func.cpf}
+                defaultValue={funcionario.cpf}
               />
               <TextField
                 disabled
