@@ -121,7 +121,6 @@ const GenericTable = ({ data, title }) => {
   const editarCliente = (cpfCliente) => {
 
     setCpfCliente(cpfCliente);
-    console.log(cpfCliente);
     handleClickOpen();
   }
 
@@ -136,7 +135,6 @@ const GenericTable = ({ data, title }) => {
       }, 3000);
     })
       .catch(error => {
-        console.log(error)
         toast.error("🍕 Falha ao apagar Cliente!", {
           toastStyle,
         })
@@ -225,7 +223,6 @@ const GenericTable = ({ data, title }) => {
       }, 3000);
     })
       .catch(error => {
-        console.log(error)
         toast.error("🍕 Falha ao apagar produto do estoque!", {
           toastStyle,
         })
@@ -243,7 +240,6 @@ const GenericTable = ({ data, title }) => {
       }, 3000);
     })
       .catch(error => {
-        console.log(error)
         toast.error("🍕 Falha ao apagar funcionário!", {
           toastStyle,
         })
@@ -266,7 +262,6 @@ const GenericTable = ({ data, title }) => {
   };
 
   const handleEdit = (item) => {
-    console.log(item);
     {
       if (url === "pedidos") {
         if (item.statusPedido == "cancelado") {
@@ -499,7 +494,6 @@ const GenericTable = ({ data, title }) => {
             </Dialog>
           </>
         )}
-        {console.log(url)}
         {url === "clientes" && (
           <>
             <thead>

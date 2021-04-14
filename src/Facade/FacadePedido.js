@@ -33,7 +33,6 @@ export default class FacadePedido {
         });
         resolve();
       } catch (error) {
-        console.log(error)
         reject(error);
       }
     });
@@ -52,13 +51,11 @@ export default class FacadePedido {
   };
 
   getPedidosCPF = async (cpf, setPedidos) => {
-    console.log("cpf", cpf);
     try {
       const response = await axios.get(
         `http://localhost:8080/pedido/cpf?cpfCliente=${cpf}`
       );
       const pedidosResponse = await response.data;
-      console.log("pedidosResponse", pedidosResponse);
       setPedidos(pedidosResponse);
     } catch (error) {
       setPedidos([]);

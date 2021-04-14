@@ -2,11 +2,10 @@ import React from 'react'
 import FormPedido from '../components/FormPedido'
 
 const GerenciarPedido = props => {
-    console.log(props.location.state)
-    const {tipo} = props.location.state
-    const {item} = props.location.state
+    const { tipo } = props.location.state
+    const { item } = props.location.state
 
-    return(
+    return (
         tipo === 'Editar' ?
             <FormPedido
                 tipo="Editar"

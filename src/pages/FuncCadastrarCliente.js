@@ -6,12 +6,7 @@ const FuncCadastrarCliente = (props) => {
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   var tipo = props.location.state ? props.location.state.tipo : "";
-  console.log(tipo)
-  if(tipo === "pedido"){
-    console.log("tipo pedido");
-  }else{
-    console.log("else")
-  }
+
   return (
     <>
       <Menubar currentUser={convertedUser} />
