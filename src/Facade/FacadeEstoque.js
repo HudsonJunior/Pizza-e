@@ -31,8 +31,7 @@ export default class FacadeEstoque {
         peso,
         validade,
         fabricacao){
-        return new Promise(function(resolve, reject){
-            try{
+        return new Promise(function(resolve, reject){   
                 axios.patch('http://localhost:8080/produtos-estoque', {
                 id,
                 nome,
@@ -40,11 +39,13 @@ export default class FacadeEstoque {
                 peso,
                 validade,
                 fabricacao
+                }).then(result =>{
+                    resolve()
+
+                }).catch(error => {
+                    reject(error)
                 });
-                resolve();
-            }catch(error){
-                reject(error);
-            }
+                
         })
     }
 
@@ -67,7 +68,6 @@ export default class FacadeEstoque {
                     `http://localhost:8080/produtos-estoque?id=${id}`
                 );
                 const estoqueResponse = await response.data;
-                console.log('response', estoqueResponse);
                 setEstoque(estoqueResponse);
             } else {
                 const response = await axios.get(
@@ -82,13 +82,11 @@ export default class FacadeEstoque {
     }
 
     getVencidos = async (aVencer, setEstoque) => {
-        console.log('oi')
         try {
             const response = await axios.get(
                 `http://localhost:8080/produtos-estoque?aVencer=${aVencer}`
             );
             const estoqueResponse = await response.data;
-            console.log('response', estoqueResponse);
             setEstoque(estoqueResponse);
         } catch (error) {
             setEstoque([]);

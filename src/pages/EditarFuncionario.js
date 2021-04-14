@@ -22,7 +22,6 @@ const theme = createMuiTheme({
 const EditarFuncionario = (props) => {
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
-  console.log('props', props)
   const { item } = props.location.state
   return (
     <ThemeProvider theme={theme}>

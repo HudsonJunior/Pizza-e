@@ -5,9 +5,7 @@ import "../components/styles/FormStyle.css";
 
 
 const EditarEstoque = (props) => {
-  console.log('flag')
   const { item } = props.location.state
-  console.log(item)
   const user = localStorage.getItem("user");
   const convertedUser = JSON.parse(user);
   return (
