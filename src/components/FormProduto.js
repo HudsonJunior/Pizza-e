@@ -277,7 +277,7 @@ const FormProduto = props => {
         return (
             <form className={classes.root} onSubmit={handleSubmit}>
                 <div className="contentProdutos">
-                    <Button variant="primary" style={{ alignItems: 'center', textAlign: "center" }} onClick={showDialogAjuda}>Preciso de ajuda</Button>
+                    {tipo === 'Cadastrar' && <Button variant="primary" style={{ alignItems: 'center', textAlign: "center" }} onClick={showDialogAjuda}>Preciso de ajuda</Button>}
 
                     <div style={{ flexDirection: "row", textAlign: "center" }}>
                         {tipo === 'Editar' ?
