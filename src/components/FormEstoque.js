@@ -102,12 +102,9 @@ const FormularioEstoque = (props) => {
         history.push("/estoque");
       }, 3000);
     })
-      .catch(error => {
+    .catch(error => {
         console.log(error)
-          toast.error(error.response.data.message, {
-              toastStyle,
-          })
-          toast.error(error.response.data.details, {
+          toast.error("Erro durante a atualização no estoque", {
               toastStyle,
           })
       })

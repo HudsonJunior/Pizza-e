@@ -78,14 +78,12 @@ export default class FacadeFuncionario {
                     `http://localhost:8080/funcionarios?cpf=${cpf}`
                 );
                 const funcionarioResponse = await response.data;
-                console.log('response', funcionarioResponse);
                 setFunc(funcionarioResponse);
             } else {
                 const response = await axios.get(
                     `http://localhost:8080/funcionarios`
                 );
                 const funcionarioResponse = await response.data;
-                console.log('else', funcionarioResponse);
                 setFunc(funcionarioResponse);
             }
         } catch (error) {
