@@ -108,16 +108,16 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpen = (id) => {
     setOpen(true);
   };
-  const [openDelCliente,setOpenDelCliente]=React.useState("");
+  const [openDelCliente, setOpenDelCliente] = React.useState("");
 
-  const handleClickCloseCliente = ()=>{
+  const handleClickCloseCliente = () => {
     setOpenDelCliente(false);
   }
 
-  const handleClickOpenCliente =(cpf)=>{
+  const handleClickOpenCliente = (cpf) => {
     setCpfCliente(cpf);
     setOpenDelCliente(true);
-  }    
+  }
   const editarCliente = (cpfCliente) => {
 
     setCpfCliente(cpfCliente);
@@ -127,20 +127,21 @@ const GenericTable = ({ data, title }) => {
 
   const deleteCliente = () => {
     //setOpen(false);
-    facadeClientes.delCliente(cpfCliente).then(result => { toast.success("🍕 Registro deletado com sucesso!", {
-      toastStyle,
+    facadeClientes.delCliente(cpfCliente).then(result => {
+      toast.success("🍕 Registro deletado com sucesso!", {
+        toastStyle,
+      })
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
     })
-    setTimeout(() => {
-      history.go(0);
-    }, 3000);
-  })
-    .catch(error => {
-      console.log(error)
+      .catch(error => {
+        console.log(error)
         toast.error("🍕 Falha ao apagar Cliente!", {
-            toastStyle,
+          toastStyle,
         })
-    })
-}
+      })
+  }
 
   const [end, setEnd] = React.useState(false);
 
@@ -208,6 +209,9 @@ const GenericTable = ({ data, title }) => {
         tipo: "Normal",
       }
     }
+
+    facadeProduto.patchProdutos(body, '🍕 Produto desativado com sucesso!', 'Ocorrou um erro ao desativar o produto, tente novamente!', true, history)
+
   }
 
   const deleteItemEstoque = () => {
@@ -276,7 +280,7 @@ const GenericTable = ({ data, title }) => {
       }
     }
     {
-      url === "clientes" && history.push("/editar-clientes",{item : item});
+      url === "clientes" && history.push("/editar-clientes", { item: item });
     }
     {
       url === "produtos" &&
@@ -527,14 +531,14 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={()=>handleEdit(item)}
+                      onClick={() => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
                     <Button
                       variant="danger"
                       data-tip="Desativar"
-                      onClick={(value) => {handleClickOpenCliente(item.cpf)}}
+                      onClick={(value) => { handleClickOpenCliente(item.cpf) }}
                     >
                       <ReactTooltip />
                       <FiXCircle size={20} color="#black" />
@@ -550,27 +554,27 @@ const GenericTable = ({ data, title }) => {
                         <Button
                           variant="danger"
                           className="botao"
-                    
+
                           onClick={handleClickCloseCliente}
                           color="primary"
                         >
                           Não
                         </Button>
 
-                          <Button
-                            className="botao"
-                            variant="success"
-                            onClick={() => deleteCliente()}
-                            color="primary"
-                            autoFocus
-                          >
-                            Sim
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={() => deleteCliente()}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
                         </Button>
-                        </DialogActions>
-                      </Dialog>
+                      </DialogActions>
+                    </Dialog>
                   </td>
                 </tr>
-                
+
               </tbody>
             ))}
           </>
