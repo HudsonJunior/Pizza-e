@@ -81,9 +81,10 @@ const FormProduto = props => {
         if (item && tipo === 'Editar') {
             setNome(item.nome)
             setValor(parseFloat(item.valor))
-            setValorPromo(parseFloat(item.valorPromocional))
-            setData1Promo(item.inicioPromo)
-            setData2Promo(item.fimPromo)
+            setValorPromo(parseFloat(item.valor_promocional))
+            setData1Promo(item.inicio_promo)
+            setData2Promo(item.fim_promo)
+            setAddPromo(true)
             setStatus(item.ativado)
 
             if (isPizza) {
@@ -264,6 +265,11 @@ const FormProduto = props => {
 
     }
 
+    const getInfoProdutos = () => {
+        return isPizza ? "Uma pizza, contém as seguintes informações: Nome (Calabresa P), valor (50,00), ingredientes, (500 gramas de mussarela, 1 pacote de molho de tomate...), adicionais e status (ativado ou desativado)"
+            : "Um produto contém as seguintes informações: Nome (Refrigerante 2l), valor(10,00), peso(2kg), status (ativado ou desativado)"
+    }
+
     const showDialogAjuda = () => {
         setShowDialog(true)
     }
@@ -271,7 +277,7 @@ const FormProduto = props => {
         return (
             <form className={classes.root} onSubmit={handleSubmit}>
                 <div className="contentProdutos">
-                    <Button variant="primary" style={{ alignItems: 'center', textAlign: "center" }} onClick={showDialogAjuda}>Precisa de ajuda?</Button>
+                    {tipo === 'Cadastrar' && <Button variant="primary" style={{ alignItems: 'center', textAlign: "center" }} onClick={showDialogAjuda}>Preciso de ajuda</Button>}
 
                     <div style={{ flexDirection: "row", textAlign: "center" }}>
                         {tipo === 'Editar' ?
@@ -325,7 +331,7 @@ const FormProduto = props => {
                             Você está no cadastro de {isPizza ? 'pizza' : 'produto'}
                         </DialogContentText>
                         <DialogContentText>
-                            Uma pizza, contém as seguintes informações: Nome (Calabresa P), valor (50,00), ingredientes, (500 gramas de mussarela, 1 pacote de molho de tomate...), adicionais e status (ativado ou desativado)
+                            {getInfoProdutos()}
                         </DialogContentText>
                         <DialogContentText>
                             Para cadastrar um produto basta preencher as informações obrigatórias (com um * na frente)

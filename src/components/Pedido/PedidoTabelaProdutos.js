@@ -84,8 +84,9 @@ const TabelaProdutoPedido = (props) => {
       item.valor_promocial !== "" &&
       fimPromo?.localeCompare(date) === 1 &&
       inicioPromo?.localeCompare(date === -1)
-    )
-      return item.valor_promocial;
+    ) {
+      return item.valor_promocional;
+    }
     else return item.valor;
   };
 
@@ -136,15 +137,12 @@ const TabelaProdutoPedido = (props) => {
                       style={{ width: 17 }}
                       id="quantidade"
                       value={getQtdeProdutos(item._id)}
-                      disabled
-                    />
+                      disabled />
                     <Fab
                       size="small"
                       aria-label="add"
                       style={{ backgroundColor: green[500] }}
-                      onClick={() =>
-                        handleAdd(item._id, item.nome, getValorItem(item))
-                      }
+                      onClick={() => handleAdd(item._id, item.nome, getValorItem(item))}
                     >
                       <AddIcon />
                     </Fab>

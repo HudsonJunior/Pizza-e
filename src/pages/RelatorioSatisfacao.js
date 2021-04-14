@@ -46,6 +46,7 @@ const RelatorioSatisfacao = () => {
           />
         </RadioGroup>
       </FormControl>
+      
       {CarregaTabela()}
     </>
   );

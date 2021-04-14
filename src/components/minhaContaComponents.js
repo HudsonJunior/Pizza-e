@@ -12,14 +12,17 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TabelaMinhaConta from "./TabelaMinhaConta";
 import FacadePedido from "../Facade/FacadePedido";
+import FacadeClientes from "../Facade/FacadeClientes";
+import FacadeFuncionario from "../Facade/FacadeFuncionario";
 import "./styles/cadastrarCliente.css";
-
+import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 
-import { makeStyles } from "@material-ui/core/styles";
 import { HistoryTwoTone } from "@material-ui/icons";
 import { parseJSON } from "date-fns";
 
+const facadeFuncionario =new FacadeFuncionario(); 
+const facadeClientes = new FacadeClientes();
 const facadePedido = new FacadePedido();
 
 const useStyles = makeStyles((theme) => ({
@@ -31,22 +34,56 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const MinhaConta = ({ currentUser }) => {
   const user = localStorage.getItem("user");
+  
   const history = useHistory();
   const classes = useStyles();
   const [alterar, setAlterar] = React.useState(false);
   const [mensagem, setMensagem] = React.useState(false);
   const [pedidos, setPedidos] = React.useState([]);
+  const [cliente,setCliente] = React.useState("");
+  const [funcionario,setFuncionario] = React.useState("");
+  
 
   useEffect(() => {
-    if (user) {
+    if(user){
       const cpfCliente = JSON.parse(user).cpf;
+      facadeFuncionario.getFuncionario(cpfCliente,setFuncionario)
       facadePedido.getPedidosCPF(cpfCliente, setPedidos);
+      facadeClientes.getCliente(cpfCliente,setCliente);
     }
   }, []);
 
+  const handleChange = (prop) => (event) => {
+    setCliente({ ...cliente, [prop]: event.target.value });
+  };
+
+  const handleChangeFunc = (prop) => (event) =>{
+    
+    setFuncionario({ ...funcionario, [prop]: event.target.value });
+    
+  }
+
   const mostrarMensagem = () => {
+    if(convertedUser.type === "C"){
+      facadeClientes.altCliente(cliente);
+    }
+    else{
+      //facadeFuncionario.altFuncionario(funcionario);
+      facadeFuncionario.patchFunc(
+        funcionario.id,
+        funcionario.nome,
+        funcionario.senha,
+        funcionario.cpf,
+        funcionario.rg,
+        funcionario.carteira,
+        funcionario.cep,
+        funcionario.rua,
+        funcionario.numero)
+    }
     setMensagem(true);
   };
   const naoMostrarMensagem = () => {
@@ -96,35 +133,35 @@ const MinhaConta = ({ currentUser }) => {
               <TextField
                 disabled
                 id="standart-required"
-                label="CPF"
-                defaultValue={data.cpf}
+                
+                value={cliente.cpf}
               />
               <TextField
                 required
-                id="standart-required"
-                label="Nome"
-                defaultValue={data.nome}
+                id="nome"
+                onChange={handleChange("nome")}
+                value={cliente.nome}
               />
             </div>
             <div>
               <TextField
                 required
-                id="standart-required"
-                label="Endereço"
-                defaultValue={data.endereco}
+                id="e"
+                onChange={handleChange("endereco")}
+                value={cliente.endereco}
               />
             </div>
             <TextField
               required
-              id="standart-required"
-              label="Email"
-              defaultValue={data.email}
+              id="email"
+              onChange={handleChange("email")}
+              value={cliente.email}
             />
             <TextField
               required
-              id="standart-required"
-              label="Telefone"
-              defaultValue={data.telefone}
+              id="telefone"
+              onChange={handleChange("nome")}
+              value={cliente.telefone}
             />
           </form>
         </>
@@ -141,13 +178,13 @@ const MinhaConta = ({ currentUser }) => {
                 disabled
                 id="standart-required"
                 label="CPF"
-                defaultValue={func.cpf}
+                defaultValue={funcionario.cpf}
               />
               <TextField
                 disabled
                 id="standart-required"
                 label="RG"
-                defaultValue={func.rg}
+                defaultValue={funcionario.rg}
               />
               <TextField
                 disabled
@@ -159,29 +196,30 @@ const MinhaConta = ({ currentUser }) => {
             <div>
               <TextField
                 required
-                id="standart-required"
-                label="Nome"
-                defaultValue={func.nome}
+                id="nome"
+                value={funcionario.nome}
+                onChange={handleChangeFunc("nome")}
+
               />
               <TextField
                 required
-                id="standart-required"
-                label="Email"
-                defaultValue={func.email}
+                id="numero"
+                value={funcionario.numero}
+                onChange={handleChangeFunc("numero")}
               />
               <TextField
                 required
-                id="standart-required"
-                label="Telefone"
-                defaultValue={func.telefone}
+                id="cep"
+                value={funcionario.cep}
+                onChange={handleChangeFunc("cep")}
               />
             </div>
             <div>
               <TextField
                 required
-                id="standart-required"
-                label="Endereço"
-                defaultValue={func.endereco}
+                id="rua"
+                value={funcionario.rua}
+                onChange={handleChangeFunc("rua")}
               />
             </div>
           </form>

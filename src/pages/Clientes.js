@@ -16,16 +16,14 @@ const Clientes = () => {
     }, []);
 
   const getClientes = async () => {
-    console.log("-----------------------------------------------------rola")
+    //console.log("-----------------------------------------------------rola")
     const response = await axios.get(
       `http://localhost:8080/clientes`
     );
-    console.log("response eh:",response)
     const clientesResponse = await response;
     const clientesArray = clientesResponse.data;
-    console.log(clientesArray)
     setClientes(clientesArray);
-    };
+  };
 
   return (
     <>

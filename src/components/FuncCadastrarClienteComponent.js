@@ -87,7 +87,11 @@ const FuncCadastrarClienteComponents = (props) => {
           toastStyle,
       })
       setTimeout(() => {
-          history.push("/clientes")
+          if(tipo === "pedido"){
+            window.history.back();
+          }  
+          else{history.push("/clientes")}
+          
       }, 3000);
   })
       .catch(error => {

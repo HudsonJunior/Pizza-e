@@ -8,6 +8,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl2 from "@material-ui/core/FormControl";
 
+
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
 import {
@@ -37,6 +38,8 @@ import { TramRounded } from "@material-ui/icons";
 import { setPageStateUpdate } from "@material-ui/data-grid";
 import FacadeProduto from "../Facade/FacadeProduto";
 import FacadePedido from "../Facade/FacadePedido";
+import FacadeClientes from "../Facade/FacadeClientes";
+
 
 import FacadeFuncionario from "../Facade/FacadeFuncionario";
 
@@ -45,7 +48,7 @@ import FacadeEstoque from "../Facade/FacadeEstoque";
 const facadeEstoque = new FacadeEstoque();
 const facadeFunc = new FacadeFuncionario();
 
-const axios = require("axios");
+const axios = require('axios');
 const url = window.location.href.replace("http://localhost:3000/", "");
 
 const GenericTable = ({ data, title }) => {
@@ -60,10 +63,11 @@ const GenericTable = ({ data, title }) => {
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
   const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
   const [statusGeneric, setStatusGeneric] = React.useState("ativado");
-  const [isAtivado, setIsAtivado] = React.useState("true");
+  const [isAtivado, setIsAtivado] = React.useState('true');
   const [produtoSelecionado, setProdutoSelecionado] = React.useState({});
-  const facadeProduto = new FacadeProduto();
-  const facadePedido = new FacadePedido();
+  const facadeProduto = new FacadeProduto()
+  const facadePedido = new FacadePedido()
+  const facadeClientes = new FacadeClientes()
 
   const handleChangePizza = () => {
     setTipoProduto("pizza");
@@ -94,22 +98,50 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpenEstoque = (id) => {
     setIdEstoque(id);
     setOpen(true);
-  };
+  }
 
   const handleClickOpenFuncionario = (cpf) => {
     setCpfFunc(cpf);
     setOpen(true);
-  };
+  }
 
   const handleClickOpen = (id) => {
     setOpen(true);
   };
+  const [openDelCliente, setOpenDelCliente] = React.useState("");
 
+  const handleClickCloseCliente = () => {
+    setOpenDelCliente(false);
+  }
+
+  const handleClickOpenCliente = (cpf) => {
+    setCpfCliente(cpf);
+    setOpenDelCliente(true);
+  }
   const editarCliente = (cpfCliente) => {
+
     setCpfCliente(cpfCliente);
     console.log(cpfCliente);
     handleClickOpen();
-  };
+  }
+
+  const deleteCliente = () => {
+    //setOpen(false);
+    facadeClientes.delCliente(cpfCliente).then(result => {
+      toast.success("🍕 Registro deletado com sucesso!", {
+        toastStyle,
+      })
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
+        toast.error("🍕 Falha ao apagar Cliente!", {
+          toastStyle,
+        })
+      })
+  }
 
   const [end, setEnd] = React.useState(false);
 
@@ -144,20 +176,14 @@ const GenericTable = ({ data, title }) => {
         statusPagamento: item.statusPagamento,
         id: item._id,
         cancelar: true,
-      };
+      }
 
-      facadePedido.patchPedidos(
-        body,
-        "🍕 Pedido cancelado com sucesso!",
-        true,
-        history,
-        toastStyle
-      );
+      facadePedido.patchPedidos(body, '🍕 Pedido cancelado com sucesso!', true, history, toastStyle)
     }
   };
 
   const desativarProduto = (item) => {
-    let body = {};
+    let body = {}
     if (item.tipo == "Pizza") {
       body = {
         nome: item.nome,
@@ -169,7 +195,8 @@ const GenericTable = ({ data, title }) => {
         inicio_promo: item.inicioPromo,
         fim_promo: item.fimPromo,
         valor_promocional: item.valorPromocional ?? "",
-      };
+      }
+
     } else {
       body = {
         nome: item.nome,
@@ -180,60 +207,54 @@ const GenericTable = ({ data, title }) => {
         fim_promo: item.fimPromo,
         valor_promocional: item.valorPromocional ?? "",
         tipo: "Normal",
-      };
+      }
     }
 
-    facadeProduto.patchProdutos(
-      body,
-      "🍕 Produto desativado com sucesso!",
-      "Ocorrou um erro ao desativar o produto, tente novamente!",
-      true,
-      history
-    );
-  };
+    facadeProduto.patchProdutos(body, '🍕 Produto desativado com sucesso!', 'Ocorrou um erro ao desativar o produto, tente novamente!', true, history)
+
+  }
+
   const deleteItemEstoque = () => {
     setOpen(false);
-    facadeEstoque
-      .delEstoque(idEstoque)
-      .then((result) => {
-        toast.success("🍕 Produto removido do estoque com sucesso!", {
-          toastStyle,
-        });
-        setTimeout(() => {
-          history.go(0);
-        }, 3000);
+    facadeEstoque.delEstoque(idEstoque).then(result => {
+      toast.success("🍕 Produto removido do estoque com sucesso!", {
+        toastStyle,
       })
-      .catch((error) => {
-        console.log(error);
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
         toast.error("🍕 Falha ao apagar produto do estoque!", {
           toastStyle,
-        });
-      });
-  };
+        })
+      })
+  }
 
   const deleteFuncionario = () => {
     setOpen(false);
-    facadeFunc
-      .delFuncionario(cpfFunc)
-      .then((result) => {
-        toast.success("🍕 Registro deletado com sucesso!", {
-          toastStyle,
-        });
-        setTimeout(() => {
-          history.go(0);
-        }, 3000);
+    facadeFunc.delFuncionario(cpfFunc).then(result => {
+      toast.success("🍕 Registro deletado com sucesso!", {
+        toastStyle,
       })
-      .catch((error) => {
-        console.log(error);
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
         toast.error("🍕 Falha ao apagar funcionário!", {
           toastStyle,
-        });
-      });
-  };
+        })
+      })
+  }
+
+
 
   const handleClose = (url, id) => {
     setOpen(false);
-    if (url === "pedidos") {
+    if (url === 'pedidos') {
       toast.success("🍕 Pedido removido com sucesso!", {
         toastStyle,
       });
@@ -259,7 +280,7 @@ const GenericTable = ({ data, title }) => {
       }
     }
     {
-      url === "clientes" && history.push("/");
+      url === "clientes" && history.push("/editar-clientes", { item: item });
     }
     {
       url === "produtos" &&
@@ -375,17 +396,18 @@ const GenericTable = ({ data, title }) => {
                 control={<Radio />}
                 value="ativado"
                 label="Ativado"
-                onChange={() => setIsAtivado("true")}
+                onChange={() => setIsAtivado('true')}
               />
               <FormControlLabel
                 control={<Radio />}
                 value="desativado"
                 label="Desativado"
-                onChange={() => setIsAtivado("false")}
+                onChange={() => setIsAtivado('false')}
               />
             </RadioGroup>
           </FormControl2>
         </>
+
       )}
       <Table striped bordered hover>
         {url === "pedidos" && (
@@ -404,6 +426,7 @@ const GenericTable = ({ data, title }) => {
                 <th>Expedição</th>
                 <th>Endereço</th>
                 <th>CPF Cliente</th>
+                <th>CPF NF</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -426,6 +449,7 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.formaExpedicao}</td>
                   <td>{item.endereco}</td>
                   <td>{item.cpfCliente}</td>
+                  <td>{item.cpfNF}</td>
                   <td>
                     <Button
                       variant="light"
@@ -480,6 +504,7 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
+
                 <td>CPF</td>
                 <td>Nome</td>
                 <td>Endereco</td>
@@ -491,6 +516,7 @@ const GenericTable = ({ data, title }) => {
             {data.map((item) => (
               <tbody>
                 <tr>
+
                   <td>{item.cpf}</td>
                   <td>{item.nome}</td>
                   <td>{item.endereco}</td>
@@ -505,93 +531,50 @@ const GenericTable = ({ data, title }) => {
                         borderWidth: 1,
                         borderColor: "black",
                       }}
-                      onClick={() => editarCliente(item.cpf)}
+                      onClick={() => handleEdit(item)}
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
                     <Button
                       variant="danger"
                       data-tip="Desativar"
-                      onClick={(value) => {}}
+                      onClick={(value) => { handleClickOpenCliente(item.cpf) }}
                     >
                       <ReactTooltip />
                       <FiXCircle size={20} color="#black" />
                     </Button>
+
+                    <Dialog open={openDelCliente} onClose={handleClickCloseCliente}>
+                      <DialogTitle id="alert-dialog-apagar">
+                        {
+                          "Deseja realmente deletar os registros do Cliente?"
+                        }
+                      </DialogTitle>
+                      <DialogActions>
+                        <Button
+                          variant="danger"
+                          className="botao"
+
+                          onClick={handleClickCloseCliente}
+                          color="primary"
+                        >
+                          Não
+                        </Button>
+
+                        <Button
+                          className="botao"
+                          variant="success"
+                          onClick={() => deleteCliente()}
+                          color="primary"
+                          autoFocus
+                        >
+                          Sim
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </td>
                 </tr>
-                <Dialog
-                  open={open}
-                  onClose={gerenciarFechar}
-                  aria-labelledby="form-dialog-title"
-                >
-                  <DialogTitle id="form-dialog-title">
-                    Editar as informações do cliente
-                  </DialogTitle>
-                  <DialogContent>
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Nome"
-                      type="name"
-                      fullWidth
-                    />
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Endereço"
-                      type="name"
-                      fullWidth
-                    />
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Email"
-                      type="email"
-                      fullWidth
-                    />
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Telefone"
-                      type="name"
-                      fullWidth
-                    />
-                  </DialogContent>
-                  <DialogActions>
-                    <Botao onClick={gerenciarFechar} color="primary">
-                      Cancel
-                    </Botao>
-                    <Botao onClick={fim} color="primary">
-                      Alterar
-                    </Botao>
-                  </DialogActions>
-                </Dialog>
-                <Dialog
-                  open={end}
-                  onClose={endClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Os dados foram alterados com sucesso!  "}
-                    <FiCheck size={35} color={"green"}></FiCheck>
-                  </DialogTitle>
 
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                      Dados alterados com sucesso.
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={endClose} color="primary" autoFocus>
-                      Ok
-                    </Button>
-                  </DialogActions>
-                </Dialog>
               </tbody>
             ))}
           </>
@@ -627,7 +610,7 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.valor}</td>
                           <td>{item.ingredientes}</td>
                           <td>{item.adicionais}</td>
-                          <td>{item.ativado == "true" ? "Sim" : "Não"}</td>
+                          <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
                           <td>{item.valor_promocional || 0}</td>
                           <td>{formataData(item.inicio_promo)}</td>
                           <td>{formataData(item.fim_promo)}</td>
@@ -709,11 +692,11 @@ const GenericTable = ({ data, title }) => {
                       <tbody>
                         <tr>
                           <td>{item.tipo}</td>
-                          <td>{item.codigo}</td>
+                          <td>{item._id}</td>
                           <td>{item.nome}</td>
                           <td>{item.valor}</td>
                           <td>{item.peso}</td>
-                          <td>{item.ativado == "true" ? "Sim" : "Não"}</td>
+                          <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
                           <td>{item.valor_promocional || 0}</td>
                           <td>{formataData(item.inicio_promo)}</td>
                           <td>{formataData(item.fim_promo)}</td>
@@ -809,10 +792,7 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button
-                      variant="danger"
-                      onClick={(value) => handleClickOpenEstoque(item._id)}
-                    >
+                    <Button variant="danger" onClick={value => handleClickOpenEstoque(item._id)}>
                       <FiXCircle size={20} color="#black" />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
@@ -832,7 +812,7 @@ const GenericTable = ({ data, title }) => {
                         <Button
                           className="botao"
                           variant="success"
-                          onClick={(value) => deleteItemEstoque()}
+                          onClick={value => deleteItemEstoque()}
                           color="primary"
                           autoFocus
                         >
@@ -884,14 +864,11 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button
-                      variant="danger"
-                      onClick={(value) => handleClickOpenFuncionario(item.cpf)}
-                    >
+                    <Button variant="danger" onClick={value => handleClickOpenFuncionario(item.cpf)}>
                       <FiXCircle
                         size={20}
                         color="#black"
-                        // onclick={deleteItem(item.quantidade)}
+                      // onclick={deleteItem(item.quantidade)}
                       />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
@@ -936,7 +913,7 @@ const GenericTable = ({ data, title }) => {
         onClick={goBack}
       >
         <FiChevronLeft /> Voltar
-      </Button>
+        </Button>
       <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
         Adicionar
