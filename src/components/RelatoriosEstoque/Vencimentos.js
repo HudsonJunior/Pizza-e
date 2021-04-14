@@ -18,9 +18,7 @@ const Vencimentos = () => {
   const [data, setData] = React.useState(currentDate);
 
   useEffect(() => {
-    if (relatorio) {
-      facadeRelatorio.getEstoqueVencido(data, setRelatorio);
-    }
+    facadeRelatorio.getEstoqueVencido(data, setRelatorio);
   }, [data]);
 
   const formataData = (data) => {

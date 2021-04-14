@@ -13,12 +13,16 @@ const TabelaData = () => {
     ("0" + (today.getMonth() + 1)).slice(-2) +
     "-" +
     ("0" + today.getDate()).slice(-2);
+  let lastMonth = new Date(new Date(currentDate) - 31 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0];
+
   const [relatorio, setRelatorio] = React.useState([]);
-  const [dataI, setDataI] = React.useState(currentDate);
+  const [dataI, setDataI] = React.useState(lastMonth);
   const [dataF, setDataF] = React.useState(currentDate);
 
   useEffect(() => {
-    if (relatorio) facadePedido.getVendaData(dataI, dataF, setRelatorio);
+    facadePedido.getVendaData(dataI, dataF, setRelatorio);
   }, [dataI, dataF]);
 
   return (
@@ -27,10 +31,10 @@ const TabelaData = () => {
         id="dateI"
         label="Data de início"
         type="date"
-        defaultValue={currentDate}
         InputLabelProps={{
           shrink: true,
         }}
+        defaultValue={lastMonth}
         value={dataI}
         onChange={(event) => setDataI(event.target.value)}
       />
@@ -38,10 +42,10 @@ const TabelaData = () => {
         id="dateF"
         label="Data final"
         type="date"
-        defaultValue={currentDate}
         InputLabelProps={{
           shrink: true,
         }}
+        defaultValue={currentDate}
         value={dataF}
         onChange={(event) => setDataF(event.target.value)}
       />
