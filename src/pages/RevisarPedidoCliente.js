@@ -13,7 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { green, red } from "@material-ui/core/colors";
 import TextField from "@material-ui/core/TextField";
-
+import FormDialogAjuda from "../components/Pedido/DialogAjudaCliente";
 import "react-toastify/dist/ReactToastify.css";
 
 const Revisar = () => {
@@ -52,6 +52,7 @@ const Revisar = () => {
       if (produtosPedido[i]._id === id) {
         produtosPedido.splice(i, 1);
         setProdutosPedido(produtosPedido);
+        localStorage.setItem("produtosPedido", JSON.stringify(produtosPedido));
       }
     }
     handleClose();
@@ -63,6 +64,7 @@ const Revisar = () => {
       valor += parseFloat(produto.valor) * parseInt(produto.quantidade);
     }
     setValor(valor);
+    localStorage.setItem("valorPedido", JSON.stringify(valor));
   };
 
   const handleAdd = (id, nome, valor) => {
@@ -83,6 +85,7 @@ const Revisar = () => {
       produtosPedido.push(obj);
     }
     setProdutosPedido(produtosPedido);
+    localStorage.setItem("produtosPedido", JSON.stringify(produtosPedido));
     getValor();
   };
 
@@ -98,14 +101,25 @@ const Revisar = () => {
     }
     if (existeProduto && produtosPedido[i].quantidade === 0) {
       produtosPedido.splice(i, 1);
+      handleClose();
     }
     setProdutosPedido(produtosPedido);
+    localStorage.setItem("produtosPedido", JSON.stringify(produtosPedido));
     getValor();
   };
 
   const handleNext = () => {
     if (produtosPedido.length > 0) {
-      history.push("/concluir-pedido");
+      if (!localStorage.getItem("user")) {
+        toast.success("🍕 Redirecionando para o login!", {
+          toastStyle,
+        });
+        setTimeout(() => {
+          history.push("/login", { tipo: "pedido" });
+        }, 3000);
+      } else {
+        history.push("/concluir-pedido");
+      }
     } else {
       toast.error(
         "🍕 Seu pedido está vazio, você será redirecionado ao cardápio!",
@@ -124,14 +138,15 @@ const Revisar = () => {
       <Menubar currentUser={convertedUser} />
       <h1>Revisar Pedido</h1>
       <p>Agora, verifique se seu pedido está correto.</p>
+      <FormDialogAjuda etapa={2} />
       {produtosPedido.length > 0 ? (
         <Table striped bordered hover>
           <thead>
             <tr>
-              <td>Descrição</td>
-              <td>Valor</td>
-              <td>Quantidade</td>
-              <td>Remover</td>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Quantidade</th>
+              <th>Remover</th>
             </tr>
           </thead>
           {produtosPedido.map((item) => (
@@ -210,11 +225,24 @@ const Revisar = () => {
           display: "flex",
           bottom: 0,
           justifyContent: "space-between",
+          width: "100%",
         }}
       >
+        <Button
+          variant="ligth"
+          style={{
+            marginLeft: 20,
+            borderWidth: 1,
+            borderColor: "black",
+            backgroundColor: "white",
+          }}
+          href="/cardapio"
+        >
+          Voltar
+        </Button>
+
         <div style={{ marginRight: 20 }}>
           <TextField
-            style={{ width: 100 }}
             id="valorPedido"
             onChange={(event) => setValor(event.target.value)}
             value={"R$ " + valor}
@@ -229,7 +257,7 @@ const Revisar = () => {
             marginBottom: 0,
             borderWidth: 1,
             borderColor: "black",
-            padding: 12,
+            padding: 10,
           }}
           type="submit"
           variant="success"

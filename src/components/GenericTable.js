@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-import { useHistory } from "react-router-dom";
+import { useHistory, pushState } from "react-router-dom";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl2 from "@material-ui/core/FormControl";
+
 
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
 
@@ -17,6 +18,7 @@ import {
   FiSearch,
   FiCheck,
   FiDelete,
+  FiChevronLeft,
 } from "react-icons/fi";
 import { Dialog } from "@material-ui/core";
 import Botao from "@material-ui/core/Button";
@@ -37,15 +39,26 @@ import { setPageStateUpdate } from "@material-ui/data-grid";
 import FacadeProduto from "../Facade/FacadeProduto";
 import FacadePedido from "../Facade/FacadePedido";
 import FacadeClientes from "../Facade/FacadeClientes";
-const axios = require("axios");
+
+
+import FacadeFuncionario from "../Facade/FacadeFuncionario";
+
+import FacadeEstoque from "../Facade/FacadeEstoque";
+
+const facadeEstoque = new FacadeEstoque();
+const facadeFunc = new FacadeFuncionario();
+
+const axios = require('axios');
 const url = window.location.href.replace("http://localhost:3000/", "");
 
 const GenericTable = ({ data, title }) => {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
+  const [idEstoque, setIdEstoque] = React.useState("");
+  const [cpfFunc, setCpfFunc] = React.useState("");
   var itensQuantidade = [];
 
-  const [cpfCliente,setCpfCliente] = React.useState("");
+  const [cpfCliente, setCpfCliente] = React.useState("");
 
   const [valueTipoProduto, setTipoProduto] = React.useState("pizza");
   const [valueGeneric, setTipoValueGeneric] = React.useState("pizza");
@@ -68,6 +81,10 @@ const GenericTable = ({ data, title }) => {
     setTipoValueGeneric(event.target.value);
   };
 
+  function goBack() {
+    window.history.back();
+  }
+
   const toastStyle = {
     position: "top-right",
     autoClose: 1500,
@@ -78,7 +95,17 @@ const GenericTable = ({ data, title }) => {
     progress: undefined,
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpenEstoque = (id) => {
+    setIdEstoque(id);
+    setOpen(true);
+  }
+
+  const handleClickOpenFuncionario = (cpf) => {
+    setCpfFunc(cpf);
+    setOpen(true);
+  }
+
+  const handleClickOpen = (id) => {
     setOpen(true);
   };
   const [openDelCliente,setOpenDelCliente]=React.useState("");
@@ -90,6 +117,12 @@ const GenericTable = ({ data, title }) => {
   const handleClickOpenCliente =(cpf)=>{
     setCpfCliente(cpf);
     setOpenDelCliente(true);
+  }    
+  const editarCliente = (cpfCliente) => {
+
+    setCpfCliente(cpfCliente);
+    console.log(cpfCliente);
+    handleClickOpen();
   }
 
   const deleteCliente = () => {
@@ -175,23 +208,49 @@ const GenericTable = ({ data, title }) => {
         tipo: "Normal",
       }
     }
+  }
 
-    facadeProduto.patchProdutos(body, '🍕 Produto desativado com sucesso!', 'Ocorrou um erro ao desativar o produto, tente novamente!', true, history)
-
-  };
-
-  const handleClose = (url) => {
+  const deleteItemEstoque = () => {
     setOpen(false);
-
-    if (url === "funcionarios") {
-      toast.success("🍕 Registro deletado com sucesso!", {
-        toastStyle,
-      });
-    } else if (url === "estoque") {
+    facadeEstoque.delEstoque(idEstoque).then(result => {
       toast.success("🍕 Produto removido do estoque com sucesso!", {
         toastStyle,
-      });
-    } else if (url === "pedidos") {
+      })
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
+        toast.error("🍕 Falha ao apagar produto do estoque!", {
+          toastStyle,
+        })
+      })
+  }
+
+  const deleteFuncionario = () => {
+    setOpen(false);
+    facadeFunc.delFuncionario(cpfFunc).then(result => {
+      toast.success("🍕 Registro deletado com sucesso!", {
+        toastStyle,
+      })
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
+    })
+      .catch(error => {
+        console.log(error)
+        toast.error("🍕 Falha ao apagar funcionário!", {
+          toastStyle,
+        })
+      })
+  }
+
+
+
+  const handleClose = (url, id) => {
+    setOpen(false);
+    if (url === 'pedidos') {
       toast.success("🍕 Pedido removido com sucesso!", {
         toastStyle,
       });
@@ -297,20 +356,6 @@ const GenericTable = ({ data, title }) => {
 
   return (
     <>
-      {/* <InputGroup className="col-3 mb-3">
-        <InputGroup.Prepend>
-          <InputGroup.Text id="basic-addon1">
-            <FiSearch size={18} color="#000" />
-          </InputGroup.Text>
-        </InputGroup.Prepend>
-
-        <FormControl
-          placeholder={`Buscar ${title}`}
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-        />
-      </InputGroup> */}
-
       {url === "produtos" && (
         <>
           <FormControl2 style={{ margin: 10 }} component="RadioTipoProduto">
@@ -455,7 +500,7 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
-                
+
                 <td>CPF</td>
                 <td>Nome</td>
                 <td>Endereco</td>
@@ -467,7 +512,7 @@ const GenericTable = ({ data, title }) => {
             {data.map((item) => (
               <tbody>
                 <tr>
-                  
+
                   <td>{item.cpf}</td>
                   <td>{item.nome}</td>
                   <td>{item.endereco}</td>
@@ -643,7 +688,7 @@ const GenericTable = ({ data, title }) => {
                       <tbody>
                         <tr>
                           <td>{item.tipo}</td>
-                          <td>{item.codigo}</td>
+                          <td>{item._id}</td>
                           <td>{item.nome}</td>
                           <td>{item.valor}</td>
                           <td>{item.peso}</td>
@@ -713,7 +758,7 @@ const GenericTable = ({ data, title }) => {
           <>
             <thead>
               <tr>
-                <td>Cod</td>
+                <td>Id</td>
                 <td>Nome</td>
                 <td>Valor do item</td>
                 <td>Peso do item</td>
@@ -743,7 +788,7 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={handleClickOpen}>
+                    <Button variant="danger" onClick={value => handleClickOpenEstoque(item._id)}>
                       <FiXCircle size={20} color="#black" />
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
@@ -763,7 +808,7 @@ const GenericTable = ({ data, title }) => {
                         <Button
                           className="botao"
                           variant="success"
-                          onClick={() => handleClose("estoque")}
+                          onClick={value => deleteItemEstoque()}
                           color="primary"
                           autoFocus
                         >
@@ -815,7 +860,7 @@ const GenericTable = ({ data, title }) => {
                     >
                       <FiEdit3 size={20} color="#black" />
                     </Button>
-                    <Button variant="danger" onClick={handleClickOpen}>
+                    <Button variant="danger" onClick={value => handleClickOpenFuncionario(item.cpf)}>
                       <FiXCircle
                         size={20}
                         color="#black"
@@ -842,7 +887,7 @@ const GenericTable = ({ data, title }) => {
                         <Button
                           className="botao"
                           variant="success"
-                          onClick={() => handleClose("funcionarios")}
+                          onClick={() => deleteFuncionario()}
                           color="primary"
                           autoFocus
                         >
@@ -857,6 +902,14 @@ const GenericTable = ({ data, title }) => {
           </>
         )}
       </Table>
+      <Button
+        className="botao"
+        variant="ligth"
+        style={{ marginRight: 10, borderWidth: 1, borderColor: "black" }}
+        onClick={goBack}
+      >
+        <FiChevronLeft /> Voltar
+        </Button>
       <Button variant="success" onClick={direcionarCadastro}>
         <FiPlus size={26} color="fff" />
         Adicionar

@@ -20,6 +20,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { useHistory } from "react-router-dom";
 
+import FacadeFuncionario from "../Facade/FacadeFuncionario";
+
+const facadeFunc = new FacadeFuncionario();
+
 const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
@@ -62,18 +66,20 @@ const FormularioFuncionario = (props) => {
   const handleSave = (event) => {
     event.preventDefault();
     if (tipo === "cadastrar") {
-      axios.post('http://localhost:8080/funcionarios', {
-        nome: nome,
-        senha: senha,
-        cpf: cpf,
-        rg: rg,
-        carteira: carteira,
-        cep: cep,
-        rua: rua,
-        numero: numero
-      }).then(result => toast.success("🍕 Cadastro feito!", {
+      facadeFunc.postFuncionario( nome,
+        senha,
+        cpf,
+        rg,
+        carteira,
+        cep,
+        rua,
+        numero).then(result => {toast.success("🍕 Cadastro feito!", {
         toastStyle,
-      }))
+      })
+      setTimeout(() => {
+        history.push("/funcionarios");
+      }, 3000);
+    })
       .catch(error => {
         console.log(error)
           toast.error(error.response.data.message, {
@@ -85,8 +91,9 @@ const FormularioFuncionario = (props) => {
       })
     }
     if (tipo === "editar") {
-      axios.patch('http://localhost:8080/funcionarios', {
-        id: func._id,
+      const id = func._id;
+      facadeFunc.patchFunc(
+        id,
         nome,
         senha,
         cpf,
@@ -95,7 +102,7 @@ const FormularioFuncionario = (props) => {
         cep,
         rua,
         numero
-      }).then(result => { toast.success("🍕 Dados atualizados!", {
+      ).then(result => { toast.success("🍕 Dados atualizados!", {
         toastStyle,
       })
       setTimeout(() => {

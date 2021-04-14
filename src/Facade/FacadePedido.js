@@ -33,6 +33,7 @@ export default class FacadePedido {
         });
         resolve();
       } catch (error) {
+        console.log(error)
         reject(error);
       }
     });

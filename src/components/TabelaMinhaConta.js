@@ -26,7 +26,7 @@ const getProdutosPedido = (produtosArray) => {
 const TabelaMinhaConta = (props) => {
   return (
     <>
-      <p>Meus Pedidos:</p>
+      <h4>Meus Pedidos:</h4>
       {props.meusPedidos.length > 0 ? (
         <Table striped bordered hover>
           <thead>

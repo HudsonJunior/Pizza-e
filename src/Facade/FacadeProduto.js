@@ -29,7 +29,7 @@ export default class FacadeProduto {
                 const response = await axios.get(
                     `${this.baseUrl}?ativado=${ativado}`
                 );
-                const produtosResponse = await response.data;
+                const produtosResponse = await response.data; 
                 setProdutos(produtosResponse);
             }
         } catch (error) {

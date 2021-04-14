@@ -10,12 +10,16 @@ import ReactTooltip from 'react-tooltip';
 import TextField from '@material-ui/core/TextField';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { MenuItem } from '@material-ui/core';
+import { DialogContent, DialogContentText, MenuItem } from '@material-ui/core';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FacadeProduto from '../Facade/FacadeProduto';
-const axios = require('axios');
+import { Dialog } from "@material-ui/core";
+
+import DialogActions from "@material-ui/core/DialogActions";
+
+import DialogTitle from "@material-ui/core/DialogTitle";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexWrap: "wrap",
@@ -58,7 +62,7 @@ const FormProduto = props => {
     }
 
     const facadeProduto = new FacadeProduto()
-
+    const [showDialog, setShowDialog] = useState(false);
     const user = localStorage.getItem("user");
     const convertedUser = JSON.parse(user);
     const [voltar, setVoltar] = useState(false)
@@ -77,9 +81,10 @@ const FormProduto = props => {
         if (item && tipo === 'Editar') {
             setNome(item.nome)
             setValor(parseFloat(item.valor))
-            setValorPromo(parseFloat(item.valorPromocional))
-            setData1Promo(item.inicioPromo)
-            setData2Promo(item.fimPromo)
+            setValorPromo(parseFloat(item.valor_promocional))
+            setData1Promo(item.inicio_promo)
+            setData2Promo(item.fim_promo)
+            setAddPromo(true)
             setStatus(item.ativado)
 
             if (isPizza) {
@@ -260,10 +265,20 @@ const FormProduto = props => {
 
     }
 
+    const getInfoProdutos = () => {
+        return isPizza ? "Uma pizza, contém as seguintes informações: Nome (Calabresa P), valor (50,00), ingredientes, (500 gramas de mussarela, 1 pacote de molho de tomate...), adicionais e status (ativado ou desativado)"
+            : "Um produto contém as seguintes informações: Nome (Refrigerante 2l), valor(10,00), peso(2kg), status (ativado ou desativado)"
+    }
+
+    const showDialogAjuda = () => {
+        setShowDialog(true)
+    }
     const renderLayoutCadastro = () => {
         return (
             <form className={classes.root} onSubmit={handleSubmit}>
                 <div className="contentProdutos">
+                    <Button variant="primary" style={{ alignItems: 'center', textAlign: "center" }} onClick={showDialogAjuda}>Preciso de ajuda</Button>
+
                     <div style={{ flexDirection: "row", textAlign: "center" }}>
                         {tipo === 'Editar' ?
                             <TextField style={{ width: "42%" }} className={classes.textField} value={nome} id="standard-basic" label="Nome" name="fieldNome" disabled />
@@ -303,6 +318,52 @@ const FormProduto = props => {
                         </Button>
                     </div>
                 </div>
+                <Dialog
+                    open={showDialog}
+                    onClose={() => setShowDialog(false)}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <DialogTitle id="form-dialog-title">
+                        Ajuda online de contexto
+                  </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Você está no cadastro de {isPizza ? 'pizza' : 'produto'}
+                        </DialogContentText>
+                        <DialogContentText>
+                            {getInfoProdutos()}
+                        </DialogContentText>
+                        <DialogContentText>
+                            Para cadastrar um produto basta preencher as informações obrigatórias (com um * na frente)
+                        </DialogContentText>
+                        <DialogContentText>
+                            Para adicionar uma promoção, basta clicar no botão "Adicionar promoção", os campos necessários
+                            da promoção seram apresentados para o preenchimento
+                        </DialogContentText>
+                        <DialogContentText>
+                            Data inicial é a data que a promoção irá começar a ser válida
+                        </DialogContentText>
+                        <DialogContentText>
+                            Data final é a data que a promoção irá deixar de ser válida
+                        </DialogContentText>
+                        <DialogContentText>
+                            Valor promocional é o valor que será descontado do valor total para esse produto
+                        </DialogContentText>
+                        <DialogContentText>
+                            Para voltar para a página anterior, clique no botão "Voltar", para confirmar o cadastro clique no botão "Confirmar"
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            className="botao"
+                            onClick={() => setShowDialog(false)}
+                            color="primary"
+                        >
+                            Ok
+                        </Button>
+
+                    </DialogActions>
+                </Dialog>
             </form>
         )
     }
@@ -313,6 +374,7 @@ const FormProduto = props => {
             <div className="containerCadastroProduto">
                 <h1 style={{ textAlign: "center", paddingTop: 20 }}>{getHeaderText()}</h1>
                 <h5 style={{ textAlign: "center", paddingTop: 40 }}>{getSubHeaderText()}</h5>
+
                 {renderLayoutCadastro()}
             </div>
 

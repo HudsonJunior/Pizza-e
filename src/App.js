@@ -6,6 +6,7 @@ import Login from "../src/pages/Login";
 import Header from "./components/HeaderComponent";
 import Footer from "./components/FooterComponent";
 
+import Chatbot from "./pages/Chatbot"
 import Cardapio from "./pages/Cardapio";
 import Home from "./pages/HomePage";
 import minhaConta from "./pages/minhaConta";
@@ -70,6 +71,7 @@ const App = () => {
             <Route path="/concluir-pedido" component={ConcluirPedidoCliente} />
           </Switch>
           <div className="push"></div>
+          <Chatbot/>
         </div>
         <Footer className="footer" />
       </div>

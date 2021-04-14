@@ -51,19 +51,14 @@ const MinhaConta = ({ currentUser }) => {
   useEffect(() => {
     if(user){
       const cpfCliente = JSON.parse(user).cpf;
-      
       facadeFuncionario.getFuncionario(cpfCliente,setFuncionario)
       facadePedido.getPedidosCPF(cpfCliente, setPedidos);
       facadeClientes.getCliente(cpfCliente,setCliente);
-      console.log("-----func: ",funcionario)
     }
-
-
   }, []);
 
   const handleChange = (prop) => (event) => {
     setCliente({ ...cliente, [prop]: event.target.value });
-
   };
 
   const handleChangeFunc = (prop) => (event) =>{

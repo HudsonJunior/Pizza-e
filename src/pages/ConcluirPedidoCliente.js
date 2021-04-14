@@ -14,7 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
 import "../components/styles/ConcluirPedidoStyle.css";
-
+import FormDialogAjuda from "../components/Pedido/DialogAjudaCliente";
 import FacadePedido from "../Facade/FacadePedido";
 const facadePedido = new FacadePedido();
 
@@ -109,6 +109,8 @@ const Concluir = () => {
             toastStyle,
           }
         );
+        localStorage.removeItem("produtosPedido");
+        localStorage.removeItem("valorPedido");
         setTimeout(() => {
           history.push("/minhaConta");
         }, 4000);
@@ -125,6 +127,7 @@ const Concluir = () => {
       <div className="concluirPage">
         <h1>Concluir Pedido</h1>
         <p>Por fim, preencha os seguintes campos.</p>
+        <FormDialogAjuda etapa={3} />
         <form className={classes.root} onSubmit={handleSave}>
           <TextField
             style={{ width: 100 }}
@@ -168,13 +171,12 @@ const Concluir = () => {
             </Button>
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle id="alert-dialog-VoltarPedido">
-                {"Deseja continuar o registro do pedido?"}
+                {"Deseja revisar o pedido novamente?"}
               </DialogTitle>
               <DialogActions>
                 <Button
                   className="botaoNaoPedido"
                   variant="danger"
-                  href="/cardapio"
                   onClick={handleClose}
                   color="primary"
                 >
@@ -184,6 +186,7 @@ const Concluir = () => {
                 <Button
                   variant="success"
                   onClick={handleClose}
+                  href="/revisar-pedido"
                   color="primary"
                   autoFocus
                 >
