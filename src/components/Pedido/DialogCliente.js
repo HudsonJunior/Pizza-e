@@ -10,8 +10,10 @@ import InputMask from "react-input-mask";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FacadeClientes from "../../Facade/FacadeClientes";
 
 const axios = require("axios");
+const facadeClientes = new FacadeClientes();
 
 export default function FormDialogCliente(props) {
   const [open, setOpen] = React.useState(false);
@@ -34,24 +36,10 @@ export default function FormDialogCliente(props) {
     setOpen(false);
   };
 
-  const getClientes = async (cpf) => {
-    return new Promise(async function (resolve, reject) {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/clientes?cpf=${cpf}`
-        );
-        const clientesResponse = await response.data;
-        resolve(clientesResponse[0]);
-      } catch (error) {
-        console.log(error);
-        reject();
-      }
-    });
-  };
-
   const BuscarCliente = () => {
     var cpf = props.cpfCliente.match(/\d/g).join("");
-    getClientes(cpf)
+    facadeClientes
+      .getClientePedido(cpf)
       .then((result) => {
         const cliente = result;
         if (!cliente.endereco || cliente.endereco === "false") {
