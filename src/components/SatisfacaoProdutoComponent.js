@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import TextField from '@material-ui/core/TextField';
@@ -9,9 +9,16 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {useHistory} from  "react-router-dom"
 import {FiCheck} from "react-icons/fi";
+import { FormControl } from "react-bootstrap";
+import { InputGroup } from "react-bootstrap";
+import FacadeRelatorioSatisfacao from "../Facade/FacadeRelatorioSatisfacao";
+import "./styles/relatorioSatisfacao.css"
+
+
+const axios =require('axios');
+const facadeRelatorioSatisfacao = new FacadeRelatorioSatisfacao();
 const dados = [
-    {id:1,probEntrega: 'Entrega demorou mais que o previsto', insatisfacoes:'entrega', reclamacaoAtend:'Nenhuma',reclamacaoProd:'Nenhuma',data:'20/11/2020'},
-    
+  {id:1,probEntrega: 'Entrega demorou mais que o previsto', insatisfacoes:'entrega', reclamacaoAtend:'Nenhuma',reclamacaoProd:'Nenhuma',data:'20/11/2020'},  
   {id:2,probEntrega: 'Nenhuma', insatisfacoes:'Mal atendido', reclamacaoAtend:'Atendente não sabe nada',reclamacaoProd:'Pizza murcha',data:'20/11/2020'},
   {id:3,probEntrega: 'Entrega rapida', insatisfacoes:'Pizza ruim', reclamacaoAtend:'Nenhuma',reclamacaoProd:'Pizza ruim',data:'20/09/2020'},
   {id:4,probEntrega: 'Nenhuma', insatisfacoes:'Pior pizza do mundo', reclamacaoAtend:'Nenhuma',reclamacaoProd:'pizza fria',data:'12/09/2020'},
@@ -19,12 +26,11 @@ const dados = [
   ];
 
 
-
   const SatisfacaoProdutoComponent = () => {
-    const history = useHistory();
-    
 
+    const history = useHistory();
     const [confirmaBaixar,setBaixar] = React.useState(false);
+
     const handleBaixar = () => {
       setBaixar(true);
     }
@@ -34,6 +40,7 @@ const dados = [
   
     const [confirmacao,setConfirmacao] = React.useState(false);
     const handleConfirma = () => {
+      console.log(cpfCliente)
       setBaixar(false);
       setConfirmacao(true);
     }
@@ -41,24 +48,83 @@ const dados = [
       setConfirmacao(false);
     }
     const Baixar = () =>{closeConfirma()}
+    const [cpfCliente, setCpfCliente] = React.useState("");
+
+    const [opnioes, setOpnioes] = React.useState([]);
+
+    useEffect(() => {
+      //Primeiro dar um get na tabela de satisfacao vai mostrar o de todos os cpfs
+      const getOpnioes = async () => {
+        //console.log("-----------------------------------------------------rola")
+        const response = await axios.get(
+          `http://localhost:8080/relatorio_satisfacao`
+        );
+        const opnioesResponse = await response;
+        const opnioesArray = opnioesResponse.data;
+        setOpnioes(opnioesArray);
+        console.log("OPNIOS:",opnioes)
+      };
+  
+    }, []);
+
+    const [lista,setLista] = React.useState([]);
+
+    const buscaCpf = () =>{
+      if(cpfCliente ===   ""){
+        facadeRelatorioSatisfacao.getList(setLista);
+        console.log("nadskfbsajfksadhfkjsada")
+      }else{
+
+        //setCpfCliente(cpf);
+        console.log("------------------",cpfCliente);
+        facadeRelatorioSatisfacao.getFromCpf(cpfCliente,setLista);
+        console.log("lista:",lista);
+      }
+    } 
+    
     return (
         <div>
+          <div class="inline">
+            <FormControl
+            placeholder={"Cpf"}
+            aria-label="BuscarProduto"
+            aria-describedby="basic-addon1"
+            value={cpfCliente}
+            //Passando o cpf como parametro  
+            onChange={(event) => setCpfCliente(event.target.value)}
+            />
+            <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                style={{
+                  borderWidth: 0.5,
+                  borderColor: "black",
+                  margin: 10,
+                  backgroundColor: "lightGray",
+                  
+                }}
+                onClick={buscaCpf}
+              >
+                Pesquisar
+            </Button>
+          </div>
           <Table striped bordered hover>
             <thead>
               <tr>
-                <td>Código do Produto</td>
-                <td>Problema da entrega</td>
-                <td>Insatisfacoes</td>
-                <td>Reclamacao produto</td>
+                <td>Cliente</td>
+                <td>Avaliacao</td>
+                <td>Produtos</td>
+                <td>Data</td>
               </tr>
             </thead>
-            {dados.map((item) => (
+            {lista.map((item) => (
               <tbody>
                 <tr>
-                  <td>{item.id}</td>
-                  <td>{item.probEntrega}</td>
-                  <td>{item.insatisfacoes}</td>
-                  <td>{item.reclamacaoProd}</td>
+                  <td>{item.cpfCliente}</td>
+                  <td>{item.opniao}</td>
+                  <td>{item.produto}</td>
+                  <td>{item.data}</td>
                 </tr>
               </tbody>
             ))}
