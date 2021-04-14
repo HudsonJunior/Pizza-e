@@ -32,7 +32,7 @@ const Menu = ({ currentUser }) => {
             <div className="dropdown1">
               <button className="dropbtn">
                 Área de Funcionários
-                <i class="fa fa-caret-down"></i>
+                <i className="fa fa-caret-down"></i>
               </button>
               <div className="dropdown-content">
                 <a href="/pedidos">Pedidos</a>
@@ -47,7 +47,7 @@ const Menu = ({ currentUser }) => {
               <button className="dropbtn2">
                 {" "}
                 Área do Gerente
-                <i class="fa fa-caret-down"></i>
+                <i className="fa fa-caret-down"></i>
               </button>
               <div className="dropdown2-content">
                 <a href="/funcionarios">Gerenciar Funcionários</a>
