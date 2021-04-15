@@ -27,26 +27,13 @@ const Funcionarios = () => {
   const [func, setFunc] = React.useState([]);
   const [cpfFunc, setCpf] = React.useState("");
 
- // useEffect(() => {
-  //    getFuncs()
-   // }, []);
 
   useEffect(() => {
     if (cpfFunc === "") {
       facadeFunc.getFuncionario(null, setFunc);
+      console.log('func', func)
     } else facadeFunc.getFuncionario(cpfFunc, setFunc);
   }, [cpfFunc]);
-
-  const getFuncs = async () => {
-    const response = await axios.get(
-      `http://localhost:8080/funcionarios`
-    );
-    const funcResponse = await response;
-    const funcArray = funcResponse.data;
-
-    setFunc(funcArray);
-    };
-
 
   return (
     <>
@@ -61,7 +48,10 @@ const Funcionarios = () => {
             onChange={(event) => setCpf(event.target.value)}
           />
         </InputGroup>
-        <GenericTable data={func} title="Funcionarios" />
+        {func.length > 0 ? (<GenericTable data={func} title="Funcionarios" />) : 
+              (<pre>
+                <p>Não foi possível encontrar um funcionario...</p>
+              </pre>)}
       </div>
     </>
   );

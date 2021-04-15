@@ -841,6 +841,7 @@ const GenericTable = ({ data, title }) => {
                 <td>Ações</td>
               </tr>
             </thead>
+            {console.log('data', data)}
             {data.map((item) => (
               <tbody>
                 <tr>
