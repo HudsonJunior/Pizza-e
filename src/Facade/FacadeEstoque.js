@@ -9,18 +9,19 @@ export default class FacadeEstoque {
         fabricacao
     ){
         return new Promise(function(resolve, reject){
-            try{
+            console.log('validade', validade)
+            console.log('fabricacao', fabricacao)
                 axios.post('http://localhost:8080/produtos-estoque', {
                 nome,
                 valor,
                 peso,
                 validade,
-                fabricacao
+                fabricacao,
+                }).then(result =>{
+                    resolve()
+                }).catch(error => {
+                    reject(error)
                 });
-                resolve();
-            }catch(error){
-                reject(error);
-            }
         })
     }
 

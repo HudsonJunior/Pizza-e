@@ -95,7 +95,6 @@ const Chatbot = () => {
         }else if(newMessage == "0" && cont == 2){
             addResponseMessage("Ate mais!")
         }
-
         if(newMessage != '0' && cont == 3){
             var string = newMessage.split(" ")
             salvarProduto(string[0], string[1])

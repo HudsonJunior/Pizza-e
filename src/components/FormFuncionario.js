@@ -179,6 +179,7 @@ const FormularioFuncionario = (props) => {
             <TextField value={cpf} onChange={event => setCpf(event.target.value)}
               required
               label="CPF"
+              type = "number"
               style={{
                 margin: 8,
                 flexDirection: "column",

@@ -64,25 +64,14 @@ const Estoque = () => {
                 onChange={(event) => setId(event.target.value)} 
                 />
               </InputGroup>
-              {estoque.length > 0 ? (<GenericTable data={estoque} title="Estoque" />) 
-              : 
-              (<pre>
-                <p>Não foi possível encontrar item com esta id...</p>
-              </pre>)}
+              <GenericTable data={estoque} title="Estoque" />
               </>
             )
         }else if (value === "venc"){
            facadeEstoque.getVencidos(true, setEstoque);
             return (  
               <>
-              {estoque.length > 0 ? (<GenericTable data={estoque} title="Estoque" />)
-              
-              : (
-                <pre>
-                  <p> Não foi possível encontrar itens próximos do vencimento...</p>
-                </pre>
-
-              )}
+              <GenericTable data={estoque} title="Estoque" />
               </>
             )
         }

@@ -48,10 +48,7 @@ const Funcionarios = () => {
             onChange={(event) => setCpf(event.target.value)}
           />
         </InputGroup>
-        {func.length > 0 ? (<GenericTable data={func} title="Funcionarios" />) : 
-              (<pre>
-                <p>Não foi possível encontrar um funcionario...</p>
-              </pre>)}
+        <GenericTable data={func} title="Funcionarios" />
       </div>
     </>
   );
