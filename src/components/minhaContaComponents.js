@@ -14,6 +14,7 @@ import TabelaMinhaConta from "./TabelaMinhaConta";
 import FacadePedido from "../Facade/FacadePedido";
 import FacadeClientes from "../Facade/FacadeClientes";
 import FacadeFuncionario from "../Facade/FacadeFuncionario";
+import FacadeSatisfacao from "../Facade/FacadeRelatorioSatisfacao";
 import "./styles/cadastrarCliente.css";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -24,6 +25,7 @@ import { parseJSON } from "date-fns";
 const facadeFuncionario =new FacadeFuncionario(); 
 const facadeClientes = new FacadeClientes();
 const facadePedido = new FacadePedido();
+const facadeSatisfacao = new FacadeSatisfacao();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 
 const MinhaConta = ({ currentUser }) => {
   const user = localStorage.getItem("user");
-  
   const history = useHistory();
   const classes = useStyles();
   const [alterar, setAlterar] = React.useState(false);
@@ -51,7 +52,7 @@ const MinhaConta = ({ currentUser }) => {
   useEffect(() => {
     if(user){
       const cpfCliente = JSON.parse(user).cpf;
-      facadeFuncionario.getFuncionario(cpfCliente,setFuncionario)
+      facadeFuncionario.getFuncionarioMinhaConta(cpfCliente,setFuncionario);
       facadePedido.getPedidosCPF(cpfCliente, setPedidos);
       facadeClientes.getCliente(cpfCliente,setCliente);
     }
@@ -64,7 +65,7 @@ const MinhaConta = ({ currentUser }) => {
   const handleChangeFunc = (prop) => (event) =>{
     
     setFuncionario({ ...funcionario, [prop]: event.target.value });
-    
+    //console.log("CONSOLE FUNC",funcionario[0]);
   }
 
   const mostrarMensagem = () => {
@@ -105,23 +106,7 @@ const MinhaConta = ({ currentUser }) => {
     history.push("/login", { tipo: "perfil" });
   };
 
-  const data = {
-    cpf: "123456798",
-    nome: "Gabriel Maeda",
-    endereco: "Rua das palmeiras 7015",
-    email: "maeda@yahoo.com",
-    telefone: "30159963",
-  };
-
-  const func = {
-    cpf: "123456798",
-    rg: "1075",
-    carteira: "102356",
-    nome: "Hudson Roger",
-    endereco: "Rua das bananinhas 1075",
-    email: "Hudsonx@yahoo.com",
-    telefone: "301509963",
-  };
+  
 
   const convertedUser = JSON.parse(user);
   function verificaUsuario() {
@@ -190,7 +175,7 @@ const MinhaConta = ({ currentUser }) => {
                 disabled
                 id="standart-required"
                 label="Carteira"
-                defaultValue={func.carteira}
+                defaultValue={funcionario.carteira}
               />
             </div>
             <div>

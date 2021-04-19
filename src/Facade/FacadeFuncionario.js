@@ -92,4 +92,27 @@ export default class FacadeFuncionario {
             setFunc([]);
         }
     }
+
+    
+    getFuncionarioMinhaConta = async (cpf, setFunc) => {
+        try {
+            if (cpf != null) {
+                const response = await axios.get(
+                    `http://localhost:8080/funcionarios?cpf=${cpf}`
+                );
+                const funcionarioResponse = await response.data[0];
+                console.log('response', funcionarioResponse);
+                setFunc(funcionarioResponse);
+            } else {
+                const response = await axios.get(
+                    `http://localhost:8080/funcionarios`
+                );
+                const funcionarioResponse = await response.data;
+                console.log('else', funcionarioResponse);
+                setFunc(funcionarioResponse);
+            }
+        } catch (error) {
+            setFunc([]);
+        }
+    }
  }

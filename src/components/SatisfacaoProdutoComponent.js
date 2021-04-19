@@ -124,7 +124,7 @@ const dados = [
                   <td>{item.cpfCliente}</td>
                   <td>{item.opniao}</td>
                   <td>{item.produto}</td>
-                  <td>{item.data}</td>
+                  <td>{item.dataSatisfacao}</td>
                 </tr>
               </tbody>
             ))}
