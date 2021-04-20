@@ -1,27 +1,25 @@
 const axios = require("axios");
 
 export default class FacadeEstoque {
-    postEstoque (
+    postEstoque(
         nome,
         valor,
         peso,
         validade,
         fabricacao
-    ){
-        return new Promise(function(resolve, reject){
-            console.log('validade', validade)
-            console.log('fabricacao', fabricacao)
-                axios.post('http://localhost:8080/produtos-estoque', {
+    ) {
+        return new Promise(function (resolve, reject) {
+            axios.post('http://localhost:8080/produtos-estoque', {
                 nome,
                 valor,
                 peso,
                 validade,
                 fabricacao,
-                }).then(result =>{
-                    resolve()
-                }).catch(error => {
-                    reject(error)
-                });
+            }).then(result => {
+                resolve()
+            }).catch(error => {
+                reject(error)
+            });
         })
     }
 
@@ -31,31 +29,31 @@ export default class FacadeEstoque {
         valor,
         peso,
         validade,
-        fabricacao){
-        return new Promise(function(resolve, reject){   
-                axios.patch('http://localhost:8080/produtos-estoque', {
+        fabricacao) {
+        return new Promise(function (resolve, reject) {
+            axios.patch('http://localhost:8080/produtos-estoque', {
                 id,
                 nome,
                 valor,
                 peso,
                 validade,
                 fabricacao
-                }).then(result =>{
-                    resolve()
+            }).then(result => {
+                resolve()
 
-                }).catch(error => {
-                    reject(error)
-                });
-                
+            }).catch(error => {
+                reject(error)
+            });
+
         })
     }
 
-    delEstoque(id){
-        return new Promise(function(resolve, reject){
-            try{
+    delEstoque(id) {
+        return new Promise(function (resolve, reject) {
+            try {
                 axios.delete(`http://localhost:8080/produtos-estoque?id=${id}`, {});
                 resolve();
-            }catch(error){
+            } catch (error) {
                 reject(error);
             }
         })
@@ -93,4 +91,4 @@ export default class FacadeEstoque {
             setEstoque([]);
         }
     }
- }
+}

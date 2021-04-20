@@ -4,7 +4,7 @@ const axios = require("axios");
 
 export default class FacadeRelatorioSatisfacao {
 
-    postSatisfacao = async(body,history) => {
+    postSatisfacao = async (body, history) => {
         axios.post(this.baseUrl, {
             ...body,
         }).then(result => {
@@ -31,8 +31,8 @@ export default class FacadeRelatorioSatisfacao {
             })
     }
 
-    getFromCpf = async (cpf,setOpniao) => {
-        
+    getFromCpf = async (cpf, setOpniao) => {
+
         try {
 
             const response = await axios.get(
@@ -40,22 +40,19 @@ export default class FacadeRelatorioSatisfacao {
             );
             const opnioesResponse = await response.data;
             setOpniao(opnioesResponse);
-            console.log("Facade BUsca pelo cpf",opnioesResponse)
         } catch (error) {
-            console.log("deu erro")
             setOpniao([]);
         }
     };
 
-    getFromData = async (dataSatisfacao,setOpniao) => {
+    getFromData = async (dataSatisfacao, setOpniao) => {
         try {
-            
+
             const response = await axios.get(
                 `http://localhost:8080/relatorio_satisfacao/data?data=${dataSatisfacao}`
             );
             const opnioesResponse = await response.data;
             setOpniao(opnioesResponse);
-            console.log("Busca pela data",opnioesResponse)
         } catch (error) {
             setOpniao([]);
         }

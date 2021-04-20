@@ -108,7 +108,6 @@ const Concluir = () => {
       ":" +
       ("0" + today.getSeconds()).slice(-2);
 
-    console.log(time);
 
     facadePedido
       .postPedido(

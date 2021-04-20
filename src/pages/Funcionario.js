@@ -1,11 +1,11 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Menubar from "../components/MenubarComponent";
 import GenericTable from "../components/GenericTable";
 
 import FacadeFuncionario from "../Facade/FacadeFuncionario"
 
-import {InputGroup, FormControl } from "react-bootstrap";
+import { InputGroup, FormControl } from "react-bootstrap";
 
 import {
   FiSearch,
@@ -31,7 +31,6 @@ const Funcionarios = () => {
   useEffect(() => {
     if (cpfFunc === "") {
       facadeFunc.getFuncionario(null, setFunc);
-      console.log('func', func)
     } else facadeFunc.getFuncionario(cpfFunc, setFunc);
   }, [cpfFunc]);
 
