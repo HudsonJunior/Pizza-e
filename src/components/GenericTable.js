@@ -606,8 +606,8 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.adicionais}</td>
                           <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
                           <td>{item.valor_promocional || 0}</td>
-                          <td>{formataData(item.inicio_promo)}</td>
-                          <td>{formataData(item.fim_promo)}</td>
+                          <td>{isNaN(formataData(item.inicio_promo)) ? "Não tem" : formataData(item.inicio_promo)}</td>
+                          <td>{isNaN(formataData(item.fim_promo)) ? "Não tem" : formataData(item.fim_promo)}</td>
                           <td>
                             <Button
                               onClick={(value) => handleEdit(item)}
@@ -692,8 +692,8 @@ const GenericTable = ({ data, title }) => {
                           <td>{item.peso}</td>
                           <td>{item.ativado == 'true' ? 'Sim' : 'Não'}</td>
                           <td>{item.valor_promocional || 0}</td>
-                          <td>{formataData(item.inicio_promo)}</td>
-                          <td>{formataData(item.fim_promo)}</td>
+                          <td>{isNaN(formataData(item.inicio_promo)) ? "Não tem" : formataData(item.inicio_promo)}</td>
+                          <td>{isNaN(formataData(item.fim_promo)) ? "Não tem" : formataData(item.fim_promo)}</td>
                           <td>
                             <Button
                               onClick={(value) => handleEdit(item)}

@@ -67,8 +67,8 @@ const FormProduto = props => {
     const convertedUser = JSON.parse(user);
     const [voltar, setVoltar] = useState(false)
     const [valorPromo, setValorPromo] = useState("")
-    const [data1Promo, setData1Promo] = useState("2020-11-24T09:30")
-    const [data2Promo, setData2Promo] = useState("2020-11-24T09:30")
+    const [data1Promo, setData1Promo] = useState("")
+    const [data2Promo, setData2Promo] = useState("")
 
     const [nome, setNome] = useState("")
     const [valor, setValor] = useState("")
