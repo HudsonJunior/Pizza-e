@@ -1,5 +1,5 @@
-import React from 'react'
-import RelatorioSatisfacaoComponent from "../components/SatisfacaoTempoComponent"
+import React from "react";
+import RelatorioSatisfacaoComponent from "../components/SatisfacaoTempoComponent";
 import Menubar from "../components/MenubarComponent";
 import FormControl from "@material-ui/core/FormControl";
 import Radio from "@material-ui/core/Radio";

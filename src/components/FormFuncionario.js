@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import TextField from "@material-ui/core/TextField";
 
@@ -66,29 +66,29 @@ const FormularioFuncionario = (props) => {
   const handleSave = (event) => {
     event.preventDefault();
     if (tipo === "cadastrar") {
-      facadeFunc.postFuncionario( nome,
+      facadeFunc.postFuncionario(nome,
         senha,
         cpf,
         rg,
         carteira,
         cep,
         rua,
-        numero).then(result => {toast.success("🍕 Cadastro feito!", {
-        toastStyle,
-      })
-      setTimeout(() => {
-        history.push("/funcionarios");
-      }, 3000);
-    })
-      .catch(error => {
-        console.log(error)
+        numero).then(result => {
+          toast.success("🍕 Cadastro feito!", {
+            toastStyle,
+          })
+          setTimeout(() => {
+            history.push("/funcionarios");
+          }, 3000);
+        })
+        .catch(error => {
           toast.error(error.response.data.message, {
-              toastStyle,
+            toastStyle,
           })
           toast.error(error.response.data.details, {
-              toastStyle,
+            toastStyle,
           })
-      })
+        })
     }
     if (tipo === "editar") {
       const id = func._id;
@@ -102,27 +102,26 @@ const FormularioFuncionario = (props) => {
         cep,
         rua,
         numero
-      ).then(result => { toast.success("🍕 Dados atualizados!", {
-        toastStyle,
+      ).then(result => {
+        toast.success("🍕 Dados atualizados!", {
+          toastStyle,
+        })
+        setTimeout(() => {
+          history.push("/funcionarios");
+        }, 3000);
       })
-      setTimeout(() => {
-        history.push("/funcionarios");
-      }, 3000);
-    })
-      .catch(error => {
-        console.log(error)
+        .catch(error => {
           toast.error(error.response.data.message, {
-              toastStyle,
+            toastStyle,
           })
           toast.error(error.response.data.details, {
-              toastStyle,
+            toastStyle,
           })
-      })
+        })
     }
   };
 
   const handleBack = () => {
-    console.log(1);
     history.push("/funcionarios");
   };
 
@@ -136,7 +135,7 @@ const FormularioFuncionario = (props) => {
   const [numero, setNumero] = useState("")
 
   useEffect(() => {
-    if(func){
+    if (func) {
       setNome(func.nome)
       setSenha(func.senha)
       setCpf(func.cpf)

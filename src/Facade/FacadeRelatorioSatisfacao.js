@@ -34,7 +34,7 @@ export default class FacadeRelatorioSatisfacao {
     getFromCpf = async (cpf,setOpniao) => {
         
         try {
-           
+
             const response = await axios.get(
                 `http://localhost:8080/relatorio_satisfacao/pedido?cpf=${cpf}`
             );
@@ -57,22 +57,19 @@ export default class FacadeRelatorioSatisfacao {
             setOpniao(opnioesResponse);
             console.log("Busca pela data",opnioesResponse)
         } catch (error) {
-            console.log("deu erro")
             setOpniao([]);
         }
     };
 
-    getList = async(setLista) =>{
+    getList = async (setLista) => {
         try {
-           
+
             const response = await axios.get(
                 `http://localhost:8080/relatorio_satisfacao`
             );
             const opnioesResponse = await response.data;
             setLista(opnioesResponse);
-            console.log("facadedfkjgbsdklgjbsdfkjgsdfkj",opnioesResponse)
         } catch (error) {
-            console.log("deu erro")
             setLista([]);
         }
     }

@@ -8,10 +8,8 @@ const QuantidadeBaixa = () => {
   const [relatorio, setRelatorio] = React.useState([]);
 
   useEffect(() => {
-    if (relatorio) {
-      facadeRelatorio.getQuantidadeProduto(setRelatorio);
-    }
-  });
+    facadeRelatorio.getQuantidadeProduto(setRelatorio);
+  }, []);
 
   return (
     <div id="relatorio">

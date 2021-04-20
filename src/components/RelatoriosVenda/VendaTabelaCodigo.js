@@ -11,9 +11,7 @@ const TabelaCodigo = () => {
   const [relatorio, setRelatorio] = React.useState([]);
 
   useEffect(() => {
-    if (relatorio) {
-      facadePedido.getVendaProduto(nomeProduto, setRelatorio);
-    }
+    facadePedido.getVendaProduto(nomeProduto, setRelatorio);
   }, [nomeProduto]);
 
   const getDataFormatada = (data) => {

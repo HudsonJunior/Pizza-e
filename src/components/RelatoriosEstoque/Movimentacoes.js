@@ -18,9 +18,7 @@ const Movimentacoes = () => {
   const [data, setData] = React.useState(currentDate);
 
   useEffect(() => {
-    if (relatorio) {
-      facadeRelatorio.getMovimentacoes(data, setRelatorio);
-    }
+    facadeRelatorio.getMovimentacoes(data, setRelatorio);
   }, [data]);
 
   return (

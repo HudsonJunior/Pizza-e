@@ -73,39 +73,38 @@ const FuncCadastrarClienteComponents = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(event.target.elements)
     axios.post('http://localhost:8080/clientes', {
-      
-        nome: values.nome,
-        endereco: values.endereco,
-        telefone: values.telefone,
-        email: values.email,
-        cpf: values.cpf,
+
+      nome: values.nome,
+      endereco: values.endereco,
+      telefone: values.telefone,
+      email: values.email,
+      cpf: values.cpf,
     })
-    .then(result => {
-      toast.success("🍕 Cliente cadastrado com sucesso!", {
+      .then(result => {
+        toast.success("🍕 Cliente cadastrado com sucesso!", {
           toastStyle,
-      })
-      setTimeout(() => {
-          if(tipo === "pedido"){
+        })
+        setTimeout(() => {
+          if (tipo === "pedido") {
             window.history.back();
-          }  
-          else{history.push("/clientes")}
-          
-      }, 3000);
-  })
+          }
+          else { history.push("/clientes") }
+
+        }, 3000);
+      })
       .catch(error => {
-          if (error.response?.data) {
-              toast.error(error.response.data.message, {
-                  toastStyle,
-              })
-              toast.error(error.response.data.details, {
-                  toastStyle,
-              })
-          }
-          else {
-              toast.error('Ocorrou um erro ao cadastrar o cliente, tente novamente!', { toastStyle, })
-          }
+        if (error.response?.data) {
+          toast.error(error.response.data.message, {
+            toastStyle,
+          })
+          toast.error(error.response.data.details, {
+            toastStyle,
+          })
+        }
+        else {
+          toast.error('Ocorrou um erro ao cadastrar o cliente, tente novamente!', { toastStyle, })
+        }
 
       })
   }
@@ -164,7 +163,7 @@ const FuncCadastrarClienteComponents = (props) => {
             </FormControl>
           </div>
 
-         
+
 
           <div style={{ flexDirection: "row", display: "flex" }}>
             <button
@@ -184,7 +183,7 @@ const FuncCadastrarClienteComponents = (props) => {
               Cadastrar
             </button>
 
-            
+
           </div>
         </div>
       </div>

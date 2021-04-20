@@ -64,7 +64,7 @@ const CadastrarClienteComponents = (props) => {
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-};
+  };
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -78,48 +78,47 @@ const CadastrarClienteComponents = (props) => {
     event.preventDefault();
   };
 
-  
+
 
   const Voltar = () => {
-    
+
     history.push("/login");
-    
+
   };
 
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(event.target.elements)
-    
+
     axios.post('http://localhost:8080/clientes', {
-      
-        nome: values.nome,
-        endereco: values.endereco,
-        telefone: values.telefone,
-        email: values.email,
-        cpf: values.cpf,
-        senha:values. password
+
+      nome: values.nome,
+      endereco: values.endereco,
+      telefone: values.telefone,
+      email: values.email,
+      cpf: values.cpf,
+      senha: values.password
     })
-    .then(result => {
-      toast.success("🍕 Cliente cadastrado com sucesso!", {
+      .then(result => {
+        toast.success("🍕 Cliente cadastrado com sucesso!", {
           toastStyle,
-      })
-      setTimeout(() => {
+        })
+        setTimeout(() => {
           history.push("/login")
-      }, 3000);
-  })
+        }, 3000);
+      })
       .catch(error => {
-          if (error.response?.data) {
-              toast.error(error.response.data.message, {
-                  toastStyle,
-              })
-              toast.error(error.response.data.details, {
-                  toastStyle,
-              })
-          }
-          else {
-              toast.error('Ocorrou um erro ao cadastrar o cliente, tente novamente!', { toastStyle, })
-          }
+        if (error.response?.data) {
+          toast.error(error.response.data.message, {
+            toastStyle,
+          })
+          toast.error(error.response.data.details, {
+            toastStyle,
+          })
+        }
+        else {
+          toast.error('Ocorrou um erro ao cadastrar o cliente, tente novamente!', { toastStyle, })
+        }
 
       })
   }
@@ -241,7 +240,7 @@ const CadastrarClienteComponents = (props) => {
               Cadastrar
             </button>
 
-            
+
           </div>
         </div>
       </div>

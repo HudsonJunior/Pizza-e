@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import TextField from "@material-ui/core/TextField";
 
@@ -20,7 +20,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { useHistory } from "react-router-dom";
 
-import FacadeEstoque from  "../Facade/FacadeEstoque";
+import FacadeEstoque from "../Facade/FacadeEstoque";
 
 const facadeEstoque = new FacadeEstoque();
 
@@ -66,26 +66,26 @@ const FormularioEstoque = (props) => {
   const handleSave = (event) => {
     event.preventDefault();
 
-    if(tipo === "cadastrar"){
+    if (tipo === "cadastrar") {
       facadeEstoque.postEstoque(
         nome,
         valor,
         peso,
         validade,
-        fabricacao).then(result => { toast.success("🍕 Cadastro feito!", {
-        toastStyle,
-      })
-        setTimeout(() => {
-          history.push("/estoque");
-        }, 3000);
-      })
-      .catch(error => {
-        console.log(error)
-          toast.error("Erro durante o cadastro no estoque", {
-              toastStyle,
+        fabricacao).then(result => {
+          toast.success("🍕 Cadastro feito!", {
+            toastStyle,
           })
-      })
-  }
+          setTimeout(() => {
+            history.push("/estoque");
+          }, 3000);
+        })
+        .catch(error => {
+          toast.error("Erro durante o cadastro no estoque", {
+            toastStyle,
+          })
+        })
+    }
     if (tipo === "editar") {
       const id = item._id
       facadeEstoque.patchEstoque(
@@ -95,22 +95,19 @@ const FormularioEstoque = (props) => {
         peso,
         validade,
         fabricacao,
-      ).then(result => { toast.success("🍕 Dados atualizados!", {
-        toastStyle,
+      ).then(result => {
+        toast.success("🍕 Dados atualizados!", {
+          toastStyle,
+        })
+        setTimeout(() => {
+          history.push("/estoque");
+        }, 3000);
       })
-      setTimeout(() => {
-        history.push("/estoque");
-      }, 3000);
-    })
-      .catch(error => {
-        console.log(error)
-          toast.error(error.response.data.message, {
-              toastStyle,
+        .catch(error => {
+          toast.error("Erro durante a atualização no estoque", {
+            toastStyle,
           })
-          toast.error(error.response.data.details, {
-              toastStyle,
-          })
-      })
+        })
     }
   };
 
@@ -121,7 +118,7 @@ const FormularioEstoque = (props) => {
   const [fabricacao, setFabricacao] = useState("")
 
   useEffect(() => {
-    if(item){
+    if (item) {
       setNome(item.nome)
       setValor(item.valor)
       setPeso(item.peso)
@@ -136,17 +133,17 @@ const FormularioEstoque = (props) => {
     <>
       <form className={classes.root} onSubmit={handleSave}>
         <div className="contentForm">
-        <TextField value={nome}
-        onChange={event => setNome(event.target.value)}
-              required
-              label="Nome"
-              placeholder="Nome do produto"
-              style={{
-                margin: 8,
-              }}
-            />
-          </div>
-          <div className="contentForm">
+          <TextField value={nome}
+            onChange={event => setNome(event.target.value)}
+            required
+            label="Nome"
+            placeholder="Nome do produto"
+            style={{
+              margin: 8,
+            }}
+          />
+        </div>
+        <div className="contentForm">
           <TextField value={valor} onChange={event => setValor(event.target.value)}
             required
             label="Valor"
@@ -185,8 +182,8 @@ const FormularioEstoque = (props) => {
               shrink: true,
             }}
           />
-          </div>
-          <div className="contentForm">
+        </div>
+        <div className="contentForm">
           <TextField value={fabricacao} onChange={event => setFabricacao(event.target.value)}
             label="Data de Fabricação"
             type="date"
