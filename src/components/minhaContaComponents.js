@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import Menubar from "../components/MenubarComponent";
 import { Table, Button, InputGroup, FormControl } from "react-bootstrap";
-import { FiEdit3, FiXCircle, FiPlus, FiSearch, FiCheck } from "react-icons/fi";
+import { FiEdit3, FiXCircle, FiPlus, FiSearch, FiCheck,FaMoneyCheckAlt } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
 import Botao from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -106,6 +106,11 @@ const MinhaConta = ({ currentUser }) => {
     history.push("/login", { tipo: "perfil" });
   };
 
+  const [showDialog,setShowDialog] = useState(false);
+  const showDialogAjuda = () => {
+    setShowDialog(true);
+  }
+  
   
 
   const convertedUser = JSON.parse(user);
@@ -231,6 +236,7 @@ const MinhaConta = ({ currentUser }) => {
             {""}
             Alterar
           </button>
+          <Button variant="primary" style={{ alignItems: 'center', textAlign: "center" }} onClick={showDialogAjuda}>Preciso de ajuda</Button>
         </div>
         <Dialog
           open={alterar}
@@ -272,6 +278,45 @@ const MinhaConta = ({ currentUser }) => {
               Ok
             </Button>
           </DialogActions>
+        </Dialog>
+        <Dialog
+            open={showDialog}
+            onClose={() => setShowDialog(false)}
+            aria-labelledby="form-dialog-title"
+        >
+            <DialogTitle id="form-dialog-title">
+                Ajuda online de contexto
+          </DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Você está na edição dos dados da sua conta
+                </DialogContentText>
+                
+                <DialogContentText>
+                Para alterar seus dados cadastrados basta preencher ou escrever novamente os campos disponiveis e clicar no botão "Alterar".
+    
+                </DialogContentText>
+                <DialogContentText>
+                Abaixo de suas informações pessoais estão contidos o historico dos pedidos ja realizados no sistema.
+
+                </DialogContentText>
+                <DialogContentText>
+                Para verificar a nota da fiscal do pedido, basta clicar no icone de "$" ao lado dos dados do pedido.
+                </DialogContentText>
+                <DialogContentText>
+                Se desejar deixar sua opnião em relação ao pedido basta clicar no icone representado por um lapis e preencher os campos requeridos.
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    className="botao"
+                    onClick={() => setShowDialog(false)}
+                    color="primary"
+                >
+                    Ok
+                </Button>
+
+            </DialogActions>
         </Dialog>
       </div>
       <TabelaMinhaConta meusPedidos={pedidos} setMeusPedidos={setPedidos} />

@@ -8,6 +8,7 @@ import {
   FiCheck,
   FiDelete,
   FiChevronLeft,
+  FiDollarSign,
 } from "react-icons/fi";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -170,7 +171,7 @@ const TabelaMinhaConta = (props) => {
                       }}
                       onClick={showDialogAjuda}
                   >
-                      <FiEdit3 size={20} color="#black" />
+                      <FiDollarSign size={20} color="#black" />
                   </Button>
 
                   <Dialog
