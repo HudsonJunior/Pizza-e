@@ -60,6 +60,7 @@ const FuncCadastrarClienteComponents = (props) => {
     email: "",
     telefone: "",
     endereco: "",
+    senha: "",
   });
 
   const handleChange = (prop) => (event) => {
@@ -80,6 +81,7 @@ const FuncCadastrarClienteComponents = (props) => {
       telefone: values.telefone,
       email: values.email,
       cpf: values.cpf,
+      senha:values.senha,
     })
       .then(result => {
         toast.success("🍕 Cliente cadastrado com sucesso!", {
@@ -149,6 +151,13 @@ const FuncCadastrarClienteComponents = (props) => {
               onChange={handleChange("telefone")}
               className={clsx(classes.margin, classes.textField)}
               fullWidth
+            />
+            <TextField
+              id="senha"
+              label="Senha"
+              value={values.senha}
+              onChange={handleChange("senha")}
+              className={clsx(classes.margin, classes.textField)}
             />
           </div>
           <div style={{ width: 460 }}>

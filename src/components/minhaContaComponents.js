@@ -150,7 +150,7 @@ const MinhaConta = ({ currentUser }) => {
             <TextField
               required
               id="telefone"
-              onChange={handleChange("nome")}
+              onChange={handleChange("telefone")}
               value={cliente.telefone}
             />
           </form>
