@@ -223,7 +223,6 @@ const FormProduto = props => {
     }
 
     const getHeaderText = () => {
-        console.log("isPizza", isPizza, 'tipo', tipo)
         if (isPizza) {
             if (tipo === 'Cadastrar')
                 return "Cadastrar nova pizza"

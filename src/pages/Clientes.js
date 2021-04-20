@@ -1,10 +1,10 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 import Menubar from "../components/MenubarComponent";
 import GenericTable from "../components/GenericTable";
 
 
-const axios=require('axios')
+const axios = require('axios')
 
 const Clientes = () => {
   const user = localStorage.getItem("user");
@@ -12,11 +12,10 @@ const Clientes = () => {
 
   const [clientes, setClientes] = React.useState([]);
   useEffect(() => {
-      getClientes()
-    }, []);
+    getClientes()
+  }, []);
 
   const getClientes = async () => {
-    //console.log("-----------------------------------------------------rola")
     const response = await axios.get(
       `http://localhost:8080/clientes`
     );

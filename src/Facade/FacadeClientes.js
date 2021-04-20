@@ -20,7 +20,6 @@ export default class FacadeClientes {
       );
       const produtosResponse = await response.data;
       setCliente(produtosResponse[0]);
-      console.log("facadedfkjgbsdklgjbsdfkjgsdfkj", produtosResponse[0]);
     } catch (error) {
       setCliente([]);
     }
@@ -35,7 +34,6 @@ export default class FacadeClientes {
         const clientesResponse = await response.data;
         resolve(clientesResponse[0]);
       } catch (error) {
-        console.log(error);
         reject();
       }
     });
@@ -63,7 +61,6 @@ export default class FacadeClientes {
         });
       })
       .catch((error) => {
-        console.log(error);
         toast.error(error.response.data.message, {
           ...this.toastStyle,
         });

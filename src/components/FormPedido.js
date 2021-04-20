@@ -69,7 +69,6 @@ const FormPedido = (props) => {
   useEffect(() => {
     // para a edicao
     if (item) {
-      console.log("item", item);
       setFormaPag(item.formaPagamento);
       setObservacoes(item.observacoes);
       setCpfNF(item.CPF);
