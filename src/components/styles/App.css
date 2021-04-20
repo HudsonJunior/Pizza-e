@@ -26,3 +26,7 @@ body,
 .contentApp {
   flex: 1;
 }
+
+div.rcw-widget-container {
+  width: auto;
+}

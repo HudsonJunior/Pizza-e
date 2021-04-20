@@ -49,6 +49,7 @@ const Vencimentos = () => {
         <Table striped bordered hover>
           <thead>
             <tr>
+              <th>ID do Produto</th>
               <th>Nome do Produto</th>
               <th>Valor</th>
               <th>Peso</th>
@@ -58,6 +59,7 @@ const Vencimentos = () => {
           {relatorio.map((item) => (
             <tbody>
               <tr>
+                <td>{item._id}</td>
                 <td>{item.nome}</td>
                 <td>{item.valor}</td>
                 <td>{item.peso}</td>

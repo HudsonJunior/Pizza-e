@@ -324,7 +324,11 @@ const FormPedido = (props) => {
               <Button
                 className="botaoRealizarPedido"
                 variant="success"
-                style={{ marginRight: 7, borderWidth: 1, borderColor: "black" }}
+                style={{
+                  marginRight: 7,
+                  borderWidth: 1,
+                  borderColor: "black",
+                }}
                 type="submit"
               >
                 {isCadastro ? "Realizar Pedido" : "Editar Pedido"}

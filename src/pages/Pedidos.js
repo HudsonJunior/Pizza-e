@@ -26,9 +26,7 @@ const Pedidos = () => {
   const [date, setDate] = React.useState(currentDate);
 
   useEffect(() => {
-    if (pedidos) {
-      facadePedido.getPedidosData(date, setPedidos);
-    }
+    facadePedido.getPedidosData(date, setPedidos);
   }, [date]);
 
   const direcionarCadastro = () => {

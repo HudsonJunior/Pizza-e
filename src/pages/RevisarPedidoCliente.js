@@ -42,9 +42,6 @@ const Revisar = () => {
   };
   const handleClose = () => {
     setOpen(false);
-    toast.success("🍕 Produto removido com sucesso!", {
-      toastStyle,
-    });
   };
 
   const handleDeleteItem = (id) => {

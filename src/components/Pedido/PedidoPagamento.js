@@ -21,7 +21,7 @@ const Pagamento = (props) => {
     if (props.formaPagamento) {
       if (props.formaPagamento === "dinheiro") {
         props.setPagamento("dinheiro");
-      } else if (props.formaPagamento === "cartão de debito") {
+      } else if (props.formaPagamento === "cartao de debito") {
         props.setPagamento("cartao de debito");
       } else {
         props.setPagamento("cartao de credito");
@@ -40,8 +40,8 @@ const Pagamento = (props) => {
           onChange={(event) => props.setPagamento(event.target.value)}
         >
           <MenuItem value={"dinheiro"}>Dinheiro</MenuItem>
-          <MenuItem value={"cartão de debito"}>Cartão de Débito</MenuItem>
-          <MenuItem value={"cartão de credito"}>Cartão de Crédito</MenuItem>
+          <MenuItem value={"cartao de debito"}>Cartão de Débito</MenuItem>
+          <MenuItem value={"cartao de credito"}>Cartão de Crédito</MenuItem>
         </Select>
       </FormControl>
     </div>
