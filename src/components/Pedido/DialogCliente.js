@@ -12,7 +12,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FacadeClientes from "../../Facade/FacadeClientes";
 
-const axios = require("axios");
 const facadeClientes = new FacadeClientes();
 
 export default function FormDialogCliente(props) {

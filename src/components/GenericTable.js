@@ -442,7 +442,7 @@ const GenericTable = ({ data, title }) => {
                   <td>{item.formaPagamento}</td>
                   <td>{item.statusPagamento}</td>
                   <td>{item.formaExpedicao}</td>
-                  <td>{item.endereco}</td>
+                  <td>{item.formaExpedicao === "entrega" ? item.endereco : ""}</td>
                   <td>{item.cpfCliente}</td>
                   <td>{item.cpfNF}</td>
                   <td>

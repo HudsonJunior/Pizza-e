@@ -102,42 +102,42 @@ const SatisfacaoProdutoComponent = () => {
         >
           Pesquisar
             </Button>
-      </div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <td>Cliente</td>
-            <td>Avaliacao</td>
-            <td>Produtos</td>
-            <td>Data</td>
-          </tr>
-        </thead>
-        {lista.map((item) => (
-          <tbody>
-            <tr>
-              <td>{item.cpfCliente}</td>
-              <td>{item.opniao}</td>
-              <td>{item.produto}</td>
-              <td>{item.data}</td>
-            </tr>
-          </tbody>
-        ))}
-      </Table>
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        style={{
-          borderWidth: 1,
-          borderColor: "black",
-          margin: 20,
-          backgroundColor: "lightGray",
-
-        }}
-        onClick={
-          handleBaixar}
-      >
-        Baixar
+          </div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <td>Cliente</td>
+                <td>Avaliacao</td>
+                <td>Produtos</td>
+                <td>Data</td>
+              </tr>
+            </thead>
+            {lista.map((item) => (
+              <tbody>
+                <tr>
+                  <td>{item.cpfCliente}</td>
+                  <td>{item.opniao}</td>
+                  <td>{item.produto}</td>
+                  <td>{item.dataSatisfacao}</td>
+                </tr>
+              </tbody>
+            ))}
+          </Table>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            style={{
+              borderWidth: 1,
+              borderColor: "black",
+              margin: 20,
+              backgroundColor: "lightGray",
+              
+            }}
+            onClick={
+              handleBaixar}
+          >
+            Baixar
           </Button>
       <Dialog
         open={confirmaBaixar}

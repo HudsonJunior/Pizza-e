@@ -30,6 +30,7 @@ import RelatoriosSatisfacao from "./pages/RelatorioSatisfacao";
 import RevisarPedidoCliente from "./pages/RevisarPedidoCliente";
 import ConcluirPedidoCliente from "./pages/ConcluirPedidoCliente";
 
+
 const App = () => {
   return (
     <body>
@@ -55,6 +56,7 @@ const App = () => {
             />
             <Route path="/editar-funcionario" component={EditarFuncionario} />
             <Route path="/editar-clientes" component={EditarClientes}/>
+            
             <Route path="/relatorios-venda" component={RelatoriosVenda} />
             <Route
               path="/relatorios-satisfacao"

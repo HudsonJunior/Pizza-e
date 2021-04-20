@@ -16,7 +16,10 @@ import { useHistory } from "react-router-dom";
 import "../components/styles/ConcluirPedidoStyle.css";
 import FormDialogAjuda from "../components/Pedido/DialogAjudaCliente";
 import FacadePedido from "../Facade/FacadePedido";
+import FacadeClientes from "../Facade/FacadeClientes";
+
 const facadePedido = new FacadePedido();
+const facadeClientes = new FacadeClientes();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,8 +52,25 @@ const Concluir = () => {
   const [cpfCliente, setCpfCliente] = React.useState("");
 
   useEffect(() => {
-    if (convertedUser) setCpfCliente(convertedUser.cpf);
-  });
+    if (convertedUser) {
+      setCpfCliente(convertedUser.cpf);
+    }
+    if (cpfCliente !== "") {
+      facadeClientes
+        .getClientePedido(cpfCliente)
+        .then((result) => {
+          const cliente = result;
+          if (!cliente.endereco || cliente.endereco === "false") {
+            setEndereco("");
+          } else {
+            setEndereco(cliente.endereco);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [cpfCliente]);
 
   const toastStyle = {
     position: "top-right",
@@ -87,6 +107,8 @@ const Concluir = () => {
       ("0" + today.getMinutes()).slice(-2) +
       ":" +
       ("0" + today.getSeconds()).slice(-2);
+
+    console.log(time);
 
     facadePedido
       .postPedido(

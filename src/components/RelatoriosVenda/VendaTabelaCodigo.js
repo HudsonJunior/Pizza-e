@@ -39,8 +39,8 @@ const TabelaCodigo = () => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>ID do produto</th>
-              <th>Descrição</th>
+              <th>ID do Produto</th>
+              <th>Nome do Produto</th>
               <th>Mês/Ano</th>
               <th>Quantidade Vendida</th>
             </tr>
