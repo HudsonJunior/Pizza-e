@@ -73,7 +73,8 @@ const FormularioFuncionario = (props) => {
         carteira,
         cep,
         rua,
-        numero).then(result => {
+        numero,
+        complemento).then(result => {
           toast.success("🍕 Cadastro feito!", {
             toastStyle,
           })
@@ -82,6 +83,7 @@ const FormularioFuncionario = (props) => {
           }, 3000);
         })
         .catch(error => {
+          console.log(error)
           toast.error(error.response.data.message, {
             toastStyle,
           })
@@ -101,14 +103,12 @@ const FormularioFuncionario = (props) => {
         carteira,
         cep,
         rua,
-        numero
+        numero,
+        complemento
       ).then(result => {
         toast.success("🍕 Dados atualizados!", {
           toastStyle,
         })
-        setTimeout(() => {
-          history.push("/funcionarios");
-        }, 3000);
       })
         .catch(error => {
           toast.error(error.response.data.message, {
@@ -118,6 +118,7 @@ const FormularioFuncionario = (props) => {
             toastStyle,
           })
         })
+
     }
   };
 
@@ -133,6 +134,7 @@ const FormularioFuncionario = (props) => {
   const [cep, setCep] = useState("")
   const [rua, setRua] = useState("")
   const [numero, setNumero] = useState("")
+  const [complemento, setComplemento] = useState("")
 
   useEffect(() => {
     if (func) {
@@ -144,6 +146,7 @@ const FormularioFuncionario = (props) => {
       setCep(func.cep)
       setRua(func.rua)
       setNumero(func.numero)
+      setComplemento(func.complemento)
     }
   }, [])
 
@@ -174,6 +177,7 @@ const FormularioFuncionario = (props) => {
             <TextField value={cpf} onChange={event => setCpf(event.target.value)}
               required
               label="CPF"
+              type="number"
               style={{
                 margin: 8,
                 flexDirection: "column",
@@ -236,7 +240,6 @@ const FormularioFuncionario = (props) => {
               }}
             />
             <TextField value={cep} onChange={event => setCep(event.target.value)}
-              required
               label="CEP"
               style={{
                 margin: 8,
@@ -257,7 +260,6 @@ const FormularioFuncionario = (props) => {
               }}
             />
             <TextField value={cep} onChange={event => setCep(event.target.value)}
-              required
               label="CEP"
               style={{
                 margin: 8,
@@ -267,7 +269,7 @@ const FormularioFuncionario = (props) => {
         )}
         <div className="contentForm">
           <TextField value={rua} onChange={event => setRua(event.target.value)}
-            required
+
             label="Rua"
             style={{
               margin: 8,
@@ -280,8 +282,22 @@ const FormularioFuncionario = (props) => {
             }}
           />
           <TextField value={numero} onChange={event => setNumero(event.target.value)}
-            required
+
             label="Numero"
+            style={{
+              margin: 8,
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
+        <div className="contentForm">
+          <TextField value={complemento} onChange={event => setComplemento(event.target.value)}
+            label="Complemento"
             style={{
               margin: 8,
               flexDirection: "column",

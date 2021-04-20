@@ -9,7 +9,8 @@ export default class FacadeFuncionario {
         carteira,
         cep,
         rua,
-        numero
+        numero,
+        complemento
     ){
         return new Promise(function(resolve, reject){
             try{
@@ -21,7 +22,8 @@ export default class FacadeFuncionario {
                 carteira,
                 cep,
                 rua,
-                numero
+                numero,
+                complemento
             });
              resolve();
             }catch(error){
@@ -39,7 +41,8 @@ export default class FacadeFuncionario {
         carteira,
         cep,
         rua,
-        numero){
+        numero,
+        complemento){
         return new Promise(function(resolve, reject){
             try{
                 axios.patch('http://localhost:8080/funcionarios', {
@@ -51,7 +54,8 @@ export default class FacadeFuncionario {
                     carteira,
                     cep,
                     rua,
-                    numero
+                    numero,
+                    complemento
                 });
                 resolve();
             }catch(error){

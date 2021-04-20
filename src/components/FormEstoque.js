@@ -81,6 +81,7 @@ const FormularioEstoque = (props) => {
           }, 3000);
         })
         .catch(error => {
+          console.log(error.response)
           toast.error("Erro durante o cadastro no estoque", {
             toastStyle,
           })
@@ -122,8 +123,12 @@ const FormularioEstoque = (props) => {
       setNome(item.nome)
       setValor(item.valor)
       setPeso(item.peso)
-      setValidade(item.validade.split("T")[0])
-      setFabricacao(item.fabricacao)
+      if (item.validade != null) {
+        setValidade(item.validade.split("T")[0])
+      }
+      if (item.fabricacao != null) {
+        setFabricacao(item.fabricacao)
+      }
     }
   }, [])
 

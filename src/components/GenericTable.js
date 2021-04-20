@@ -765,15 +765,15 @@ const GenericTable = ({ data, title }) => {
                 <td>Ações</td>
               </tr>
             </thead>
-            {data.map((item) => (
+            {data.length > 0 && data.map((item) => (
               <tbody>
                 <tr>
                   <td>{item._id}</td>
                   <td>{item.nome}</td>
                   <td>{item.valor}</td>
                   <td>{item.peso}</td>
-                  <td>{item.validade.split("T")[0]}</td>
-                  <td>{item.fabricacao}</td>
+                  <td>{item.validade == null ? "Validade indisponivel" : item.validade.split("T")[0]}</td>
+                  <td>{item.fabricacao == null ? "Data de fabricacao nao disponivel" : item.fabricacao}</td>
                   <td>
                     <Button
                       variant="light"
@@ -818,6 +818,10 @@ const GenericTable = ({ data, title }) => {
                 </tr>
               </tbody>
             ))}
+            {data.length <= 0 && (
+            <pre>
+            <p> Não foi possível encontrar itens...</p>
+          </pre>)}
           </>
         )}
         {url === "funcionarios" && (
@@ -835,7 +839,7 @@ const GenericTable = ({ data, title }) => {
                 <td>Ações</td>
               </tr>
             </thead>
-            {data.map((item) => (
+            {data.length > 0 && data.map((item) => (
               <tbody>
                 <tr>
                   <td>{item.nome}</td>
@@ -896,7 +900,10 @@ const GenericTable = ({ data, title }) => {
                   </td>
                 </tr>
               </tbody>
-            ))}
+            ))}{data.length <= 0 && ( <pre>
+              <p> Não foi possível encontrar um funcionario...</p>
+            </pre>)
+            }
           </>
         )}
       </Table>
