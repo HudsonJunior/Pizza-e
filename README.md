@@ -1,33 +1,10 @@
-# Instalando o projeto
+# Pizza-e Frontend
 
-Antes de tudo, será necessário instalar o NodeJS e o gerenciador de pacotes NPM.
+This repository contains the frontend implementation for the **Pizza-e** project, created as part of a **Software Architecture** course at UEM. Built with **React**, the app serves as a customer-facing interface for an ordering system, utilizing the **Facade design pattern** to streamline interactions between the UI and backend services.
 
-Após instalado, clonar este repositório em uma pasta do seu computador
+## Overview
 
-$ git clone https://github.com/Hudsox/Pizza-e.git
+- **Purpose**: Provides an intuitive interface for browsing the menu and managing orders.
+- **Technologies Used**: React, JavaScript, HTML, CSS, with the Facade pattern for modularity and simplicity.
 
-Depois, é necessário a instalação das depêndencias do projeto, para isso digite:
-
-$ npm install
-
-# Iniciando o projeto
-
-Ao clonar o repositório, verificar se não há mudanças pendentes no git, realizando o comando:
-
-$ git pull
-
-Após isso, mudar para sua respectiva branch de trabalho:
-
-$ git checkout nome-da-sua-branch
-
-Para iniciar o projeto no localhost, basta digitar
-
-$ npm start
-
-# Mudanças
-
-Todas as mudanças realizadas na sua branch devem ser commitadas através dos comandos
-
-$ git add nome_dos_arquivos
-$ git commit -m "Mensagem do commit"
-$ git push
+This project demonstrates architectural design principles in frontend development.
